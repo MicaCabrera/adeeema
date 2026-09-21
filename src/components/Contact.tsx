@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent, type RefObject } from "react";
 import CtaButton from "./ui/CtaButton";
 import Eyebrow from "./ui/Eyebrow";
-import { contact } from "../data/content";
+import { useContent, useUi } from "../i18n/useContent";
 
 function CloseIcon({ className }: { className?: string }) {
   return (
@@ -48,6 +48,8 @@ function FloatingInput({
 }
 
 function FloatingSelect({ id, label, required }: { id: string; label: string; required?: boolean }) {
+  const { contact } = useContent();
+
   return (
     <div className="relative">
       <label htmlFor={id} className="absolute left-0 top-0 text-xs text-white/70">
@@ -99,6 +101,8 @@ function FloatingTextarea({ id, label, required }: { id: string; label: string; 
 }
 
 export default function Contact() {
+  const { contact } = useContent();
+  const ui = useUi();
   const [open, setOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const triggerRef = useRef<HTMLSpanElement | null>(null);
@@ -189,7 +193,7 @@ export default function Contact() {
             <button
               type="button"
               onClick={closeDrawer}
-              aria-label="Cerrar"
+              aria-label={ui.close}
               className="text-white/60 transition-colors duration-200 hover:text-white"
             >
               <CloseIcon className="h-5 w-5" />
@@ -198,10 +202,8 @@ export default function Contact() {
 
           {submitted ? (
             <div className="flex flex-1 flex-col items-start justify-center gap-3">
-              <h3 className="text-2xl font-medium text-white md:text-3xl">¡Gracias por tu mensaje!</h3>
-              <p className="text-sm text-white/70">
-                Nuestro equipo de relaciones institucionales se va a contactar a la brevedad.
-              </p>
+              <h3 className="text-2xl font-medium text-white md:text-3xl">{contact.success.title}</h3>
+              <p className="text-sm text-white/70">{contact.success.paragraph}</p>
             </div>
           ) : (
             <>
