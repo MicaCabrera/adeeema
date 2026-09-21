@@ -20,7 +20,7 @@ export default function Fan() {
             {fan.titleParts.slice(3, -1).join(" ")}{" "}
             <span className="text-secondary">{fan.titleParts[fan.titleParts.length - 1]}</span>
           </h2>
-          <p className="mx-auto mb-10 max-w-md text-base leading-relaxed text-white/60">
+          <p className="mx-auto mb-10 max-w-md text-[17.6px] leading-relaxed text-white/60">
             {fan.paragraph}
           </p>
         </Reveal>

@@ -48,7 +48,7 @@ export default function Academy() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <p className="mt-8 max-w-md text-sm leading-relaxed text-muted-dark">{academy.paragraph}</p>
+            <p className="mt-8 text-[15.4px] leading-relaxed text-muted-dark">{academy.paragraph}</p>
           </Reveal>
         </div>
       </div>

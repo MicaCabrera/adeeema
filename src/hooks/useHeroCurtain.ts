@@ -57,11 +57,14 @@ export function useHeroCurtain() {
             institutionalEl.style.position = "relative";
             institutionalEl.style.zIndex = "10";
             if (ENABLE_DEPTH_SHADOW) {
-              institutionalEl.style.boxShadow = "0 -40px 80px rgba(0,0,0,0.35)";
+              // Arranca sin sombra; se anima con el scroll (ver shadowTween
+              // más abajo) en vez de aparecer ya a máxima intensidad.
+              institutionalEl.style.boxShadow = "0 -40px 80px rgba(0,0,0,0)";
             }
 
-            // Mismo cálculo de inicio/fin para el pin y (si está prendido)
-            // el dim del Hero, para que ambos efectos queden sincronizados.
+            // Mismo cálculo de inicio/fin para el pin y los extras con
+            // scrub (sombra, y si está prendido, el dim del Hero), para que
+            // todo quede sincronizado.
             const resolveStart = () =>
               heroEl.offsetHeight > window.innerHeight ? "bottom bottom" : "top top";
             const resolveEnd = () => "+=" + heroEl.offsetHeight;
@@ -76,6 +79,23 @@ export function useHeroCurtain() {
               start: resolveStart,
               end: resolveEnd,
             });
+
+            let shadowTween: gsap.core.Tween | null = null;
+            if (ENABLE_DEPTH_SHADOW) {
+              // scrub 0.6 (en vez de ligarla 1:1 al pin) le da un pequeño
+              // retraso/ease a la sombra para que la cortina se sienta más
+              // suave, no un corte seco apenas arranca el pin.
+              shadowTween = gsap.to(institutionalEl, {
+                boxShadow: "0 -40px 80px rgba(0,0,0,0.35)",
+                ease: "none",
+                scrollTrigger: {
+                  trigger: heroEl,
+                  start: resolveStart,
+                  end: resolveEnd,
+                  scrub: 0.6,
+                },
+              });
+            }
 
             let overlay: HTMLDivElement | null = null;
             let dimTween: gsap.core.Tween | null = null;
@@ -105,6 +125,8 @@ export function useHeroCurtain() {
 
             return () => {
               pinTrigger.kill();
+              shadowTween?.scrollTrigger?.kill();
+              shadowTween?.kill();
               dimTween?.scrollTrigger?.kill();
               dimTween?.kill();
               overlay?.remove();

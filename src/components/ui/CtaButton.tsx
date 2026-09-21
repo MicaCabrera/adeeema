@@ -108,18 +108,25 @@ export default function CtaButton({
 
       <span
         aria-hidden="true"
-        className={`relative z-10 aspect-square shrink-0 overflow-hidden rounded transition-colors duration-300 group-hover:bg-secondary ${squareClassName} ${SIZE.square}`}
+        className={`relative z-10 aspect-square shrink-0 overflow-hidden rounded transition-colors duration-300 group-hover:bg-paper/90 ${squareClassName} ${SIZE.square}`}
       >
         <span className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-in-out group-hover:-translate-x-full group-hover:-translate-y-full">
           <ArrowIcon className={`${SIZE.icon} text-white`} />
         </span>
         <span className="absolute inset-0 flex -translate-x-full translate-y-full items-center justify-center transition-transform duration-300 ease-in-out group-hover:translate-x-0 group-hover:translate-y-0">
-          <img
-            src={site.logo}
-            alt=""
+          <span
             aria-hidden="true"
-            className={`${SIZE.emblem} object-contain brightness-0 invert`}
-            loading="lazy"
+            className={`${SIZE.emblem} bg-ink`}
+            style={{
+              maskImage: `url(${site.logo})`,
+              maskSize: "contain",
+              maskRepeat: "no-repeat",
+              maskPosition: "center",
+              WebkitMaskImage: `url(${site.logo})`,
+              WebkitMaskSize: "contain",
+              WebkitMaskRepeat: "no-repeat",
+              WebkitMaskPosition: "center",
+            }}
           />
         </span>
       </span>
