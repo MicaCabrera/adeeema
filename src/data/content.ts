@@ -189,6 +189,7 @@ export const fan = {
   cta: "Sumarme",
   consent: "Acepto recibir el newsletter de ADEEMA.",
   note: "Tus datos están protegidos. Podés darte de baja cuando quieras.",
+  success: "¡Gracias por sumarte!",
 };
 
 export const contact = {
@@ -215,6 +216,14 @@ export const contact = {
     },
     submit: "Enviar",
   },
+  success: {
+    title: "¡Gracias por tu mensaje!",
+    paragraph: "Nuestro equipo de relaciones institucionales se va a contactar a la brevedad.",
+  },
+};
+
+export const newsDetail = {
+  notFound: "No encontramos esta noticia.",
 };
 
 export const footer = {
