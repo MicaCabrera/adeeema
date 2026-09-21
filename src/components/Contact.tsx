@@ -154,7 +154,7 @@ export default function Contact() {
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
           <Eyebrow label={contact.eyebrow} className="mb-4" />
-          <h2 className="mb-4 text-3xl font-medium leading-tight text-white md:text-4xl lg:text-5xl">
+          <h2 className="display-font mb-4 text-[13vw] font-bold uppercase leading-[0.9] text-white md:text-[5.5vw]">
             {contact.title}
           </h2>
           <p className="text-sm leading-relaxed text-white/60 md:text-base">{contact.paragraph}</p>
@@ -180,7 +180,7 @@ export default function Contact() {
           role="dialog"
           aria-modal="true"
           aria-labelledby="contacto-panel-title"
-          className={`absolute right-0 top-0 flex h-full w-full flex-col overflow-hidden bg-surface p-6 shadow-2xl transition-transform duration-300 ease-out sm:w-[45%] sm:min-w-[420px] sm:p-8 md:p-10 ${
+          className={`absolute right-0 top-0 flex h-full w-full flex-col overflow-hidden bg-ink-soft p-6 shadow-2xl transition-transform duration-300 ease-out sm:w-[45%] sm:min-w-[420px] sm:p-8 md:p-10 ${
             open ? "translate-x-0" : "translate-x-full"
           }`}
         >

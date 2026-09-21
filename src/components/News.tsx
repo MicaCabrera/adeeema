@@ -1,52 +1,129 @@
-import Eyebrow from "./ui/Eyebrow";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import Reveal from "./ui/Reveal";
-import CtaButton from "./ui/CtaButton";
-import { news } from "../data/content";
+import {
+  newsCategoryGroups,
+  getNewsItemsSorted,
+  getSubcategoryCount,
+  formatNewsDate,
+  type NewsItem,
+} from "../data/news";
+
+const sortedItems = getNewsItemsSorted();
 
 export default function News() {
-  const total = news.items.length.toString().padStart(2, "0");
+  const [activeSubcategory, setActiveSubcategory] = useState<string | null>(null);
+
+  const filteredItems = activeSubcategory
+    ? sortedItems.filter((item) => item.subcategory === activeSubcategory)
+    : sortedItems;
 
   return (
-    <section id="noticias" className="relative bg-ink px-6 py-28 md:px-10 md:py-32">
+    <section id="noticias" className="relative bg-paper px-6 py-28 text-ink md:px-10 md:py-32">
       <div className="mx-auto max-w-[1600px]">
-        <div className="mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-end">
-          <Reveal>
-            <Eyebrow label={news.eyebrow} className="mb-8 max-w-sm" />
-            <h2 className="display-font text-5xl font-bold uppercase leading-[0.95] text-white md:text-7xl">
-              {news.title}
-            </h2>
-          </Reveal>
-          <Reveal delay={0.15} className="flex max-w-md flex-col items-start gap-6">
-            <p className="text-base leading-relaxed text-white/60">{news.paragraph}</p>
-            <CtaButton href="#noticias" variant="secondary">
-              {news.ctaLabel}
-            </CtaButton>
-          </Reveal>
-        </div>
+        <div className="flex flex-col gap-12 lg:flex-row lg:gap-16">
+          <Reveal className="w-full shrink-0 lg:w-64">
+            <h3 className="display-font mb-6 text-2xl font-bold uppercase leading-none text-ink">
+              Categorías
+            </h3>
 
-        <div className="grid gap-px overflow-hidden rounded-sm bg-white/10 md:grid-cols-3">
-          {news.items.map((item, i) => (
-            <Reveal key={item.title} delay={i * 0.1} className="group flex h-full flex-col justify-between gap-10 bg-panel p-8">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold uppercase tracking-widest text-white/40">
-                  {item.date}
-                </span>
-                <span className="display-font text-xs tabular-nums text-white/30">
-                  {String(i + 1).padStart(2, "0")}/{total}
-                </span>
-              </div>
-              <div className="flex flex-col gap-3">
-                <span className="w-max rounded-full border border-accent/40 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-accent">
-                  {item.category}
-                </span>
-                <h3 className="display-font text-xl font-semibold leading-snug text-white transition-colors group-hover:text-accent">
-                  {item.title}
-                </h3>
-              </div>
+            <button
+              type="button"
+              onClick={() => setActiveSubcategory(null)}
+              className={`mb-2 flex w-full items-center justify-between gap-3 border-b border-ink/10 px-3 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wide transition-colors ${
+                activeSubcategory === null ? "text-accent" : "text-ink hover:text-accent"
+              }`}
+            >
+              <span>Todas las noticias</span>
+              <span className={activeSubcategory === null ? "text-accent" : "text-muted-dark"}>
+                {sortedItems.length}
+              </span>
+            </button>
+
+            <div className="flex flex-col gap-8">
+              {newsCategoryGroups.map((group) => (
+                <div key={group.group}>
+                  <div className="mb-2 bg-ink/[0.04] px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-widest text-muted-dark">
+                    {group.group}
+                  </div>
+                  <ul>
+                    {group.subcategories.map((sub) => {
+                      const count = getSubcategoryCount(sub);
+                      const active = activeSubcategory === sub;
+                      return (
+                        <li key={sub}>
+                          <button
+                            type="button"
+                            onClick={() => setActiveSubcategory(active ? null : sub)}
+                            className={`flex w-full items-center justify-between gap-3 border-b border-ink/10 px-3 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wide transition-colors ${
+                              active ? "text-accent" : "text-ink hover:text-accent"
+                            }`}
+                          >
+                            <span>{sub}</span>
+                            <span className={active ? "text-accent" : "text-muted-dark"}>{count}</span>
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+
+          <div className="min-w-0 flex-1">
+            <Reveal className="mb-10 border-b border-ink/10 pb-6">
+              <h2 className="display-font text-4xl font-bold uppercase leading-[0.95] text-ink md:text-5xl">
+                Actualidad <span className="text-secondary">& Prensa</span>
+              </h2>
             </Reveal>
-          ))}
+
+            {filteredItems.length > 0 ? (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                {filteredItems.map((item, i) => (
+                  <Reveal key={item.slug} delay={i * 0.06}>
+                    <NewsCard item={item} />
+                  </Reveal>
+                ))}
+              </div>
+            ) : (
+              <p className="py-16 text-center text-sm text-muted-dark">
+                No hay noticias en esta categoría todavía.
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </section>
+  );
+}
+
+function NewsCard({ item }: { item: NewsItem }) {
+  const content = (
+    <div className="flex h-full flex-col gap-6 rounded-sm bg-ink/[0.035] p-6 transition-colors hover:bg-ink/[0.06]">
+      <div className="h-20 w-20 overflow-hidden rounded-sm">
+        <img src={item.image} alt="" className="h-full w-full object-cover" loading="lazy" />
+      </div>
+      <div className="flex flex-col gap-3">
+        <span className="font-mono text-[11px] font-semibold uppercase tracking-widest text-muted-dark">
+          {item.subcategory} | {formatNewsDate(item.date)}
+        </span>
+        <p className="text-sm font-semibold leading-snug text-ink">{item.title}</p>
+      </div>
+    </div>
+  );
+
+  if (item.externalLink) {
+    return (
+      <a href={item.externalLink} target="_blank" rel="noreferrer" className="block h-full">
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <Link to={`/actualidad/${item.slug}`} className="block h-full">
+      {content}
+    </Link>
   );
 }

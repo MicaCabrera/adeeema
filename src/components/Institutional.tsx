@@ -19,9 +19,9 @@ export default function Institutional() {
             <h2 className="display-font text-[13vw] font-bold uppercase leading-[0.9] text-white md:text-[5.5vw]">
               Tecnología,
               <br />
-              <span className="text-white/35">conocimiento</span>
+              <span className="text-secondary">conocimiento</span>
               <br />
-              <span className="text-white/35">y comunidad.</span>
+              <span className="text-secondary">y comunidad.</span>
             </h2>
           </Reveal>
 

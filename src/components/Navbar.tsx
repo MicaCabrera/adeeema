@@ -1,10 +1,20 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import gsap from "gsap";
 import CtaButton from "./ui/CtaButton";
 import LangSwitcher from "./ui/LangSwitcher";
 import { site, nav } from "../data/content";
 
 export default function Navbar() {
+  const { pathname } = useLocation();
+  // Los links son anclas ("#seccion") pensadas para la home. Si estamos en
+  // otra ruta (ej. el detalle de una noticia), hay que anteponer "/" para
+  // que el navegador primero vuelva a la home y después baje a la sección.
+  const toHomeAnchor = useCallback(
+    (anchor: string) => (pathname === "/" ? anchor : `/${anchor}`),
+    [pathname]
+  );
+
   const [activeHref, setActiveHref] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [closing, setClosing] = useState(false);
@@ -127,21 +137,21 @@ export default function Navbar() {
       {/* Dock fijo arriba — tres cápsulas independientes (desktop, >=1280px) */}
       <div className="pointer-events-none fixed inset-x-0 top-6 z-50 hidden items-center justify-center gap-3 xl:flex">
         <a
-          href="#inicio"
+          href={toHomeAnchor("#inicio")}
           aria-label="Ir al inicio"
-          className="pointer-events-auto flex h-12 w-12 shrink-0 items-center justify-center rounded-medium border border-white/10 bg-ink/70 backdrop-blur-lg transition-colors duration-200 hover:border-white/20"
+          className="pointer-events-auto flex h-12 w-12 shrink-0 items-center justify-center rounded-[4px] bg-ink/70 backdrop-blur-lg transition-colors duration-200"
         >
           <img src={site.logo} alt={site.name} className="h-6 w-6 object-contain brightness-0 invert" />
         </a>
 
         <nav
           aria-label="Navegación principal"
-          className="pointer-events-auto flex h-12 shrink-0 items-center gap-0.5 rounded-full border border-white/10 bg-ink/70 px-1.5 backdrop-blur-lg"
+          className="pointer-events-auto flex h-12 shrink-0 items-center gap-0.5 rounded-[4px] bg-ink/70 px-1.5 backdrop-blur-lg"
         >
           {nav.map((link) => (
             <a
               key={link.href}
-              href={link.href}
+              href={toHomeAnchor(link.href)}
               aria-current={activeHref === link.href ? "true" : undefined}
               className={`relative shrink-0 whitespace-nowrap rounded-full px-3.5 py-2 text-[13px] font-medium transition-colors duration-200 ${
                 activeHref === link.href ? "text-white" : "text-white/60 hover:text-white"
@@ -165,30 +175,29 @@ export default function Navbar() {
           <LangSwitcher variant="flat" />
         </nav>
 
-        <div className="pointer-events-auto flex h-12 shrink-0 items-center gap-1 rounded-full border border-white/10 bg-ink/70 px-1.5 backdrop-blur-lg">
+        <div className="pointer-events-auto flex h-12 shrink-0 items-center gap-1 rounded-[4px] bg-ink/70 px-1.5 backdrop-blur-lg">
           <a
-            href="#login"
+            href={toHomeAnchor("#login")}
             className="rounded-full px-3.5 py-2 text-[13px] font-medium text-white/60 transition-colors duration-200 hover:text-white"
           >
             Iniciar Sesión
           </a>
-          <CtaButton href="#comunidad">Sumate</CtaButton>
         </div>
       </div>
 
       {/* Navbar mobile / tablet (<1280px) */}
       <div className="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-white/10 bg-ink/80 px-4 py-3 backdrop-blur-lg sm:px-6 xl:hidden">
         <a
-          href="#inicio"
+          href={toHomeAnchor("#inicio")}
           aria-label="Ir al inicio"
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-medium border border-white/10 bg-ink/70 transition-colors duration-200 hover:border-white/20"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[4px] bg-ink/70 transition-colors duration-200"
         >
           <img src={site.logo} alt={site.name} className="h-6 w-6 object-contain brightness-0 invert" />
         </a>
 
         <button
           type="button"
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-medium border border-white/10 bg-ink/70 text-white/80 transition-colors duration-300 hover:text-white"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[4px] bg-ink/70 text-white/80 transition-colors duration-300 hover:text-white"
           onClick={() => setMenuOpen((v) => !v)}
           aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={menuOpen}
@@ -224,7 +233,7 @@ export default function Navbar() {
                   ref={(el) => {
                     mobileItemRefs.current[index] = el;
                   }}
-                  href={link.href}
+                  href={toHomeAnchor(link.href)}
                   onClick={closeMenu}
                   className="group flex items-center justify-between border-b border-white/10 py-4 text-3xl font-semibold text-white/80 transition-colors hover:text-white sm:text-4xl"
                 >
@@ -242,15 +251,12 @@ export default function Navbar() {
               }}
               className="mt-8 flex flex-col gap-4"
             >
-              <div className="flex items-center justify-between gap-3 rounded-medium border border-white/10 bg-white/5 p-3 backdrop-blur-md">
-                <CtaButton href="#login" onClick={closeMenu}>
+              <div className="flex items-center justify-between gap-3 rounded-[4px] bg-white/5 p-3 backdrop-blur-md">
+                <CtaButton href={toHomeAnchor("#login")} onClick={closeMenu}>
                   Iniciar Sesión
                 </CtaButton>
                 <LangSwitcher />
               </div>
-              <CtaButton href="#comunidad" className="w-full justify-center" onClick={closeMenu}>
-                Sumate
-              </CtaButton>
             </div>
           </div>
         </div>

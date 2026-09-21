@@ -1,3 +1,4 @@
+import { useLocation } from "react-router-dom";
 import { site, footer } from "../data/content";
 import CtaButton from "./ui/CtaButton";
 
@@ -20,12 +21,15 @@ function LinkedinIcon() {
 }
 
 export default function Footer() {
+  const { pathname } = useLocation();
+  const toHomeAnchor = (anchor: string) => (pathname === "/" ? anchor : `/${anchor}`);
+
   return (
     <footer className="relative border-t border-white/10 bg-ink px-6 pb-8 pt-16 md:px-10 md:pt-20">
       <div className="mx-auto max-w-[1600px]">
         <div className="grid gap-12 pb-14 md:grid-cols-[1.4fr_1fr_1fr] md:gap-8">
           <div className="flex flex-col gap-4">
-            <a href="#inicio" className="flex items-center gap-3">
+            <a href={toHomeAnchor("#inicio")} className="flex items-center gap-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent p-2">
                 <img src={site.logo} alt={site.name} className="h-full w-full object-contain brightness-0 invert" />
               </span>
@@ -45,7 +49,7 @@ export default function Footer() {
               {footer.navLinks.map((link) => (
                 <a
                   key={link.label}
-                  href={link.href}
+                  href={toHomeAnchor(link.href)}
                   className="text-sm text-white/60 transition-colors hover:text-accent"
                 >
                   {link.label}
@@ -77,7 +81,7 @@ export default function Footer() {
               </a>
             </div>
 
-            <CtaButton href="#inicio" variant="secondary" className="mt-4">
+            <CtaButton href={toHomeAnchor("#inicio")} variant="secondary" className="mt-4">
               {footer.backToTop}
             </CtaButton>
           </div>

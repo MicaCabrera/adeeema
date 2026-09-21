@@ -1,59 +1,54 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import Eyebrow from "./ui/Eyebrow";
 import Reveal from "./ui/Reveal";
-import { network } from "../data/content";
+import Cursor from "./ui/inverted-cursor";
+import { network, site } from "../data/content";
 
 export default function Network() {
   const [active, setActive] = useState(0);
-  const [isHovering, setIsHovering] = useState(false);
+  const [inside, setInside] = useState(false);
+  const [fine, setFine] = useState(false);
+
+  useEffect(() => {
+    setFine(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  }, []);
 
   return (
-    <section
-      id="red-articulacion"
-      className="relative flex flex-col bg-ink px-6 py-16 pt-28 md:min-h-screen md:justify-center md:px-10 md:pb-16 md:pt-32"
-    >
-      <div className="mx-auto w-full max-w-[1600px]">
-        <div className="mb-10 md:mb-16">
-          <Reveal>
-            <Eyebrow label={network.eyebrow} className="mb-3" />
-            <h2 className="display-font text-[13vw] font-bold uppercase leading-[0.9] text-white md:text-[5.5vw]">
-              Red de
-              <br />
-              <span className="text-white/35">articulación</span>
-            </h2>
-          </Reveal>
-        </div>
+    <section id="red-articulacion" className="relative bg-paper px-6 py-28 text-ink md:px-10 md:py-32">
+      <div className="mx-auto max-w-[1600px]">
+        <Reveal className="mb-16 md:mb-20">
+          <h2 className="display-font text-[13vw] font-bold uppercase leading-[0.9] text-ink md:text-[5.5vw]">
+            Red de <span className="text-secondary">articulación</span>
+          </h2>
+        </Reveal>
 
-        <div className="flex flex-col" onMouseLeave={() => setIsHovering(false)}>
+        <div
+          className={`relative ${fine ? "cursor-none [&_*]:cursor-none" : ""}`}
+          onMouseEnter={() => setInside(true)}
+          onMouseLeave={() => setInside(false)}
+        >
+          {fine && inside && <Cursor size={44} />}
           {network.items.map((item, i) => {
             const isActive = active === i;
+            const highlighted = isActive;
+
             return (
-              <button
-                key={item.index}
-                onMouseEnter={() => {
-                  setActive(i);
-                  setIsHovering(true);
-                }}
-                onFocus={() => {
-                  setActive(i);
-                  setIsHovering(true);
-                }}
-                onBlur={() => setIsHovering(false)}
-                onClick={() => setActive(i)}
-                className="group relative flex w-full items-center text-left transition-colors duration-300"
-              >
-                <div
-                  className={`relative flex w-full flex-col gap-1 border-b border-white/10 py-3 md:w-fit md:flex-row md:items-center md:gap-8 md:py-4 ${
-                    i === 0 ? "border-t" : ""
-                  }`}
+              <Reveal key={item.index} y={16} delay={i * 0.04}>
+                <button
+                  type="button"
+                  onMouseEnter={() => setActive(i)}
+                  onFocus={() => setActive(i)}
+                  onClick={() => setActive(i)}
+                  className={`relative flex w-full flex-col text-left sm:flex-row sm:items-stretch ${
+                    i === 0 ? "border-t border-ink/10" : ""
+                  } border-b border-ink/10`}
                 >
                   {isActive && (
                     <motion.div
-                      layoutId="hover-highlight"
-                      className="absolute inset-0 z-0 rounded-md bg-accent/15 will-change-transform"
+                      layoutId="network-hover-highlight"
+                      className="absolute inset-0 z-0 bg-accent will-change-transform"
                       initial={false}
-                      animate={{ opacity: isHovering ? 1 : 0 }}
+                      animate={{ opacity: highlighted ? 1 : 0 }}
                       transition={{
                         layout: { type: "spring", stiffness: 600, damping: 45, mass: 0.8 },
                         opacity: { duration: 0.15, ease: "easeOut" },
@@ -61,39 +56,62 @@ export default function Network() {
                     />
                   )}
 
-                  <span
-                    className={`display-font relative z-10 text-xs shrink-0 tabular-nums transition-colors duration-150 md:w-8 ${
-                      isActive ? "text-accent" : "text-white/30"
-                    }`}
-                  >
-                    {item.index}
-                  </span>
+                  {/* Miniatura: emblema ADEEMA en reposo, imagen en hover */}
+                  <div className="relative h-40 w-full shrink-0 overflow-hidden bg-ink/[0.04] sm:h-auto sm:w-[180px] md:w-[260px] lg:w-[320px]">
+                    <div
+                      className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
+                        highlighted ? "opacity-0" : "opacity-100"
+                      }`}
+                    >
+                      <img
+                        src={site.logo}
+                        alt=""
+                        className="h-10 w-10 object-contain brightness-0 opacity-[0.18] md:h-14 md:w-14"
+                      />
+                    </div>
+                    <img
+                      src={item.image}
+                      alt=""
+                      className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+                        highlighted ? "opacity-100" : "opacity-0"
+                      }`}
+                    />
+                  </div>
 
-                  <span
-                    className={`display-font relative z-10 shrink-0 text-xl font-bold uppercase transition-colors duration-150 md:w-56 md:text-3xl ${
-                      isActive ? "text-white" : "text-white/25"
-                    }`}
-                  >
-                    {item.tag}
-                  </span>
+                  {/* Título */}
+                  <div className="relative z-10 flex w-full shrink-0 items-center px-6 py-6 sm:w-[200px] sm:py-8 md:w-[280px] md:px-8 lg:w-[340px]">
+                    <h3
+                      className={`display-font text-xl font-bold uppercase leading-[1.05] transition-colors duration-300 md:text-2xl lg:text-[28px] ${
+                        highlighted ? "text-white" : "text-ink"
+                      }`}
+                    >
+                      {item.title}
+                    </h3>
+                  </div>
 
-                  <span
-                    className={`relative z-10 text-[11px] font-medium uppercase tracking-wide transition-colors duration-150 md:w-52 md:text-xs ${
-                      isActive ? "text-white/70" : "text-white/20"
-                    }`}
-                  >
-                    {item.title}
-                  </span>
+                  {/* Descripción */}
+                  <div className="relative z-10 flex w-full flex-1 items-center px-6 pb-6 sm:px-4 sm:py-8 md:px-6">
+                    <p
+                      className={`max-w-xl text-sm leading-relaxed transition-colors duration-300 md:text-base ${
+                        highlighted ? "text-white/70" : "text-muted-dark"
+                      }`}
+                    >
+                      {item.description || "Contenido próximamente."}
+                    </p>
+                  </div>
 
-                  <span
-                    className={`relative z-10 overflow-hidden text-xs leading-relaxed text-white/50 transition-all duration-500 md:w-[26rem] ${
-                      isActive ? "max-h-16 opacity-100" : "max-h-0 opacity-0 md:max-h-16 md:opacity-0"
-                    }`}
-                  >
-                    {item.description}
-                  </span>
-                </div>
-              </button>
+                  {/* Número */}
+                  <div className="relative z-10 flex w-full shrink-0 items-center justify-end px-6 pb-6 sm:w-24 sm:py-8 md:w-28 md:px-8">
+                    <span
+                      className={`display-font text-2xl font-bold tabular-nums transition-colors duration-300 md:text-3xl ${
+                        highlighted ? "text-white" : "text-accent"
+                      }`}
+                    >
+                      {item.index}
+                    </span>
+                  </div>
+                </button>
+              </Reveal>
             );
           })}
         </div>

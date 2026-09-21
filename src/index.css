@@ -4,18 +4,18 @@
   --font-display: "Space Grotesk", "Inter", sans-serif;
   --font-body: "Inter", sans-serif;
 
-  --color-ink: #090c0d;
-  --color-ink-soft: #101416;
-  --color-panel: #14181c;
-  --color-line: #262b2f;
-  --color-paper: #e4e8f7;
-  --color-paper-dim: #d3d9ef;
-  --color-accent: #034bff;
-  --color-accent-dim: #034bff66;
-  --color-accent-deep: #040f36;
-  --color-surface: #0d2447;
-  --color-muted: #9a9fa8;
-  --color-muted-dark: #6c7178;
+  /* Paleta oficial ADEEMA */
+  --color-ink: #151515; /* Black — estructural / fondos oscuros */
+  --color-ink-soft: #1e1e1e;
+  --color-panel: #242424;
+  --color-line: #363636;
+  --color-paper: #f7fff7; /* Mint Cream — fondo claro principal */
+  --color-paper-dim: #e7f3e7;
+  --color-accent: #1d5cba; /* Tech Blue — color principal / acción */
+  --color-accent-dim: #1d5cba66;
+  --color-accent-deep: #0f2e5d;
+  --color-secondary: #6189c4; /* Dusty Denim — apoyo / interacción secundaria */
+  --color-muted-dark: #4a4a4a; /* Dark Gray — texto secundario sobre fondos claros */
 
   --radius-medium: 0.5rem;
 
@@ -39,7 +39,7 @@
   body {
     margin: 0;
     background: var(--color-ink);
-    color: #f2f1ed;
+    color: var(--color-paper);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
@@ -47,7 +47,7 @@
 
   ::selection {
     background: var(--color-accent);
-    color: #ffffff;
+    color: var(--color-paper);
   }
 
   h1, h2, h3, h4 {
@@ -85,6 +85,14 @@
 ::-webkit-scrollbar-thumb {
   background: var(--color-line);
   border-radius: 0;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 /* ---------- Orbit loader dot ---------- */
@@ -159,7 +167,7 @@
 
 /* ---------- Dotted grid reveal graphic ---------- */
 .dot-grid {
-  --dot-color: rgba(3, 75, 255, 0.55);
+  --dot-color: rgba(29, 92, 186, 0.55);
   background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
   background-size: 10px 10px;
 }

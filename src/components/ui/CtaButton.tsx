@@ -79,7 +79,7 @@ export default function CtaButton({
   if (variant === "secondary") {
     return (
       <Component
-        className={`group inline-flex items-center justify-center overflow-hidden rounded bg-white/10 font-semibold uppercase tracking-widest text-white/70 backdrop-blur-sm transition-colors duration-500 ease-in-out hover:bg-white/15 hover:text-white ${SIZE.height} ${SIZE.text} ${className}`}
+        className={`group inline-flex items-center justify-center overflow-hidden rounded bg-paper/10 font-semibold uppercase tracking-widest text-paper/70 backdrop-blur-sm transition-colors duration-500 ease-in-out hover:bg-paper/15 hover:text-paper ${SIZE.height} ${SIZE.text} ${className}`}
         {...(componentProps as object)}
       >
         <span className="relative inline-block overflow-hidden">
@@ -101,14 +101,14 @@ export default function CtaButton({
   return (
     <Component className={`group inline-flex items-stretch ${SIZE.gap} ${className}`} {...(componentProps as object)}>
       <span
-        className={`relative z-0 flex items-center rounded bg-white ${SIZE.text} font-semibold uppercase tracking-widest text-ink transition-colors duration-300 group-hover:bg-white/90`}
+        className={`relative z-0 flex items-center rounded bg-paper ${SIZE.text} font-semibold uppercase tracking-widest text-ink transition-colors duration-300 group-hover:bg-paper/90`}
       >
         {children}
       </span>
 
       <span
         aria-hidden="true"
-        className={`relative z-10 aspect-square shrink-0 overflow-hidden rounded ${squareClassName} ${SIZE.square}`}
+        className={`relative z-10 aspect-square shrink-0 overflow-hidden rounded transition-colors duration-300 group-hover:bg-secondary ${squareClassName} ${SIZE.square}`}
       >
         <span className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-in-out group-hover:-translate-x-full group-hover:-translate-y-full">
           <ArrowIcon className={`${SIZE.icon} text-white`} />

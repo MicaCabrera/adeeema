@@ -20,8 +20,7 @@ function ConceptCard({ data }: { data: (typeof concepts)[number] }) {
 
       <div className="relative w-full px-6 py-14 md:px-10 md:py-16">
         <div className="mx-auto max-w-[1600px]">
-          <div className="grid gap-8 pt-8 md:grid-cols-[auto_1fr_1fr] md:items-end md:gap-12">
-            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-white/50">{data.eyebrow}</span>
+          <div className="grid gap-8 pt-8 md:grid-cols-[1fr_1fr] md:items-end md:gap-12">
             <h2 className="display-font text-6xl font-bold uppercase leading-none text-white md:text-8xl">
               {data.label}
             </h2>
@@ -104,23 +103,10 @@ function PinnedMissionVision() {
   const past = concepts.slice(0, activeIndex);
 
   return (
-    <section ref={sectionRef} className="relative hidden h-screen overflow-hidden bg-ink lg:block">
-      {/* Fondo: crossfade entre la imagen del concepto activo */}
-      <div className="absolute inset-0">
-        {concepts.map((c, i) => (
-          <img
-            key={c.label}
-            src={c.image}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out"
-            style={{ opacity: activeIndex === i ? 1 : 0 }}
-          />
-        ))}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/65 to-ink/25" />
-      </div>
-
-      <div className="relative z-10 flex h-full flex-col justify-end px-6 pb-16 md:px-10 md:pb-20">
-        <div className="mx-auto w-full max-w-[1600px]">
+    <section ref={sectionRef} className="relative hidden h-screen overflow-hidden bg-ink lg:flex">
+      {/* Mitad izquierda: contenido sobre fondo sólido */}
+      <div className="relative z-10 flex h-full w-1/2 flex-col justify-end bg-accent px-6 pb-16 md:px-10 md:pb-20">
+        <div className="w-full max-w-xl">
           {/* Títulos ya vistos, apilados arriba, chicos y atenuados */}
           <div className="mb-3 flex min-h-[1px] flex-col gap-1">
             <AnimatePresence initial={false}>
@@ -140,11 +126,7 @@ function PinnedMissionVision() {
           </div>
 
           <div className="pt-6 md:pt-8">
-            <div className="grid gap-8 md:grid-cols-[auto_1fr_1fr] md:items-end md:gap-12">
-              <span className="text-xs font-semibold uppercase tracking-[0.3em] text-white/50">
-                {current.eyebrow}
-              </span>
-
+            <div className="flex flex-col gap-6">
               <h2 className="display-font relative w-max text-6xl font-bold uppercase leading-none md:text-8xl">
                 <span className="text-white/25" aria-hidden="true">
                   {current.label}
@@ -166,10 +148,23 @@ function PinnedMissionVision() {
 
             {/* Barra de progreso general de toda la sección */}
             <div className="mt-10 h-px w-full bg-white/15">
-              <div ref={progressRef} className="h-full bg-accent" style={{ width: "0%" }} />
+              <div ref={progressRef} className="h-full bg-secondary" style={{ width: "0%" }} />
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Mitad derecha: imagen */}
+      <div className="relative h-full w-1/2 overflow-hidden">
+        {concepts.map((c, i) => (
+          <img
+            key={c.label}
+            src={c.image}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out"
+            style={{ opacity: activeIndex === i ? 1 : 0 }}
+          />
+        ))}
       </div>
     </section>
   );

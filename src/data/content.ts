@@ -27,7 +27,7 @@ export const nav = [
 export const hero = {
   kicker: "Impulsando el ecosistema tecnológico, académico y cultural del futuro.",
   titleLines: ["ADE", "EMA"], // "ADE" en outline + "EMA" sólido, sobre una misma línea ("ADEEMA")
-  ctaPrimary: { label: "Conocé ADEEMA", href: "#institucional" },
+  ctaPrimary: { label: "SUMATE", href: "#institucional" },
   ctaSecondary: { label: "Explorar Academy", href: "https://academy.adeema.org.ar" },
 };
 
@@ -49,36 +49,42 @@ export const network = {
       tag: "Gobierno",
       title: "Municipios y Gobiernos",
       description: "Acercamos innovación, tecnología y formación a comunidades de todo el país.",
+      image: "https://picsum.photos/seed/gobierno/640/360",
     },
     {
       index: "02",
       tag: "Instituciones",
       title: "Cámaras Empresariales e Instituciones",
       description: "Generamos alianzas y proyectos que fortalecen el desarrollo empresarial e institucional.",
+      image: "https://picsum.photos/seed/instituciones/640/360",
     },
     {
       index: "03",
       tag: "Educación",
       title: "Universidades y Colegios",
       description: "Conectamos educación, conocimiento e innovación para crear nuevas oportunidades de formación.",
+      image: "https://picsum.photos/seed/educacion/640/360",
     },
     {
       index: "04",
       tag: "Innovación",
       title: "Centros Tech e Incubadoras",
       description: "Potenciamos talento, proyectos y emprendimientos que impulsan el futuro tecnológico.",
+      image: "https://picsum.photos/seed/innovacion/640/360",
     },
     {
       index: "05",
       tag: "Cooperación",
       title: "Organismos y Asociaciones",
       description: "Articulamos cooperación y alianzas para desarrollar iniciativas de impacto nacional e internacional.",
+      image: "https://picsum.photos/seed/cooperacion/640/360",
     },
     {
       index: "06",
       tag: "Sponsors",
       title: "Empresas Tech y Sponsors",
       description: "Creamos oportunidades de colaboración, visibilidad y participación en nuevas iniciativas tecnológicas.",
+      image: "https://picsum.photos/seed/sponsors/640/360",
     },
   ],
 };
@@ -156,24 +162,28 @@ export const media = {
       title: "Transmisiones en Vivo / Streaming",
       description:
         "Programación institucional en directo junto a referentes del sector, conversando sobre gaming, innovación, educación y nuevas generaciones.",
+      image: "https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "02",
       title: "Ciclos de Entrevistas",
       description:
         "Charlas profundas con líderes de la industria, académicos y tomadores de decisión que impulsan el desarrollo.",
+      image: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "03",
       title: "Contenido Audiovisual",
       description:
         "Resúmenes, contenidos en formato corto y material interactivo diseñado para plataformas digitales.",
+      image: "https://images.unsplash.com/photo-1601506521937-0121a7fc2a6b?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "04",
       title: "Cobertura de Eventos",
       description:
         "Difusión audiovisual de las activaciones presenciales, jornadas de vinculación y encuentros de la asociación.",
+      image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=80",
     },
   ],
 };
@@ -186,31 +196,6 @@ export const fan = {
   cta: "Sumarme",
   consent: "Acepto recibir el newsletter de ADEEMA.",
   note: "Tus datos están protegidos. Podés darte de baja cuando quieras.",
-};
-
-export const news = {
-  eyebrow: "Actualidad",
-  title: "Actualidad & Prensa",
-  paragraph:
-    "El registro de nuestra actividad. Seguí las novedades, comunicados institucionales y eventos que marcan la agenda del ecosistema.",
-  ctaLabel: "Ver todas las novedades",
-  items: [
-    {
-      date: "18 Sep",
-      category: "Comunicados",
-      title: "ADEEMA consolida su red de alianzas estratégicas y convenios federales.",
-    },
-    {
-      date: "10 Sep",
-      category: "Eventos",
-      title: "Encuentros en Territorio: agenda de jornadas presenciales en todo el país.",
-    },
-    {
-      date: "02 Sep",
-      category: "Actividades",
-      title: "Espacios de Innovación: nuevas convocatorias de ADEEMA Talks y la Academy.",
-    },
-  ],
 };
 
 export const contact = {
