@@ -1,17 +1,20 @@
 import { Link, useParams } from "react-router-dom";
 import Reveal from "./ui/Reveal";
 import { getNewsItemBySlug, formatNewsDate } from "../data/news";
+import { useContent, useUi } from "../i18n/useContent";
 
 export default function NewsDetail() {
+  const { newsDetail } = useContent();
+  const ui = useUi();
   const { slug } = useParams<{ slug: string }>();
   const item = slug ? getNewsItemBySlug(slug) : undefined;
 
   if (!item) {
     return (
       <section className="relative bg-paper px-6 py-32 pt-40 text-center text-ink md:px-10">
-        <p className="mb-6 text-sm text-muted-dark">No encontramos esta noticia.</p>
+        <p className="mb-6 text-sm text-muted-dark">{newsDetail.notFound}</p>
         <Link to="/#noticias" className="font-mono text-xs font-semibold uppercase tracking-widest text-accent">
-          ← Volver
+          ← {ui.back}
         </Link>
       </section>
     );
@@ -24,7 +27,7 @@ export default function NewsDetail() {
           to="/#noticias"
           className="mb-10 inline-block font-mono text-xs font-semibold uppercase tracking-widest text-accent hover:underline"
         >
-          ← Volver
+          ← {ui.back}
         </Link>
 
         <Reveal>
