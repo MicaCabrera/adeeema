@@ -4,8 +4,13 @@ import gsap from "gsap";
 import CtaButton from "./ui/CtaButton";
 import LangSwitcher from "./ui/LangSwitcher";
 import { site, nav } from "../data/content";
+import { useContent, useUi } from "../i18n/useContent";
 
 export default function Navbar() {
+  // "nav" estático: hrefs para el scroll-spy y la barra de progreso (no se
+  // traducen). Los labels visibles salen de navT, por índice.
+  const { nav: navT } = useContent();
+  const ui = useUi();
   const { pathname } = useLocation();
   // Los links son anclas ("#seccion") pensadas para la home. Si estamos en
   // otra ruta (ej. el detalle de una noticia), hay que anteponer "/" para
@@ -197,17 +202,17 @@ export default function Navbar() {
       <div className="pointer-events-none fixed inset-x-0 top-6 z-50 hidden items-center justify-center gap-3 xl:flex">
         <a
           href={toHomeAnchor("#inicio")}
-          aria-label="Ir al inicio"
+          aria-label={ui.goHome}
           className="pointer-events-auto flex h-12 w-12 shrink-0 items-center justify-center rounded-[4px] bg-ink/70 backdrop-blur-lg transition-colors duration-200"
         >
           <img src={site.logo} alt={site.name} className="h-6 w-6 object-contain brightness-0 invert" />
         </a>
 
         <nav
-          aria-label="Navegación principal"
+          aria-label={ui.mainNav}
           className="pointer-events-auto flex h-12 shrink-0 items-center gap-0.5 rounded-[4px] bg-ink/70 px-1.5 backdrop-blur-lg"
         >
-          {nav.map((link) => (
+          {nav.map((link, index) => (
             <a
               key={link.href}
               href={toHomeAnchor(link.href)}
@@ -216,7 +221,7 @@ export default function Navbar() {
                 activeHref === link.href ? "text-white" : "text-white/60 hover:text-white"
               }`}
             >
-              {link.label}
+              {navT[index]?.label ?? link.label}
               <span
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-x-2.5 bottom-0.5 h-0.5 rounded-full bg-white/15"
@@ -239,7 +244,7 @@ export default function Navbar() {
             href={toHomeAnchor("#login")}
             className="rounded-full px-3.5 py-2 text-[13px] font-medium text-white/60 transition-colors duration-200 hover:text-white"
           >
-            Iniciar Sesión
+            {ui.signIn}
           </a>
         </div>
       </div>
@@ -248,7 +253,7 @@ export default function Navbar() {
       <div className="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-white/10 bg-ink/80 px-4 py-3 backdrop-blur-lg sm:px-6 xl:hidden">
         <a
           href={toHomeAnchor("#inicio")}
-          aria-label="Ir al inicio"
+          aria-label={ui.goHome}
           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[4px] bg-ink/70 transition-colors duration-200"
         >
           <img src={site.logo} alt={site.name} className="h-6 w-6 object-contain brightness-0 invert" />
@@ -259,7 +264,7 @@ export default function Navbar() {
           type="button"
           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[4px] bg-ink/70 text-white/80 transition-colors duration-300 hover:text-white"
           onClick={() => setMenuOpen((v) => !v)}
-          aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-label={menuOpen ? ui.closeMenu : ui.openMenu}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
         >
@@ -288,7 +293,7 @@ export default function Navbar() {
           className="fixed inset-0 z-40 flex flex-col bg-accent xl:hidden"
         >
           <div className="flex-1 overflow-y-auto px-6 pb-28 pt-16 sm:px-10">
-            <nav aria-label="Navegación mobile" className="flex flex-col">
+            <nav aria-label={ui.mobileNav} className="flex flex-col">
               {nav.map((link, index) => (
                 <a
                   key={link.href}
@@ -299,7 +304,7 @@ export default function Navbar() {
                   onClick={closeMenu}
                   className="group flex items-center justify-between border-b border-white/20 py-4 text-3xl font-semibold text-white transition-colors sm:text-4xl"
                 >
-                  <span>{link.label}</span>
+                  <span>{navT[index]?.label ?? link.label}</span>
                   <span aria-hidden="true" className="text-secondary opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                     →
                   </span>
@@ -315,7 +320,7 @@ export default function Navbar() {
             >
               <div className="flex items-center justify-between gap-3 rounded-[4px] bg-white/10 p-3">
                 <CtaButton href={toHomeAnchor("#login")} onClick={closeMenu} squareClassName="bg-secondary">
-                  Iniciar Sesión
+                  {ui.signIn}
                 </CtaButton>
                 <LangSwitcher dropdownAlign="up" />
               </div>
