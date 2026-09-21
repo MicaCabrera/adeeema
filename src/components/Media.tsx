@@ -13,7 +13,7 @@ export default function Media() {
               <Eyebrow label={media.eyebrow} dark />
             </Reveal>
             <Reveal delay={0.15} className="mt-8 hidden lg:mt-0 lg:block">
-              <p className="max-w-[200px] text-sm leading-relaxed text-white">{media.paragraph}</p>
+              <p className="max-w-[200px] text-[15.4px] leading-relaxed text-white">{media.paragraph}</p>
             </Reveal>
           </div>
 
@@ -26,7 +26,7 @@ export default function Media() {
             </Reveal>
 
             <Reveal delay={0.1} className="lg:hidden">
-              <p className="mt-6 max-w-md text-sm leading-relaxed text-white">{media.paragraph}</p>
+              <p className="mt-6 max-w-md text-[15.4px] leading-relaxed text-white">{media.paragraph}</p>
             </Reveal>
 
             <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4">

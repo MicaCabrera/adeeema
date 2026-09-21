@@ -26,7 +26,7 @@ function ConceptCard({ data }: { data: (typeof concepts)[number] }) {
             </h2>
             <div className="flex flex-col gap-4">
               <p className="text-lg font-medium leading-snug text-white md:text-xl">{data.title}</p>
-              <p className="max-w-md text-sm leading-relaxed text-white/60">{data.paragraph}</p>
+              <p className="max-w-md text-[15.4px] leading-relaxed text-white/60">{data.paragraph}</p>
             </div>
           </div>
         </div>
@@ -142,13 +142,13 @@ function PinnedMissionVision() {
 
               <div className="flex flex-col gap-4">
                 <p className="text-lg font-medium leading-snug text-white md:text-xl">{current.title}</p>
-                <p className="max-w-md text-sm leading-relaxed text-white/60">{current.paragraph}</p>
+                <p className="max-w-md text-[15.4px] leading-relaxed text-white/60">{current.paragraph}</p>
               </div>
             </div>
 
             {/* Barra de progreso general de toda la sección */}
             <div className="mt-10 h-px w-full bg-white/15">
-              <div ref={progressRef} className="h-full bg-secondary" style={{ width: "0%" }} />
+              <div ref={progressRef} className="h-full bg-ink" style={{ width: "0%" }} />
             </div>
           </div>
         </div>

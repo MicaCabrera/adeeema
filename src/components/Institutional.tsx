@@ -26,7 +26,7 @@ export default function Institutional() {
           </Reveal>
 
           <Reveal delay={0.25} className="flex flex-col gap-6 md:col-start-2 md:row-start-2">
-            <p className="max-w-lg text-base leading-relaxed text-white/60">
+            <p className="max-w-lg text-[17.6px] leading-relaxed text-white/60">
               {institutional.paragraph}
             </p>
             <div>

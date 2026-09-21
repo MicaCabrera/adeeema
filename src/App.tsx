@@ -12,6 +12,7 @@ import News from "./components/News";
 import NewsDetail from "./components/NewsDetail";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import { useHeroCurtain } from "./hooks/useHeroCurtain";
 
 function ScrollManager() {
   const { pathname, hash } = useLocation();
@@ -31,6 +32,8 @@ function ScrollManager() {
 }
 
 function HomePage() {
+  useHeroCurtain();
+
   return (
     <>
       <Hero />
