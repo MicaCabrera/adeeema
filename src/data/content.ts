@@ -3,12 +3,9 @@
 
 export const site = {
   name: "ADEEMA",
-  fullName: "Asociación de Deportes Electrónicos y Electromecánicos de Argentina",
   description:
     "ADEEMA - Asociación de Deportes Electrónicos y Electromecánicos de Argentina. Impulsamos el ecosistema deportivo tecnológico nacional.",
   logo: "/adeema-logo.png",
-  email: "contacto@adeema.org.ar",
-  academyUrl: "https://academy.adeema.org.ar",
   social: {
     instagram: "https://www.instagram.com/adeemaoficial/",
     linkedin: "https://www.linkedin.com/company/adeema/posts/?feedView=all",
@@ -95,7 +92,6 @@ export const mission = {
   title: "Impulsar las competencias del futuro en Argentina.",
   paragraph:
     "Creamos programas de formación, comunidades y espacios de articulación que conectan conocimiento, tecnología y oportunidades para fortalecer el desarrollo sostenible del ecosistema en todo el país.",
-  tags: ["Formación", "Comunidad", "Innovación"],
   image:
     "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=2000&q=80",
 };
@@ -106,7 +102,6 @@ export const vision = {
   title: "Ser una organización de referencia en la región.",
   paragraph:
     "Impulsamos la investigación, el desarrollo y la articulación en torno al gaming, los esports y la innovación tecnológica, conectando nuevas generaciones, educación y tecnología con una mirada federal y de largo plazo.",
-  tags: ["Alcance Federal", "Estrategia", "Legitimidad"],
   image:
     "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=2000&q=80",
 };
@@ -114,10 +109,8 @@ export const vision = {
 export const academy = {
   eyebrow: "Educación",
   title: "ADEEMA Academy",
-  ctaLabel: "Ir a la Academia",
   paragraph:
     "El espacio de formación del ecosistema. Programas educativos estructurados para capacitar a las nuevas generaciones, profesionales y organizaciones en las competencias del futuro e innovación.",
-  sectionLabel: "Cursos Especializados",
   tag: "Academy",
   items: [
     {

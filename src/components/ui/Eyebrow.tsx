@@ -1,7 +1,6 @@
 interface EyebrowProps {
   label: string;
   className?: string;
-  dark?: boolean;
 }
 
 export default function Eyebrow({ label, className = "" }: EyebrowProps) {

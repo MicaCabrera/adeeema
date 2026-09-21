@@ -41,7 +41,7 @@ export default function Academy() {
       <div className="pl-[var(--gutter)] pr-6 pb-16 pt-28 md:pr-10 md:pb-16 md:pt-32">
         <div className="max-w-2xl text-left">
           <Reveal>
-            <Eyebrow label={academy.eyebrow} className="mb-6" dark />
+            <Eyebrow label={academy.eyebrow} className="mb-6" />
             <h2 className="display-font text-[13vw] font-bold uppercase leading-[0.9] text-ink md:text-[5.5vw]">
               ADEEMA <span className="text-secondary">Academy</span>
             </h2>
