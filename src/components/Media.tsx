@@ -10,7 +10,7 @@ export default function Media() {
           {/* Columna izquierda: eyebrow arriba, párrafo abajo (sólo desktop) */}
           <div className="flex flex-col lg:justify-between">
             <Reveal>
-              <Eyebrow label={media.eyebrow} dark />
+              <Eyebrow label={media.eyebrow} />
             </Reveal>
             <Reveal delay={0.15} className="mt-8 hidden lg:mt-0 lg:block">
               <p className="max-w-[200px] text-sm leading-relaxed text-white">{media.paragraph}</p>
