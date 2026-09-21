@@ -1,9 +1,11 @@
 import Eyebrow from "./ui/Eyebrow";
 import Reveal from "./ui/Reveal";
 import CtaButton from "./ui/CtaButton";
-import { institutional } from "../data/content";
+import { useContent } from "../i18n/useContent";
 
 export default function Institutional() {
+  const { institutional } = useContent();
+
   return (
     <section
       id="institucional"
