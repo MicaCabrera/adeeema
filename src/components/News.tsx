@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Reveal from "./ui/Reveal";
+import { useUi } from "../i18n/useContent";
 import {
   newsCategoryGroups,
   getNewsItemsSorted,
@@ -12,6 +13,7 @@ import {
 const sortedItems = getNewsItemsSorted();
 
 export default function News() {
+  const ui = useUi();
   const [activeSubcategory, setActiveSubcategory] = useState<string | null>(null);
 
   const filteredItems = activeSubcategory
@@ -24,7 +26,7 @@ export default function News() {
         <div className="flex flex-col gap-12 lg:flex-row lg:gap-16">
           <Reveal className="w-full shrink-0 lg:w-64">
             <h3 className="display-font mb-6 text-2xl font-bold uppercase leading-none text-ink">
-              Categorías
+              {ui.newsCategories}
             </h3>
 
             <button
@@ -34,7 +36,7 @@ export default function News() {
                 activeSubcategory === null ? "text-accent" : "text-ink hover:text-accent"
               }`}
             >
-              <span>Todas las noticias</span>
+              <span>{ui.newsAll}</span>
               <span className={activeSubcategory === null ? "text-accent" : "text-muted-dark"}>
                 {sortedItems.length}
               </span>
@@ -74,7 +76,7 @@ export default function News() {
           <div className="min-w-0 flex-1">
             <Reveal className="mb-10 border-b border-ink/10 pb-6">
               <h2 className="display-font text-4xl font-bold uppercase leading-[0.95] text-ink md:text-5xl">
-                Actualidad <span className="text-secondary">& Prensa</span>
+                {ui.newsTitleLead} <span className="text-secondary">{ui.newsTitleAccent}</span>
               </h2>
             </Reveal>
 
@@ -88,7 +90,7 @@ export default function News() {
               </div>
             ) : (
               <p className="py-16 text-center text-sm text-muted-dark">
-                No hay noticias en esta categoría todavía.
+                {ui.newsEmpty}
               </p>
             )}
           </div>
