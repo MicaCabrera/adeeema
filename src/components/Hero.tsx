@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
-import { hero } from "../data/content";
+import { useContent } from "../i18n/useContent";
 import CtaButton from "./ui/CtaButton";
 
 export default function Hero() {
+  const { hero } = useContent();
+
   return (
     <section
       id="inicio"
