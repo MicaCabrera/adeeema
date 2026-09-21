@@ -31,6 +31,7 @@ export const hero = {
 export const institutional = {
   eyebrow: "Quiénes somos",
   title: "Una asociación que conecta tecnología, conocimiento y comunidad.",
+  headingParts: ["Tecnología,", "conocimiento", "y comunidad."],
   paragraph:
     "ADEEMA impulsa el impacto del gaming y las nuevas tecnologías en la sociedad. Articulamos comunidades, universidades, empresas e instituciones para conectar conocimiento, innovación y oportunidades, fortaleciendo las capacidades necesarias para el futuro.",
   ctaLabel: "Conocer más",
@@ -38,6 +39,7 @@ export const institutional = {
 
 export const network = {
   eyebrow: "Red de articulación",
+  headingParts: ["Red de", "articulación"],
   title:
     "Construimos vínculos estratégicos entre instituciones, empresas y comunidades para impulsar el desarrollo tecnológico y académico.",
   items: [

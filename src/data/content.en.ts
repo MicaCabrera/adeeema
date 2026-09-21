@@ -34,6 +34,7 @@ export const hero: typeof es.hero = {
 export const institutional: typeof es.institutional = {
   eyebrow: "Who we are",
   title: "An association that connects technology, knowledge and community.",
+  headingParts: ["Technology,", "knowledge", "and community."],
   paragraph:
     "ADEEMA drives the impact of gaming and new technologies on society. We connect communities, universities, companies and institutions to bring together knowledge, innovation and opportunities, strengthening the capabilities needed for the future.",
   ctaLabel: "Learn more",
@@ -41,6 +42,7 @@ export const institutional: typeof es.institutional = {
 
 export const network: typeof es.network = {
   eyebrow: "Partnership network",
+  headingParts: ["Partnership", "network"],
   title:
     "We build strategic links between institutions, companies and communities to drive technological and academic development.",
   items: [

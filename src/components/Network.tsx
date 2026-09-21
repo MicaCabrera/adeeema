@@ -18,7 +18,7 @@ export default function Network() {
       <div className="mx-auto max-w-[1600px]">
         <Reveal className="mb-16 md:mb-20">
           <h2 className="display-font text-[13vw] font-bold uppercase leading-[0.9] text-ink md:text-[5.5vw]">
-            Red de <span className="text-secondary">articulación</span>
+            {network.headingParts[0]} <span className="text-secondary">{network.headingParts[1]}</span>
           </h2>
         </Reveal>
 
