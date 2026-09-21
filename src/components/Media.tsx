@@ -1,8 +1,10 @@
 import Eyebrow from "./ui/Eyebrow";
 import Reveal from "./ui/Reveal";
-import { media } from "../data/content";
+import { useContent } from "../i18n/useContent";
 
 export default function Media() {
+  const { media } = useContent();
+
   return (
     <section id="media" className="relative bg-accent px-6 py-28 text-ink md:px-10 md:py-32">
       <div className="mx-auto max-w-[1600px]">
