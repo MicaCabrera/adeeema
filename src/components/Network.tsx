@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Reveal from "./ui/Reveal";
 import Cursor from "./ui/inverted-cursor";
-import { network, site } from "../data/content";
+import { useContent, useUi } from "../i18n/useContent";
 
 export default function Network() {
+  const { network, site } = useContent();
+  const ui = useUi();
   const [active, setActive] = useState(0);
   const [inside, setInside] = useState(false);
   const [fine, setFine] = useState(false);
@@ -96,7 +98,7 @@ export default function Network() {
                         highlighted ? "text-white/70" : "text-muted-dark"
                       }`}
                     >
-                      {item.description || "Contenido próximamente."}
+                      {item.description || ui.comingSoon}
                     </p>
                   </div>
 
