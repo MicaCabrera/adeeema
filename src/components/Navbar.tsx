@@ -130,7 +130,17 @@ export default function Navbar() {
           .fromTo(
             items,
             { y: 30, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.06 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.5,
+              ease: "power3.out",
+              stagger: 0.06,
+              // Sin esto, el transform inline queda pegado en cada item ya
+              // terminada la animación y le abre un stacking context nuevo
+              // (afecta, por ejemplo, al desplegable de LangSwitcher).
+              clearProps: "transform,opacity",
+            },
             "-=0.35"
           )
           .call(() => mobileItemRefs.current[0]?.focus());
@@ -307,7 +317,7 @@ export default function Navbar() {
                 <CtaButton href={toHomeAnchor("#login")} onClick={closeMenu} squareClassName="bg-secondary">
                   Iniciar Sesión
                 </CtaButton>
-                <LangSwitcher />
+                <LangSwitcher dropdownAlign="up" />
               </div>
             </div>
           </div>
