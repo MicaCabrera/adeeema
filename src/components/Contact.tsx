@@ -157,7 +157,7 @@ export default function Contact() {
           <h2 className="display-font mb-4 text-[13vw] font-bold uppercase leading-[0.9] text-white md:text-[5.5vw]">
             {contact.title}
           </h2>
-          <p className="text-sm leading-relaxed text-white/60 md:text-base">{contact.paragraph}</p>
+          <p className="text-[15.4px] leading-relaxed text-white/60 md:text-[17.6px]">{contact.paragraph}</p>
         </div>
 
         <div className="mt-16 md:mt-20">

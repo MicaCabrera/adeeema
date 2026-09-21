@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
 import { site, footer } from "../data/content";
-import CtaButton from "./ui/CtaButton";
 
 function InstagramIcon() {
   return (
@@ -81,9 +80,15 @@ export default function Footer() {
               </a>
             </div>
 
-            <CtaButton href={toHomeAnchor("#inicio")} variant="secondary" className="mt-4">
-              {footer.backToTop}
-            </CtaButton>
+            <a
+              href={toHomeAnchor("#inicio")}
+              aria-label={footer.backToTop}
+              className="mt-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors duration-300 hover:border-accent/40 hover:text-accent"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 19V5M5 12l7-7 7 7" />
+              </svg>
+            </a>
           </div>
         </div>
 

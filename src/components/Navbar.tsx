@@ -28,6 +28,7 @@ export default function Navbar() {
   const progressRefs = useRef<Record<string, HTMLSpanElement | null>>({});
   const mobileOverlayRef = useRef<HTMLDivElement | null>(null);
   const mobileItemRefs = useRef<(HTMLElement | null)[]>([]);
+  const mobileTriggerRef = useRef<HTMLButtonElement | null>(null);
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
@@ -109,28 +110,86 @@ export default function Navbar() {
     };
   }, [menuRendered]);
 
+  // Timeline de apertura/cierre del menú full-screen mobile (revelado por
+  // clip-path + entrada escalonada de los links), sin tocar el dock desktop.
   useEffect(() => {
-    if (!menuRendered) return;
+    if (!menuRendered) return undefined;
     const overlay = mobileOverlayRef.current;
-    const items = mobileItemRefs.current.filter(Boolean);
-    if (!overlay) return;
+    const items = mobileItemRefs.current.filter(Boolean) as HTMLElement[];
+    if (!overlay) return undefined;
 
-    if (menuOpen) {
-      gsap.set(overlay, { opacity: 0 });
-      gsap.set(items, { opacity: 0, y: 28 });
-      gsap.to(overlay, { opacity: 1, duration: 0.3, ease: "power2.out" });
-      gsap.to(items, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out", stagger: 0.06, delay: 0.1 });
-    } else {
-      gsap.to(items, { opacity: 0, y: -16, duration: 0.2, ease: "power2.in", stagger: 0.03 });
-      gsap.to(overlay, {
-        opacity: 0,
-        duration: 0.25,
-        ease: "power2.in",
-        delay: 0.08,
-        onComplete: () => setClosing(false),
-      });
-    }
+    const ctx = gsap.context(() => {
+      if (menuOpen) {
+        gsap
+          .timeline()
+          .fromTo(
+            overlay,
+            { clipPath: "inset(0 0 100% 0)" },
+            { clipPath: "inset(0% 0 0% 0)", duration: 0.7, ease: "power4.out" }
+          )
+          .fromTo(
+            items,
+            { y: 30, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.5,
+              ease: "power3.out",
+              stagger: 0.06,
+              // Sin esto, el transform inline queda pegado en cada item ya
+              // terminada la animación y le abre un stacking context nuevo
+              // (afecta, por ejemplo, al desplegable de LangSwitcher).
+              clearProps: "transform,opacity",
+            },
+            "-=0.35"
+          )
+          .call(() => mobileItemRefs.current[0]?.focus());
+      } else {
+        gsap
+          .timeline()
+          .to(items, { y: -15, opacity: 0, stagger: 0.03, duration: 0.25, ease: "power2.in" })
+          .to(overlay, { clipPath: "inset(0 0 100% 0)", duration: 0.5, ease: "power4.in" }, "-=0.1")
+          .call(() => {
+            setClosing(false);
+            mobileTriggerRef.current?.focus();
+          });
+      }
+    }, overlay);
+
+    return () => ctx.revert();
   }, [menuOpen, menuRendered]);
+
+  // Escape para cerrar y Tab-trap mientras el menú está abierto (mismo
+  // patrón que el drawer de Contacto).
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+    const overlay = mobileOverlayRef.current;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        closeMenu();
+        return;
+      }
+      if (e.key === "Tab" && overlay) {
+        const focusables = overlay.querySelectorAll<HTMLElement>("a[href], button");
+        if (focusables.length === 0) return;
+        const list = Array.from(focusables);
+        const first = list[0];
+        const last = list[list.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen, closeMenu]);
 
   return (
     <>
@@ -196,6 +255,7 @@ export default function Navbar() {
         </a>
 
         <button
+          ref={mobileTriggerRef}
           type="button"
           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[4px] bg-ink/70 text-white/80 transition-colors duration-300 hover:text-white"
           onClick={() => setMenuOpen((v) => !v)}
@@ -223,7 +283,9 @@ export default function Navbar() {
         <div
           id="mobile-menu"
           ref={mobileOverlayRef}
-          className="fixed inset-0 z-40 flex flex-col bg-ink/98 opacity-0 backdrop-blur-xl xl:hidden"
+          inert={!menuOpen}
+          style={{ clipPath: "inset(0 0 100% 0)" }}
+          className="fixed inset-0 z-40 flex flex-col bg-accent xl:hidden"
         >
           <div className="flex-1 overflow-y-auto px-6 pb-28 pt-16 sm:px-10">
             <nav aria-label="Navegación mobile" className="flex flex-col">
@@ -235,10 +297,10 @@ export default function Navbar() {
                   }}
                   href={toHomeAnchor(link.href)}
                   onClick={closeMenu}
-                  className="group flex items-center justify-between border-b border-white/10 py-4 text-3xl font-semibold text-white/80 transition-colors hover:text-white sm:text-4xl"
+                  className="group flex items-center justify-between border-b border-white/20 py-4 text-3xl font-semibold text-white transition-colors sm:text-4xl"
                 >
                   <span>{link.label}</span>
-                  <span aria-hidden="true" className="text-accent opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                  <span aria-hidden="true" className="text-secondary opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                     →
                   </span>
                 </a>
@@ -251,11 +313,11 @@ export default function Navbar() {
               }}
               className="mt-8 flex flex-col gap-4"
             >
-              <div className="flex items-center justify-between gap-3 rounded-[4px] bg-white/5 p-3 backdrop-blur-md">
-                <CtaButton href={toHomeAnchor("#login")} onClick={closeMenu}>
+              <div className="flex items-center justify-between gap-3 rounded-[4px] bg-white/10 p-3">
+                <CtaButton href={toHomeAnchor("#login")} onClick={closeMenu} squareClassName="bg-secondary">
                   Iniciar Sesión
                 </CtaButton>
-                <LangSwitcher />
+                <LangSwitcher dropdownAlign="up" />
               </div>
             </div>
           </div>
