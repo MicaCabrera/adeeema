@@ -27,7 +27,7 @@ export const nav: typeof es.nav = [
 export const hero: typeof es.hero = {
   kicker: "Driving the technological, academic and cultural ecosystem of the future.",
   titleLines: ["ADE", "EMA"],
-  ctaPrimary: { label: "JOIN US", href: "#institucional" },
+  ctaPrimary: { label: "Get involved", href: "#institucional" },
   ctaSecondary: { label: "Explore Academy", href: "https://academy.adeema.org.ar" },
 };
 
@@ -191,10 +191,10 @@ export const fan: typeof es.fan = {
   titleParts: ["A", "community", "to", "stay", "connected"],
   paragraph:
     "News, alerts and exclusive content from ADEEMA's tech, academic and cultural ecosystem, straight to your inbox.",
-  cta: "Join",
+  cta: "Get involved",
   consent: "I agree to receive the ADEEMA newsletter.",
   note: "Your data is protected. You can unsubscribe at any time.",
-  success: "Thanks for joining!",
+  success: "Thanks for getting involved!",
 };
 
 export const contact: typeof es.contact = {
