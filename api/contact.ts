@@ -1,14 +1,25 @@
 // Función serverless de Vercel: POST /api/contact
 //
 // Recibe los datos del formulario "Vinculación Institucional" (Contact.tsx) y
-// los reenvía a Web3Forms (https://web3forms.com) para que lleguen por mail.
-// La access key de Web3Forms vive SOLO acá, en process.env.WEB3FORMS_KEY (sin
-// el prefijo VITE_ a propósito): así nunca se expone en el bundle del
-// frontend. Se configura en Vercel → Project Settings → Environment
-// Variables, no en ningún archivo del repo.
+// los manda por mail vía Resend (https://resend.com) a CONTACT_TO_EMAIL.
+// La API key de Resend vive SOLO acá, en process.env.RESEND_API_KEY (sin
+// prefijo VITE_ a propósito): así nunca se expone en el bundle del frontend.
+// Se configura en Vercel → Project Settings → Environment Variables.
+//
+// (Antes se usaba Web3Forms, pero está detrás de Cloudflare y bloquea con un
+// challenge JS cualquier pedido que no venga de un navegador real — no hay
+// forma de resolver eso desde un servidor. Resend sí soporta uso server-side.)
 import type { IncomingMessage, ServerResponse } from "node:http";
 
-const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+const RESEND_ENDPOINT = "https://api.resend.com/emails";
+
+// Mientras no se verifique un dominio propio en Resend (Dashboard → Domains,
+// agregando registros DNS), el remitente tiene que ser sí o sí
+// onboarding@resend.dev, y ESE remitente solo entrega al mail con el que se
+// creó la cuenta de Resend. Por eso CONTACT_TO_EMAIL tiene que ser ese mismo
+// mail hasta que se verifique un dominio propio.
+const FROM_ADDRESS = "ADEEMA — Sitio web <onboarding@resend.dev>";
+const TO_EMAIL = process.env.CONTACT_TO_EMAIL || "mcabrera@adeema.org";
 
 interface ContactPayload {
   name: string;
@@ -18,10 +29,9 @@ interface ContactPayload {
 }
 
 // En Vercel, request.body ya llega parseado (según el Content-Type) gracias
-// al runtime de Node — ver docs.vercel.com/docs/functions/runtimes/node-js.
-// En `vite dev` no hay ese parseo automático (lo simula vite.config.ts
-// llamando a este mismo handler a mano), así que si no viene ya parseado
-// leemos el stream nosotros. Misma función sirve para los dos casos.
+// al runtime de Node. En `vite dev` no hay ese parseo automático (lo simula
+// vite.config.ts llamando a este mismo handler a mano), así que si no viene
+// ya parseado leemos el stream nosotros. Misma función sirve para los dos casos.
 async function readJsonBody(req: IncomingMessage & { body?: unknown }): Promise<unknown> {
   if (req.body !== undefined) return req.body;
 
@@ -60,6 +70,11 @@ function sendJson(res: ServerResponse, statusCode: number, body: { success: bool
   res.end(JSON.stringify(body));
 }
 
+function escapeHtml(value: string): string {
+  const map: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+  return value.replace(/[&<>"']/g, (c) => map[c]);
+}
+
 export default async function handler(
   req: IncomingMessage & { body?: unknown },
   res: ServerResponse,
@@ -76,55 +91,57 @@ export default async function handler(
     return;
   }
 
-  const accessKey = process.env.WEB3FORMS_KEY;
-  if (!accessKey) {
-    // Falta configurar WEB3FORMS_KEY en las env vars de Vercel. No se expone
-    // el detalle al cliente, solo se deja registrado en los logs de la función.
-    console.error("[api/contact] falta la variable de entorno WEB3FORMS_KEY");
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    // Falta configurar RESEND_API_KEY en las env vars de Vercel. No se
+    // expone el detalle al cliente, solo queda en los logs de la función.
+    console.error("[api/contact] falta la variable de entorno RESEND_API_KEY");
     sendJson(res, 500, { success: false, message: "El formulario no está disponible en este momento." });
     return;
   }
 
-  // Web3Forms rechaza (403, "not allowed... use client side") los pedidos
-  // que no parecen venir de un navegador real — un fetch de servidor sin
-  // estos headers cae ahí siempre, sin importar la IP. Se arman a partir
-  // del propio request que llegó a esta función (mismo origen que el sitio).
-  const origin =
-    (Array.isArray(req.headers.origin) ? req.headers.origin[0] : req.headers.origin) ||
-    (req.headers.host ? `https://${req.headers.host}` : "https://adeeema-ii.vercel.app");
-
   try {
-    const upstream = await fetch(WEB3FORMS_ENDPOINT, {
+    const upstream = await fetch(RESEND_ENDPOINT, {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
-        Accept: "application/json",
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        Origin: origin,
-        Referer: `${origin}/`,
       },
       body: JSON.stringify({
-        access_key: accessKey,
+        from: FROM_ADDRESS,
+        to: [TO_EMAIL],
+        reply_to: payload.email,
         subject: `Vinculación Institucional — ${payload.name}`,
-        from_name: payload.name,
-        name: payload.name,
-        email: payload.email,
-        motivo: payload.reason,
-        mensaje: payload.message,
+        text: [
+          `Nombre: ${payload.name}`,
+          `Email: ${payload.email}`,
+          payload.reason ? `Motivo: ${payload.reason}` : null,
+          "",
+          "Mensaje:",
+          payload.message,
+        ]
+          .filter((line): line is string => line !== null)
+          .join("\n"),
+        html: `
+          <p><strong>Nombre:</strong> ${escapeHtml(payload.name)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(payload.email)}</p>
+          ${payload.reason ? `<p><strong>Motivo:</strong> ${escapeHtml(payload.reason)}</p>` : ""}
+          <p><strong>Mensaje:</strong></p>
+          <p>${escapeHtml(payload.message).replace(/\n/g, "<br>")}</p>
+        `,
       }),
     });
 
     const result = await upstream.json().catch(() => null);
-    if (!upstream.ok || !result?.success) {
-      console.error("[api/contact] Web3Forms respondió con error", upstream.status, result);
+    if (!upstream.ok) {
+      console.error("[api/contact] Resend respondió con error", upstream.status, result);
       sendJson(res, 502, { success: false, message: "No pudimos enviar tu mensaje. Probá de nuevo en unos segundos." });
       return;
     }
 
     sendJson(res, 200, { success: true });
   } catch (err) {
-    console.error("[api/contact] error llamando a Web3Forms", err);
+    console.error("[api/contact] error llamando a Resend", err);
     sendJson(res, 502, { success: false, message: "No pudimos enviar tu mensaje. Probá de nuevo en unos segundos." });
   }
 }

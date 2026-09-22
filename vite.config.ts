@@ -18,7 +18,7 @@ function apiNewsDevMiddleware(): Plugin {
   }
 }
 
-// Mismo patrón para /api/contact. WEB3FORMS_KEY no tiene prefijo VITE_ a
+// Mismo patrón para /api/contact. RESEND_API_KEY no tiene prefijo VITE_ a
 // propósito (no debe llegar nunca al bundle del cliente), así que acá la
 // cargamos a mano con loadEnv() y la inyectamos en process.env, tal como en
 // Vercel la inyecta el propio runtime a partir de las env vars del proyecto.
@@ -28,8 +28,11 @@ function apiContactDevMiddleware(): Plugin {
     apply: 'serve',
     configureServer(server) {
       const env = loadEnv(server.config.mode, process.cwd(), '')
-      if (env.WEB3FORMS_KEY && !process.env.WEB3FORMS_KEY) {
-        process.env.WEB3FORMS_KEY = env.WEB3FORMS_KEY
+      if (env.RESEND_API_KEY && !process.env.RESEND_API_KEY) {
+        process.env.RESEND_API_KEY = env.RESEND_API_KEY
+      }
+      if (env.CONTACT_TO_EMAIL && !process.env.CONTACT_TO_EMAIL) {
+        process.env.CONTACT_TO_EMAIL = env.CONTACT_TO_EMAIL
       }
 
       server.middlewares.use('/api/contact', async (req, res) => {
