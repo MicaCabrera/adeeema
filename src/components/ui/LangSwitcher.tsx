@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { useLanguage, type Lang } from "../../i18n/language";
+import { useUi } from "../../i18n/useContent";
 
-const LANGS = [
-  { code: "ES", label: "Español" },
-  { code: "EN", label: "English" },
+// Los nombres de idioma se muestran siempre en su propio idioma (es la
+// convención de UI): no se traducen.
+const LANGS: { code: Lang; short: string; label: string }[] = [
+  { code: "es", short: "ES", label: "Español" },
+  { code: "en", short: "EN", label: "English" },
 ];
 
 interface LangSwitcherProps {
@@ -15,7 +19,8 @@ interface LangSwitcherProps {
 }
 
 export default function LangSwitcher({ className = "", variant = "chip", dropdownAlign }: LangSwitcherProps) {
-  const [lang, setLang] = useState("ES");
+  const { lang, setLang } = useLanguage();
+  const ui = useUi();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
@@ -58,7 +63,7 @@ export default function LangSwitcher({ className = "", variant = "chip", dropdow
         }`}
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label={`Idioma actual: ${lang}. Cambiar idioma`}
+        aria-label={`${ui.currentLanguage}: ${lang.toUpperCase()}. ${ui.changeLanguage}`}
       >
         <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75}>
           <circle cx="12" cy="12" r="9" strokeLinecap="round" strokeLinejoin="round" />
@@ -67,7 +72,7 @@ export default function LangSwitcher({ className = "", variant = "chip", dropdow
         </svg>
         {!isFlat && (
           <>
-            <span>{lang}</span>
+            <span>{lang.toUpperCase()}</span>
             <svg
               className={`h-3 w-3 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
               viewBox="0 0 24 24"
@@ -84,12 +89,12 @@ export default function LangSwitcher({ className = "", variant = "chip", dropdow
       {open && (
         <div
           role="menu"
-          aria-label="Seleccionar idioma"
+          aria-label={ui.selectLanguage}
           className={`absolute right-0 z-50 min-w-[9rem] overflow-hidden rounded-medium border border-white/10 bg-panel/98 py-1 shadow-xl shadow-black/30 backdrop-blur-md ${
             opensUp ? "bottom-full mb-2" : "top-full mt-2"
           }`}
         >
-          {LANGS.map(({ code, label }) => (
+          {LANGS.map(({ code, short, label }) => (
             <button
               key={code}
               type="button"
@@ -104,7 +109,7 @@ export default function LangSwitcher({ className = "", variant = "chip", dropdow
               }`}
             >
               <span>{label}</span>
-              <span className="text-[10px] text-white/40">{code}</span>
+              <span className="text-[10px] text-white/40">{short}</span>
             </button>
           ))}
         </div>

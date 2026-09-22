@@ -1,9 +1,11 @@
 import Eyebrow from "./ui/Eyebrow";
 import Reveal from "./ui/Reveal";
 import CtaButton from "./ui/CtaButton";
-import { institutional } from "../data/content";
+import { useContent } from "../i18n/useContent";
 
 export default function Institutional() {
+  const { institutional } = useContent();
+
   return (
     <section
       id="institucional"
@@ -17,11 +19,11 @@ export default function Institutional() {
         <div className="grid gap-y-8 gap-x-0 md:grid-cols-2 md:gap-x-16 md:gap-y-0">
           <Reveal delay={0.1} className="md:col-start-1 md:row-start-1">
             <h2 className="display-font text-[13vw] font-bold uppercase leading-[0.9] text-white md:text-[5.5vw]">
-              Tecnología,
+              {institutional.headingParts[0]}
               <br />
-              <span className="text-secondary">conocimiento</span>
+              <span className="text-secondary">{institutional.headingParts[1]}</span>
               <br />
-              <span className="text-secondary">y comunidad.</span>
+              <span className="text-secondary">{institutional.headingParts[2]}</span>
             </h2>
           </Reveal>
 

@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { site, footer } from "../data/content";
+import { useContent } from "../i18n/useContent";
 
 function InstagramIcon() {
   return (
@@ -20,6 +20,7 @@ function LinkedinIcon() {
 }
 
 export default function Footer() {
+  const { site, footer } = useContent();
   const { pathname } = useLocation();
   const toHomeAnchor = (anchor: string) => (pathname === "/" ? anchor : `/${anchor}`);
 

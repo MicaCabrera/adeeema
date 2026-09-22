@@ -31,6 +31,7 @@ export const hero = {
 export const institutional = {
   eyebrow: "Quiénes somos",
   title: "Una asociación que conecta tecnología, conocimiento y comunidad.",
+  headingParts: ["Tecnología,", "conocimiento", "y comunidad."],
   paragraph:
     "ADEEMA impulsa el impacto del gaming y las nuevas tecnologías en la sociedad. Articulamos comunidades, universidades, empresas e instituciones para conectar conocimiento, innovación y oportunidades, fortaleciendo las capacidades necesarias para el futuro.",
   ctaLabel: "Conocer más",
@@ -38,6 +39,7 @@ export const institutional = {
 
 export const network = {
   eyebrow: "Red de articulación",
+  headingParts: ["Red de", "articulación"],
   title:
     "Construimos vínculos estratégicos entre instituciones, empresas y comunidades para impulsar el desarrollo tecnológico y académico.",
   items: [
@@ -189,6 +191,7 @@ export const fan = {
   cta: "Sumarme",
   consent: "Acepto recibir el newsletter de ADEEMA.",
   note: "Tus datos están protegidos. Podés darte de baja cuando quieras.",
+  success: "¡Gracias por sumarte!",
 };
 
 export const contact = {
@@ -205,16 +208,25 @@ export const contact = {
       email: "Email",
       reason: "Motivo de la Consulta",
       reasonPlaceholder: "Seleccionar…",
+      // "value" es una clave estable, igual en todos los idiomas; solo "label" se traduce.
       reasonOptions: [
-        "Alianzas y Convenios Marco",
-        "Patrocinio y Sponsors",
-        "Consultas de Academy",
-        "Prensa y Media",
+        { value: "alliances", label: "Alianzas y Convenios Marco" },
+        { value: "sponsorship", label: "Patrocinio y Sponsors" },
+        { value: "academy", label: "Consultas de Academy" },
+        { value: "press", label: "Prensa y Media" },
       ],
       message: "Mensaje / Propuesta",
     },
     submit: "Enviar",
   },
+  success: {
+    title: "¡Gracias por tu mensaje!",
+    paragraph: "Nuestro equipo de relaciones institucionales se va a contactar a la brevedad.",
+  },
+};
+
+export const newsDetail = {
+  notFound: "No encontramos esta noticia.",
 };
 
 export const footer = {

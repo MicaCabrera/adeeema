@@ -2,9 +2,11 @@ import { useRef, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Eyebrow from "./ui/Eyebrow";
 import Reveal from "./ui/Reveal";
-import { academy } from "../data/content";
+import { useContent, useUi } from "../i18n/useContent";
 
 export default function Academy() {
+  const { academy } = useContent();
+  const ui = useUi();
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
@@ -102,8 +104,8 @@ export default function Academy() {
           <button
             type="button"
             onClick={() => scrollByCard(-1)}
-            aria-label="Anterior"
-            className="relative flex h-9 w-9 items-center justify-center rounded-sm border border-ink/10 text-ink/50 transition-colors duration-300 before:absolute before:-inset-1 before:content-[''] hover:border-accent/40 hover:text-accent"
+            aria-label={ui.previous}
+            className="relative flex h-9 w-9 items-center justify-center rounded-sm border border-ink/10 text-ink/50 transition-colors duration-300 before:absolute before:-inset-1 before:content-[''] hover:border-accent hover:text-accent"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
@@ -114,7 +116,7 @@ export default function Academy() {
                 key={item.index}
                 type="button"
                 onClick={() => scrollToIndex(i)}
-                aria-label={`Ir a ${item.title}`}
+                aria-label={`${ui.goTo} ${item.title}`}
                 className={`relative h-1.5 rounded-full transition-all duration-300 before:absolute before:-inset-x-1 before:-inset-y-4 before:content-[''] ${
                   i === active ? "w-6 bg-accent" : "w-1.5 bg-ink/20 hover:bg-ink/35"
                 }`}
@@ -125,8 +127,8 @@ export default function Academy() {
           <button
             type="button"
             onClick={() => scrollByCard(1)}
-            aria-label="Siguiente"
-            className="relative flex h-9 w-9 items-center justify-center rounded-sm border border-ink/10 text-ink/50 transition-colors duration-300 before:absolute before:-inset-1 before:content-[''] hover:border-accent/40 hover:text-accent"
+            aria-label={ui.next}
+            className="relative flex h-9 w-9 items-center justify-center rounded-sm border border-ink/10 text-ink/50 transition-colors duration-300 before:absolute before:-inset-1 before:content-[''] hover:border-accent hover:text-accent"
           >
             <ArrowRight className="h-4 w-4" />
           </button>

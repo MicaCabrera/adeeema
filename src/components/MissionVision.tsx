@@ -1,14 +1,22 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { mission, vision } from "../data/content";
+import { useContent } from "../i18n/useContent";
 
 gsap.registerPlugin(ScrollTrigger);
 
 // Misión → Visión: mismo orden y mismos campos que usaba el bloque anterior
 // (eyebrow/label/title/paragraph/tags/image), solo cambia el patrón visual.
+// Este "concepts" estático solo aporta la cantidad de pasos para el pin
+// (no depende del idioma); lo que se renderiza sale de useConcepts().
 const concepts = [mission, vision];
+
+function useConcepts() {
+  const content = useContent();
+  return useMemo(() => [content.mission, content.vision], [content]);
+}
 
 const SCROLL_PER_STEP = 900; // px de scroll "virtual" que consume cada concepto durante el pin
 
@@ -99,8 +107,9 @@ function PinnedMissionVision() {
     };
   }, []);
 
-  const current = concepts[activeIndex];
-  const past = concepts.slice(0, activeIndex);
+  const translated = useConcepts();
+  const current = translated[activeIndex];
+  const past = translated.slice(0, activeIndex);
 
   return (
     <section ref={sectionRef} className="relative hidden h-screen overflow-hidden bg-ink lg:flex">
@@ -112,7 +121,7 @@ function PinnedMissionVision() {
             <AnimatePresence initial={false}>
               {past.map((c) => (
                 <motion.span
-                  key={c.label}
+                  key={c.image}
                   layout
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -156,9 +165,9 @@ function PinnedMissionVision() {
 
       {/* Mitad derecha: imagen */}
       <div className="relative h-full w-1/2 overflow-hidden">
-        {concepts.map((c, i) => (
+        {translated.map((c, i) => (
           <img
-            key={c.label}
+            key={c.image}
             src={c.image}
             alt=""
             className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out"
@@ -175,10 +184,12 @@ function PinnedMissionVision() {
 // propia imagen de fondo — mismo contenido, sin el efecto de relleno ni la
 // acumulación de títulos.
 function StackedMissionVision() {
+  const translated = useConcepts();
+
   return (
     <div className="lg:hidden">
-      {concepts.map((c) => (
-        <ConceptCard key={c.label} data={c} />
+      {translated.map((c) => (
+        <ConceptCard key={c.image} data={c} />
       ))}
     </div>
   );

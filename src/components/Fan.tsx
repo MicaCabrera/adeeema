@@ -1,9 +1,11 @@
 import { useState } from "react";
 import Reveal from "./ui/Reveal";
 import CtaButton from "./ui/CtaButton";
-import { fan } from "../data/content";
+import { useContent, useUi } from "../i18n/useContent";
 
 export default function Fan() {
+  const { fan } = useContent();
+  const ui = useUi();
   const [consent, setConsent] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -27,7 +29,7 @@ export default function Fan() {
 
         <Reveal delay={0.15}>
           {submitted ? (
-            <p className="text-lg font-semibold text-white">¡Gracias por sumarte!</p>
+            <p className="text-lg font-semibold text-white">{fan.success}</p>
           ) : (
             <form
               onSubmit={(e) => {
@@ -40,7 +42,7 @@ export default function Fan() {
                 <input
                   type="email"
                   required
-                  placeholder="Tu email"
+                  placeholder={ui.emailPlaceholder}
                   className="w-full rounded-[4px] bg-white/5 px-6 py-4 text-sm text-white placeholder:text-white/40 outline-none focus:bg-white/10"
                 />
                 <CtaButton as="button" type="submit" className="shrink-0">

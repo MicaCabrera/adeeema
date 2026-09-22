@@ -1,24 +1,52 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Reveal from "./ui/Reveal";
 import Cursor from "./ui/inverted-cursor";
-import { network, site } from "../data/content";
+import { useContent, useUi } from "../i18n/useContent";
 
 export default function Network() {
+  const { network, site } = useContent();
+  const ui = useUi();
   const [active, setActive] = useState(0);
   const [inside, setInside] = useState(false);
   const [fine, setFine] = useState(false);
+  const rowRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
     setFine(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
   }, []);
+
+  // En mobile/tablet táctil no hay hover: la fila se activa sola cuando
+  // scrollea cerca del centro de la pantalla, imitando el mismo highlight
+  // que en desktop dispara el mouse.
+  useEffect(() => {
+    if (fine) return undefined;
+
+    const rows = rowRefs.current.filter((el): el is HTMLButtonElement => el !== null);
+    if (rows.length === 0) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting);
+        if (visible.length === 0) return;
+
+        const best = visible.reduce((max, entry) => (entry.intersectionRatio > max.intersectionRatio ? entry : max));
+        const index = rowRefs.current.indexOf(best.target as HTMLButtonElement);
+        if (index !== -1) setActive(index);
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
+    );
+
+    for (const row of rows) observer.observe(row);
+    return () => observer.disconnect();
+  }, [fine, network.items.length]);
 
   return (
     <section id="red-articulacion" className="relative bg-paper px-6 pb-12 pt-28 text-ink md:px-10 md:pb-16 md:pt-32">
       <div className="mx-auto max-w-[1600px]">
         <Reveal className="mb-16 md:mb-20">
           <h2 className="display-font text-[13vw] font-bold uppercase leading-[0.9] text-ink md:text-[5.5vw]">
-            Red de <span className="text-secondary">articulación</span>
+            {network.headingParts[0]} <span className="text-secondary">{network.headingParts[1]}</span>
           </h2>
         </Reveal>
 
@@ -36,6 +64,9 @@ export default function Network() {
               <Reveal key={item.index} y={16} delay={i * 0.04}>
                 <button
                   type="button"
+                  ref={(el) => {
+                    rowRefs.current[i] = el;
+                  }}
                   onMouseEnter={() => setActive(i)}
                   onFocus={() => setActive(i)}
                   onClick={() => setActive(i)}
@@ -96,7 +127,7 @@ export default function Network() {
                         highlighted ? "text-white/70" : "text-muted-dark"
                       }`}
                     >
-                      {item.description || "Contenido próximamente."}
+                      {item.description || ui.comingSoon}
                     </p>
                   </div>
 
