@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, ChevronDown } from "lucide-react";
+import Eyebrow from "./ui/Eyebrow";
 import Reveal from "./ui/Reveal";
 import WindowedDots from "./ui/WindowedDots";
 import { useContent, useUi } from "../i18n/useContent";
@@ -177,6 +178,7 @@ export default function News() {
               una columna normal (título + grilla) al lado del sidebar. */}
           <div className="contents lg:flex lg:min-w-0 lg:flex-1 lg:flex-col lg:order-2">
             <Reveal className="order-1 mb-10 border-b border-ink/10 pb-6 lg:order-none">
+              <Eyebrow label={ui.newsEyebrow} className="mb-4 max-w-md" />
               <h2 className="display-font text-4xl font-bold uppercase leading-[0.95] text-ink md:text-5xl">
                 {ui.newsTitleLead} <span className="text-secondary">{ui.newsTitleAccent}</span>
               </h2>

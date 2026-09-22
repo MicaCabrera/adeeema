@@ -1,16 +1,19 @@
 import type { ReactNode } from "react";
 import { site } from "../../data/content";
 
-// Único componente de CTA del sitio, con un único tamaño fijo (no acepta
-// variación de tamaño): las medidas son las del CTA del Hero ("Conocé
-// ADEEMA" / "Explorar Academy"), la fuente de verdad para alto, padding y
-// tipografía de todos los botones de la página, sin importar la sección ni
-// el largo del texto de cada uno.
+// Único componente de CTA del sitio. En desktop (md+) cada instancia
+// mantiene el tamaño default de siempre (las medidas del CTA del Hero
+// "Conocé ADEEMA" / "Explorar Academy", la fuente de verdad histórica),
+// sin importar la sección. En mobile, en cambio, el tamaño SÍ varía según
+// la prop `size`, para poder unificar todos los CTA de texto del sitio al
+// tamaño mobile del Hero sin tocar su tamaño en desktop.
 //
-// Única excepción: prop `size="touch"`, pensada solo para el CTA "Iniciar
-// sesión" del menú full-screen mobile, donde el botón necesita cumplir el
-// área táctil mínima (alto 48px; el ancho ya lo da el contenido/padding).
-// No se usa en ningún otro lugar del sitio.
+// - `size="mobile"`: el tamaño de referencia — igual al CTA del Hero en
+//   mobile. Se usa en todos los CTA "de texto" de las secciones (Quiénes
+//   somos, Comunidad, Contacto, Hero). En md+ es idéntico al default.
+// - `size="touch"`: excepción aparte, solo para el CTA "Iniciar sesión" del
+//   menú full-screen mobile, que necesita el área táctil mínima (48px) con
+//   su propio tamaño de texto (no el del Hero). No se usa en otro lugar.
 //
 // Variante "primary" (default): rectángulo de texto blanco + cuadrado azul
 // de marca con flecha, separados por gap chico. En hover, la flecha escapa
@@ -59,10 +62,10 @@ const SIZE_TOUCH = {
   emblem: "h-4 w-4",
 };
 
-// Variante "heroMobile": los valores md: son idénticos a SIZE (desktop no
-// cambia), pero en mobile el CTA es un poco más grande. Solo para los dos
-// CTA del Hero.
-const SIZE_HERO_MOBILE = {
+// Variante "mobile": los valores md: son idénticos a SIZE (desktop no
+// cambia), pero en mobile el CTA es un poco más grande — tamaño de
+// referencia para unificar todos los CTA de texto del sitio en mobile.
+const SIZE_MOBILE = {
   ...SIZE,
   square: "w-12 md:w-9",
   height: "h-12 md:h-9",
@@ -82,10 +85,10 @@ interface CtaButtonProps {
   /** Recolorea el cuadrado del arrow (variante primary) para los casos puntuales
    * donde el botón se usa sobre un fondo que ya es accent (#034BFF). */
   squareClassName?: string;
-  /** "touch": alto 48px fijo, solo para el CTA del menú full-screen mobile.
-   *  "heroMobile": un poco más grande en mobile, solo para los CTA del Hero
-   *  (en md+ es idéntico al tamaño default). */
-  size?: "default" | "touch" | "heroMobile";
+  /** "mobile": tamaño unificado de todos los CTA de texto en mobile (igual
+   *  al CTA del Hero); en md+ es idéntico al tamaño default.
+   *  "touch": alto 48px fijo, solo para el CTA del menú full-screen mobile. */
+  size?: "default" | "touch" | "mobile";
   onClick?: () => void;
   target?: string;
   rel?: string;
@@ -108,7 +111,7 @@ export default function CtaButton({
   const componentProps = href
     ? { href, onClick, target, rel }
     : { onClick, type: type ?? (as === "button" ? "button" : undefined) };
-  const S = size === "touch" ? SIZE_TOUCH : size === "heroMobile" ? SIZE_HERO_MOBILE : SIZE;
+  const S = size === "touch" ? SIZE_TOUCH : size === "mobile" ? SIZE_MOBILE : SIZE;
 
   if (variant === "secondary") {
     return (

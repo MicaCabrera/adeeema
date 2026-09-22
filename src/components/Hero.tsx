@@ -48,16 +48,10 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.6 }}
             className="flex flex-wrap items-center gap-5 pt-8"
           >
-            <CtaButton href={hero.ctaPrimary.href} size="heroMobile">
+            <CtaButton href={hero.ctaPrimary.href} size="mobile">
               {hero.ctaPrimary.label}
             </CtaButton>
-            <CtaButton
-              href={hero.ctaSecondary.href}
-              variant="secondary"
-              target="_blank"
-              rel="noreferrer"
-              size="heroMobile"
-            >
+            <CtaButton href={hero.ctaSecondary.href} variant="secondary" size="mobile">
               {hero.ctaSecondary.label}
             </CtaButton>
           </motion.div>

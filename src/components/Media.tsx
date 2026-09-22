@@ -8,20 +8,18 @@ export default function Media() {
   return (
     <section id="media" className="relative bg-accent px-6 py-28 text-ink md:px-10 md:py-32">
       <div className="mx-auto max-w-[1600px]">
-        <div className="flex flex-col gap-10 lg:grid lg:grid-cols-[240px_1fr] lg:gap-16">
-          {/* Columna izquierda: eyebrow arriba, párrafo abajo (sólo desktop) */}
-          <div className="flex flex-col lg:justify-between">
-            <Reveal>
-              <Eyebrow label={media.eyebrow} />
-            </Reveal>
-            <Reveal delay={0.15} className="mt-8 hidden lg:mt-0 lg:block">
+        <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[240px_1fr] lg:gap-16">
+          {/* Columna izquierda: párrafo, pegado abajo (sólo desktop) */}
+          <div className="hidden lg:flex lg:h-full lg:flex-col lg:justify-end">
+            <Reveal delay={0.15}>
               <p className="max-w-[200px] text-[15.4px] leading-relaxed text-white">{media.paragraph}</p>
             </Reveal>
           </div>
 
-          {/* Columna derecha: título grande + párrafo (mobile/tablet) + grilla de tarjetas */}
+          {/* Columna derecha: eyebrow + título + párrafo (mobile/tablet) + grilla de tarjetas */}
           <div>
             <Reveal>
+              <Eyebrow label={media.eyebrow} textClassName="text-ink" className="mb-4" />
               <h2 className="display-font text-[15vw] font-bold uppercase leading-[0.9] text-white sm:text-[10vw] md:text-[7vw] lg:text-[4.6vw]">
                 ADEEMA <span className="text-secondary">MEDIA</span>
               </h2>

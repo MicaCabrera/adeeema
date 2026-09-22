@@ -25,7 +25,7 @@ export const hero = {
   kicker: "Impulsando el ecosistema tecnológico, académico y cultural del futuro.",
   titleLines: ["ADE", "EMA"], // "ADE" en outline + "EMA" sólido, sobre una misma línea ("ADEEMA")
   ctaPrimary: { label: "SUMATE", href: "#institucional" },
-  ctaSecondary: { label: "Explorar Academy", href: "https://academy.adeema.org.ar" },
+  ctaSecondary: { label: "Explorar Academy", href: "#academy" },
 };
 
 export const institutional = {
@@ -37,6 +37,11 @@ export const institutional = {
   ctaLabel: "Conocer más",
 };
 
+// `image` de cada item: placeholder temático (no random) de Unsplash, curado
+// a mano por temática mientras no haya foto real del cliente para ese rubro.
+// Reemplazo cuando llegue la definitiva: pisar el string de `image` acá
+// (o subir el archivo a /public y usar esa ruta) — ningún componente
+// necesita tocarse, todos leen `item.image` desde acá.
 export const network = {
   eyebrow: "Red de articulación",
   headingParts: ["Red de", "articulación"],
@@ -48,46 +53,48 @@ export const network = {
       tag: "Gobierno",
       title: "Municipios y Gobiernos",
       description: "Acercamos innovación, tecnología y formación a comunidades de todo el país.",
-      image: "https://picsum.photos/seed/gobierno/640/360",
+      image: "https://images.unsplash.com/photo-1627397159237-d2acb7f500af?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "02",
       tag: "Instituciones",
       title: "Cámaras Empresariales e Instituciones",
       description: "Generamos alianzas y proyectos que fortalecen el desarrollo empresarial e institucional.",
-      image: "https://picsum.photos/seed/instituciones/640/360",
+      image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "03",
       tag: "Educación",
       title: "Universidades y Colegios",
       description: "Conectamos educación, conocimiento e innovación para crear nuevas oportunidades de formación.",
-      image: "https://picsum.photos/seed/educacion/640/360",
+      image: "https://images.unsplash.com/photo-1616428394230-ba242d33e3ba?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "04",
       tag: "Innovación",
       title: "Centros Tech e Incubadoras",
       description: "Potenciamos talento, proyectos y emprendimientos que impulsan el futuro tecnológico.",
-      image: "https://picsum.photos/seed/innovacion/640/360",
+      image: "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "05",
       tag: "Cooperación",
       title: "Organismos y Asociaciones",
       description: "Articulamos cooperación y alianzas para desarrollar iniciativas de impacto nacional e internacional.",
-      image: "https://picsum.photos/seed/cooperacion/640/360",
+      image: "https://images.unsplash.com/photo-1591453214154-c95db71dbd83?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "06",
       tag: "Sponsors",
       title: "Empresas Tech y Sponsors",
       description: "Creamos oportunidades de colaboración, visibilidad y participación en nuevas iniciativas tecnológicas.",
-      image: "https://picsum.photos/seed/sponsors/640/360",
+      image: "https://images.unsplash.com/photo-1606857521015-7f9fcf423740?auto=format&fit=crop&w=1200&q=80",
     },
   ],
 };
 
+// `image`: placeholder temático de Unsplash (equipo/tecnología/comunidad),
+// no random. Reemplazar acá cuando haya foto real — ver nota en `network`.
 export const mission = {
   eyebrow: "Nosotros",
   label: "Misión",
@@ -95,7 +102,7 @@ export const mission = {
   paragraph:
     "Creamos programas de formación, comunidades y espacios de articulación que conectan conocimiento, tecnología y oportunidades para fortalecer el desarrollo sostenible del ecosistema en todo el país.",
   image:
-    "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=2000&q=80",
+    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2000&q=80",
 };
 
 export const vision = {
@@ -105,9 +112,10 @@ export const vision = {
   paragraph:
     "Impulsamos la investigación, el desarrollo y la articulación en torno al gaming, los esports y la innovación tecnológica, conectando nuevas generaciones, educación y tecnología con una mirada federal y de largo plazo.",
   image:
-    "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=2000&q=80",
+    "https://images.unsplash.com/photo-1542323228-002ac256e7b8?auto=format&fit=crop&w=2000&q=80",
 };
 
+// `image` de cada item: placeholder temático de Unsplash — ver nota en `network`.
 export const academy = {
   eyebrow: "Educación",
   title: "ADEEMA Academy",
@@ -120,34 +128,35 @@ export const academy = {
       title: "Cursos Especializados",
       description:
         "Trayectos formativos enfocados en herramientas clave, gestión del entorno tecnológico y habilidades técnicas demandadas por el sector.",
-      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "02",
       title: "Diplomaturas Institucionales",
       description:
         "Programas de formación continua con respaldo académico para profesionalizar la industria del gaming y los esports de manera sostenible.",
-      image: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1200&q=80",
+      image: "https://images.unsplash.com/photo-1664382953481-141e97ad9825?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "03",
       title: "Charlas & ADEEMA Talks",
       description:
         "Ciclos de conferencias y masterclasses abiertas con expertos del sector, analizando el impacto educativo y social de la tecnología.",
-      image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1200&q=80",
+      image: "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "04",
       title: "Programas de Innovación",
       description:
         "Espacios de aceleración de conocimiento orientados al desarrollo de talento joven, transformación y capacidades tecnológicas aplicadas.",
-      image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+      image: "https://images.unsplash.com/photo-1519241047957-be31d7379a5d?auto=format&fit=crop&w=1200&q=80",
     },
   ],
 };
 
+// `image` de cada item: placeholder temático de Unsplash — ver nota en `network`.
 export const media = {
-  eyebrow: "Media Hub",
+  eyebrow: "Adeema Media",
   title: "ADEEMA Media",
   paragraph:
     "Conectando audiencias a través de contenidos estratégicos, streaming y producciones audiovisuales sobre innovación y cultura del gaming.",
@@ -164,14 +173,14 @@ export const media = {
       title: "Ciclos de Entrevistas",
       description:
         "Charlas profundas con líderes de la industria, académicos y tomadores de decisión que impulsan el desarrollo.",
-      image: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=1200&q=80",
+      image: "https://images.unsplash.com/photo-1615458318132-1f151a3d18f4?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "03",
       title: "Contenido Audiovisual",
       description:
         "Resúmenes, contenidos en formato corto y material interactivo diseñado para plataformas digitales.",
-      image: "https://images.unsplash.com/photo-1601506521937-0121a7fc2a6b?auto=format&fit=crop&w=1200&q=80",
+      image: "https://images.unsplash.com/photo-1497015289639-54688650d173?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "04",

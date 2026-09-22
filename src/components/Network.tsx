@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import Eyebrow from "./ui/Eyebrow";
 import Reveal from "./ui/Reveal";
 import Cursor from "./ui/inverted-cursor";
 import { useContent, useUi } from "../i18n/useContent";
@@ -44,6 +45,10 @@ export default function Network() {
   return (
     <section id="red-articulacion" className="relative bg-paper px-6 pb-12 pt-28 text-ink md:px-10 md:pb-16 md:pt-32">
       <div className="mx-auto max-w-[1600px]">
+        <Reveal>
+          <Eyebrow label={network.eyebrow} className="mb-4 max-w-md" />
+        </Reveal>
+
         <Reveal className="mb-16 md:mb-20">
           <h2 className="display-font text-[13vw] font-bold uppercase leading-[0.9] text-ink md:text-[5.5vw]">
             {network.headingParts[0]} <span className="text-secondary">{network.headingParts[1]}</span>

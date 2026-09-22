@@ -10,8 +10,11 @@ export default function Fan() {
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <section id="comunidad" className="relative overflow-hidden bg-ink px-6 py-32 text-center md:px-10 md:py-40">
-      <div className="relative mx-auto max-w-2xl">
+    <section
+      id="comunidad"
+      className="relative flex min-h-dvh flex-col justify-center overflow-hidden bg-ink px-6 py-32 text-center md:block md:min-h-0 md:px-10 md:py-40"
+    >
+      <div className="relative mx-auto w-full max-w-2xl">
         <Reveal>
           <span className="mb-4 inline-block text-xs font-semibold uppercase tracking-[0.3em] text-accent">
             {fan.eyebrow}
@@ -27,7 +30,7 @@ export default function Fan() {
           </p>
         </Reveal>
 
-        <Reveal delay={0.15}>
+        <Reveal delay={0.15} className="mt-10 md:mt-0">
           {submitted ? (
             <p className="text-lg font-semibold text-white">{fan.success}</p>
           ) : (
@@ -38,14 +41,14 @@ export default function Fan() {
               }}
               className="flex flex-col items-center gap-4"
             >
-              <div className="flex w-full max-w-md flex-col items-center gap-3 sm:flex-row">
+              <div className="flex w-full max-w-md flex-col items-center gap-10 sm:flex-row sm:gap-3">
                 <input
                   type="email"
                   required
                   placeholder={ui.emailPlaceholder}
                   className="w-full rounded-[4px] bg-white/5 px-6 py-4 text-sm text-white placeholder:text-white/40 outline-none focus:bg-white/10"
                 />
-                <CtaButton as="button" type="submit" className="shrink-0">
+                <CtaButton as="button" type="submit" className="shrink-0" size="mobile">
                   {fan.cta}
                 </CtaButton>
               </div>

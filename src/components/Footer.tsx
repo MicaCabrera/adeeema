@@ -25,7 +25,7 @@ export default function Footer() {
   const toHomeAnchor = (anchor: string) => (pathname === "/" ? anchor : `/${anchor}`);
 
   return (
-    <footer className="relative border-t border-white/10 bg-ink px-6 pb-8 pt-16 md:px-10 md:pt-20">
+    <footer className="relative bg-ink px-6 pb-8 pt-16 md:px-10 md:pt-20">
       <div className="mx-auto max-w-[1600px]">
         <div className="grid gap-12 pb-14 md:grid-cols-[1.4fr_1fr_1fr] md:gap-8">
           <div className="flex flex-col gap-4">

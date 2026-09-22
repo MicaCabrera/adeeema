@@ -37,7 +37,7 @@ function FloatingInput({
       />
       <label
         htmlFor={id}
-        className="pointer-events-none absolute left-0 top-5 text-sm text-white/70 transition-all duration-200 ease-out peer-focus:top-0 peer-focus:text-xs peer-focus:text-white peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-white"
+        className="pointer-events-none absolute left-0 top-5 text-sm text-white/80 transition-all duration-200 ease-out peer-focus:top-0 peer-focus:text-xs peer-focus:text-white peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-white"
       >
         {label}
       </label>
@@ -52,7 +52,7 @@ function FloatingSelect({ id, label, required }: { id: string; label: string; re
 
   return (
     <div className="relative">
-      <label htmlFor={id} className="absolute left-0 top-0 text-xs text-white/70">
+      <label htmlFor={id} className="absolute left-0 top-0 text-xs text-white/80">
         {label}
       </label>
       <select
@@ -90,7 +90,7 @@ function FloatingTextarea({ id, label, required }: { id: string; label: string; 
       />
       <label
         htmlFor={id}
-        className="pointer-events-none absolute left-0 top-5 text-sm text-white/70 transition-all duration-200 ease-out peer-focus:top-0 peer-focus:text-xs peer-focus:text-white peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-white"
+        className="pointer-events-none absolute left-0 top-5 text-sm text-white/80 transition-all duration-200 ease-out peer-focus:top-0 peer-focus:text-xs peer-focus:text-white peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-white"
       >
         {label}
       </label>
@@ -154,7 +154,14 @@ export default function Contact() {
   }, [open]);
 
   return (
-    <section id="contacto" className="section-padding relative flex min-h-[100svh] items-center overflow-hidden bg-ink">
+    <section id="contacto" className="section-padding relative isolate flex min-h-[100svh] items-center overflow-hidden bg-ink">
+      {/* Fondo: foto + filtro negro encima (mismo patrón que el Hero) para
+          que el texto blanco siga siendo legible sobre la imagen. */}
+      <div className="absolute inset-0 -z-20">
+        <img src="/contacto.jpg" alt="" className="h-full w-full object-cover" />
+      </div>
+      <div className="absolute inset-0 -z-10 bg-ink/90" />
+
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
           <Eyebrow label={contact.eyebrow} className="mb-4" />
@@ -166,7 +173,14 @@ export default function Contact() {
 
         <div className="mt-16 md:mt-20">
           <span ref={triggerRef} className="inline-block">
-            <CtaButton as="button" type="button" onClick={openDrawer} aria-haspopup="dialog" aria-expanded={open}>
+            <CtaButton
+              as="button"
+              type="button"
+              onClick={openDrawer}
+              aria-haspopup="dialog"
+              aria-expanded={open}
+              size="mobile"
+            >
               {contact.ctaLabel}
             </CtaButton>
           </span>
@@ -184,17 +198,17 @@ export default function Contact() {
           role="dialog"
           aria-modal="true"
           aria-labelledby="contacto-panel-title"
-          className={`absolute right-0 top-0 flex h-full w-full flex-col overflow-hidden bg-ink-soft p-6 shadow-2xl transition-transform duration-300 ease-out sm:w-[45%] sm:min-w-[420px] sm:p-8 md:p-10 ${
+          className={`absolute right-0 top-0 flex h-full w-full flex-col overflow-hidden bg-accent p-6 shadow-2xl transition-transform duration-300 ease-out sm:w-[45%] sm:min-w-[420px] sm:p-8 md:p-10 ${
             open ? "translate-x-0" : "translate-x-full"
           }`}
         >
           <div className="mb-6 flex shrink-0 items-center justify-between">
-            <Eyebrow label={contact.eyebrow} />
+            <Eyebrow label={contact.eyebrow} textClassName="text-white" />
             <button
               type="button"
               onClick={closeDrawer}
               aria-label={ui.close}
-              className="text-white/60 transition-colors duration-200 hover:text-white"
+              className="text-white/70 transition-colors duration-200 hover:text-white"
             >
               <CloseIcon className="h-5 w-5" />
             </button>
@@ -203,14 +217,14 @@ export default function Contact() {
           {submitted ? (
             <div className="flex flex-1 flex-col items-start justify-center gap-3">
               <h3 className="text-2xl font-medium text-white md:text-3xl">{contact.success.title}</h3>
-              <p className="text-sm text-white/70">{contact.success.paragraph}</p>
+              <p className="text-sm text-white/80">{contact.success.paragraph}</p>
             </div>
           ) : (
             <>
               <h3 id="contacto-panel-title" className="shrink-0 text-2xl font-medium leading-tight text-white md:text-3xl">
                 {contact.form.title}
               </h3>
-              <p className="mt-2 shrink-0 text-sm text-white/70">{contact.form.subtitle}</p>
+              <p className="mt-2 shrink-0 text-sm text-white/80">{contact.form.subtitle}</p>
 
               <form onSubmit={handleSubmit} className="mt-6 flex min-h-0 flex-1 flex-col gap-4 overflow-hidden">
                 <FloatingInput
@@ -223,8 +237,14 @@ export default function Contact() {
                 <FloatingSelect id="contacto-motivo" label={contact.form.fields.reason} required />
                 <FloatingTextarea id="contacto-mensaje" label={contact.form.fields.message} required />
 
-                <div className="mt-2">
-                  <CtaButton as="button" type="submit" className="w-full justify-center">
+                <div className="mt-8 md:mt-2">
+                  <CtaButton
+                    as="button"
+                    type="submit"
+                    className="w-full justify-center"
+                    squareClassName="bg-secondary"
+                    size="mobile"
+                  >
                     {contact.form.submit}
                   </CtaButton>
                 </div>

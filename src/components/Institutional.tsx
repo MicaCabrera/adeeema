@@ -9,11 +9,11 @@ export default function Institutional() {
   return (
     <section
       id="institucional"
-      className="relative overflow-hidden bg-gradient-to-b from-ink via-accent-deep to-accent px-6 py-28 md:px-10 md:py-36"
+      className="relative flex min-h-dvh flex-col justify-center overflow-hidden bg-gradient-to-b from-ink via-accent-deep to-accent px-6 py-28 md:block md:min-h-0 md:px-10 md:py-36"
     >
-      <div className="relative mx-auto max-w-[1600px]">
+      <div className="relative mx-auto w-full max-w-[1600px]">
         <Reveal>
-          <Eyebrow label={institutional.eyebrow} className="mb-10 max-w-md" />
+          <Eyebrow label={institutional.eyebrow} className="mb-4 max-w-md" />
         </Reveal>
 
         <div className="grid gap-y-8 gap-x-0 md:grid-cols-2 md:gap-x-16 md:gap-y-0">
@@ -31,8 +31,8 @@ export default function Institutional() {
             <p className="max-w-lg text-[17.6px] leading-relaxed text-white/60">
               {institutional.paragraph}
             </p>
-            <div>
-              <CtaButton href="#mision-vision">
+            <div className="mt-10 md:mt-0">
+              <CtaButton href="#mision-vision" size="mobile">
                 {institutional.ctaLabel}
               </CtaButton>
             </div>

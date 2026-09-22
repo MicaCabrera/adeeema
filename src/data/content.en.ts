@@ -28,7 +28,7 @@ export const hero: typeof es.hero = {
   kicker: "Driving the technological, academic and cultural ecosystem of the future.",
   titleLines: ["ADE", "EMA"],
   ctaPrimary: { label: "Get involved", href: "#institucional" },
-  ctaSecondary: { label: "Explore Academy", href: "https://academy.adeema.org.ar" },
+  ctaSecondary: { label: "Explore Academy", href: "#academy" },
 };
 
 export const institutional: typeof es.institutional = {
@@ -51,42 +51,42 @@ export const network: typeof es.network = {
       tag: "Government",
       title: "Municipalities and Governments",
       description: "We bring innovation, technology and training to communities across the country.",
-      image: "https://picsum.photos/seed/gobierno/640/360",
+      image: "https://images.unsplash.com/photo-1627397159237-d2acb7f500af?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "02",
       tag: "Institutions",
       title: "Chambers of Commerce and Institutions",
       description: "We create alliances and projects that strengthen business and institutional development.",
-      image: "https://picsum.photos/seed/instituciones/640/360",
+      image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "03",
       tag: "Education",
       title: "Universities and Schools",
       description: "We connect education, knowledge and innovation to create new training opportunities.",
-      image: "https://picsum.photos/seed/educacion/640/360",
+      image: "https://images.unsplash.com/photo-1616428394230-ba242d33e3ba?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "04",
       tag: "Innovation",
       title: "Tech Centers and Incubators",
       description: "We nurture talent, projects and ventures that drive the technological future.",
-      image: "https://picsum.photos/seed/innovacion/640/360",
+      image: "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "05",
       tag: "Cooperation",
       title: "Organizations and Associations",
       description: "We foster cooperation and alliances to develop initiatives of national and international impact.",
-      image: "https://picsum.photos/seed/cooperacion/640/360",
+      image: "https://images.unsplash.com/photo-1591453214154-c95db71dbd83?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "06",
       tag: "Sponsors",
       title: "Tech Companies and Sponsors",
       description: "We create opportunities for collaboration, visibility and participation in new technology initiatives.",
-      image: "https://picsum.photos/seed/sponsors/640/360",
+      image: "https://images.unsplash.com/photo-1606857521015-7f9fcf423740?auto=format&fit=crop&w=1200&q=80",
     },
   ],
 };
@@ -98,7 +98,7 @@ export const mission: typeof es.mission = {
   paragraph:
     "We create training programs, communities and networking spaces that connect knowledge, technology and opportunities to strengthen the sustainable development of the ecosystem across the country.",
   image:
-    "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=2000&q=80",
+    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2000&q=80",
 };
 
 export const vision: typeof es.vision = {
@@ -108,7 +108,7 @@ export const vision: typeof es.vision = {
   paragraph:
     "We promote research, development and networking around gaming, esports and technological innovation, connecting new generations, education and technology with a federal, long-term outlook.",
   image:
-    "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=2000&q=80",
+    "https://images.unsplash.com/photo-1542323228-002ac256e7b8?auto=format&fit=crop&w=2000&q=80",
 };
 
 export const academy: typeof es.academy = {
@@ -123,34 +123,34 @@ export const academy: typeof es.academy = {
       title: "Specialized Courses",
       description:
         "Training paths focused on key tools, technology environment management and technical skills in demand across the industry.",
-      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "02",
       title: "Institutional Diplomas",
       description:
         "Continuing education programs with academic backing to professionalize the gaming and esports industry in a sustainable way.",
-      image: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1200&q=80",
+      image: "https://images.unsplash.com/photo-1664382953481-141e97ad9825?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "03",
       title: "Talks & ADEEMA Talks",
       description:
         "Series of open conferences and masterclasses with industry experts, exploring the educational and social impact of technology.",
-      image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1200&q=80",
+      image: "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "04",
       title: "Innovation Programs",
       description:
         "Knowledge-acceleration spaces aimed at developing young talent, transformation and applied technological capabilities.",
-      image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+      image: "https://images.unsplash.com/photo-1519241047957-be31d7379a5d?auto=format&fit=crop&w=1200&q=80",
     },
   ],
 };
 
 export const media: typeof es.media = {
-  eyebrow: "Media Hub",
+  eyebrow: "Adeema Media",
   title: "ADEEMA Media",
   paragraph:
     "Connecting audiences through strategic content, streaming and audiovisual productions on innovation and gaming culture.",
@@ -167,14 +167,14 @@ export const media: typeof es.media = {
       title: "Interview Series",
       description:
         "In-depth conversations with industry leaders, academics and decision-makers who drive development.",
-      image: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=1200&q=80",
+      image: "https://images.unsplash.com/photo-1615458318132-1f151a3d18f4?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "03",
       title: "Audiovisual Content",
       description:
         "Recaps, short-form content and interactive material designed for digital platforms.",
-      image: "https://images.unsplash.com/photo-1601506521937-0121a7fc2a6b?auto=format&fit=crop&w=1200&q=80",
+      image: "https://images.unsplash.com/photo-1497015289639-54688650d173?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "04",
