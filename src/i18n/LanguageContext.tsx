@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { LanguageContext, type Lang } from "./language";
+import { useRefreshScrollTriggerOnLanguage } from "./useRefreshScrollTriggerOnLanguage";
 
 const STORAGE_KEY = "adeema-lang";
 
@@ -29,6 +30,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     document.documentElement.lang = lang;
   }, [lang]);
+
+  useRefreshScrollTriggerOnLanguage(lang);
 
   const value = useMemo(() => ({ lang, setLang }), [lang, setLang]);
 
