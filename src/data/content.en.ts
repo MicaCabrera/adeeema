@@ -232,7 +232,7 @@ export const footer: typeof es.footer = {
   socialTitle: "Social",
   legal: [
     { label: "Terms and conditions", href: "/legal/terminos" },
-    { label: "Privacy policy", href: "#" },
+    { label: "Privacy policy", href: "/legal/privacidad" },
   ],
   backToTop: "Back to top",
   copyright: `© ${new Date().getFullYear()} ADEEMA. All rights reserved.`,
@@ -244,10 +244,17 @@ export const newsDetail: typeof es.newsDetail = {
 
 // Sin traducción todavía: todo en "" (o arrays vacíos) para que
 // withFallback (src/i18n/useContent.ts) muestre el texto en español en vez
-// de dejar la página en blanco. Reemplazar campo por campo cuando llegue
-// la traducción oficial de Términos y Condiciones.
+// de dejar la página en blanco. Reemplazar campo por campo cuando lleguen
+// las traducciones oficiales de Términos y Condiciones / Política de Privacidad.
 export const legalPages: typeof es.legalPages = {
   terminos: {
+    title: "",
+    lastUpdated: "",
+    intro: [],
+    sections: [],
+    contact: { heading: "", orgName: "", emailLabel: "", email: "", websiteLabel: "", website: "" },
+  },
+  privacidad: {
     title: "",
     lastUpdated: "",
     intro: [],

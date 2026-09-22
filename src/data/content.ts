@@ -241,10 +241,9 @@ export const footer = {
     { label: "Contacto", href: "#contacto" },
   ],
   socialTitle: "Social",
-  // href "#": todavía no hay página para ese link (ver Política de privacidad).
   legal: [
     { label: "Términos y condiciones", href: "/legal/terminos" },
-    { label: "Política de privacidad", href: "#" },
+    { label: "Política de privacidad", href: "/legal/privacidad" },
   ],
   backToTop: "Volver arriba",
   copyright: `© ${new Date().getFullYear()} ADEEMA. Todos los derechos reservados.`,
@@ -253,9 +252,14 @@ export const footer = {
 // Páginas legales (Términos y Condiciones, Política de Privacidad) — el
 // mismo componente Legal.tsx (src/components/Legal.tsx) renderiza
 // cualquier clave de acá según la ruta /legal/:page.
+// Cada sección es una lista ordenada de bloques: párrafo o lista con
+// viñetas, para poder intercalar los dos (ej. un párrafo, después una
+// lista de puntos, después otro párrafo) sin forzar un orden fijo.
+export type LegalBlock = { type: "p"; text: string } | { type: "list"; items: string[] };
+
 export interface LegalSection {
   heading: string;
-  paragraphs: string[];
+  blocks: LegalBlock[];
 }
 
 export interface LegalPage {
@@ -273,7 +277,7 @@ export interface LegalPage {
   };
 }
 
-export const legalPages: { terminos: LegalPage } = {
+export const legalPages: { terminos: LegalPage; privacidad: LegalPage } = {
   terminos: {
     title: "Términos y Condiciones",
     lastUpdated: "Última actualización: septiembre de 2026",
@@ -284,69 +288,171 @@ export const legalPages: { terminos: LegalPage } = {
     sections: [
       {
         heading: "1. Identificación",
-        paragraphs: [
-          "El sitio web https://adeema.org/ es titularidad de la Asociación de Deportes Electrónicos y Electromecánicos de Argentina (ADEEMA).",
-          "Para consultas relacionadas con el sitio web, puede comunicarse a través de mcabrera@adeema.org.",
+        blocks: [
+          { type: "p", text: "El sitio web https://adeema.org/ es titularidad de la Asociación de Deportes Electrónicos y Electromecánicos de Argentina (ADEEMA)." },
+          { type: "p", text: "Para consultas relacionadas con el sitio web, puede comunicarse a través de mcabrera@adeema.org." },
         ],
       },
       {
         heading: "2. Uso del sitio",
-        paragraphs: [
-          "El sitio tiene como finalidad brindar información sobre ADEEMA, sus actividades, proyectos, programas, iniciativas, eventos, contenidos educativos, noticias y demás acciones vinculadas con sus objetivos institucionales.",
-          "El usuario se compromete a utilizar el sitio de manera lícita, responsable y conforme a estos Términos y Condiciones.",
-          "Queda prohibido utilizar el sitio para realizar actividades que puedan afectar su funcionamiento, seguridad, disponibilidad o integridad, así como intentar acceder sin autorización a sistemas, bases de datos o funcionalidades restringidas.",
+        blocks: [
+          { type: "p", text: "El sitio tiene como finalidad brindar información sobre ADEEMA, sus actividades, proyectos, programas, iniciativas, eventos, contenidos educativos, noticias y demás acciones vinculadas con sus objetivos institucionales." },
+          { type: "p", text: "El usuario se compromete a utilizar el sitio de manera lícita, responsable y conforme a estos Términos y Condiciones." },
+          { type: "p", text: "Queda prohibido utilizar el sitio para realizar actividades que puedan afectar su funcionamiento, seguridad, disponibilidad o integridad, así como intentar acceder sin autorización a sistemas, bases de datos o funcionalidades restringidas." },
         ],
       },
       {
         heading: "3. Contenidos",
-        paragraphs: [
-          "ADEEMA procura que la información publicada en el sitio sea clara y se encuentre actualizada. No obstante, determinados contenidos pueden modificarse, actualizarse o retirarse sin previo aviso.",
-          "Las publicaciones, noticias, fechas, actividades, programas y demás información institucional se proporcionan con fines informativos.",
-          "Cuando el sitio incluya contenidos provenientes de terceros, estos podrán encontrarse sujetos a sus propias condiciones y políticas.",
+        blocks: [
+          { type: "p", text: "ADEEMA procura que la información publicada en el sitio sea clara y se encuentre actualizada. No obstante, determinados contenidos pueden modificarse, actualizarse o retirarse sin previo aviso." },
+          { type: "p", text: "Las publicaciones, noticias, fechas, actividades, programas y demás información institucional se proporcionan con fines informativos." },
+          { type: "p", text: "Cuando el sitio incluya contenidos provenientes de terceros, estos podrán encontrarse sujetos a sus propias condiciones y políticas." },
         ],
       },
       {
         heading: "4. Propiedad intelectual",
-        paragraphs: [
-          "Salvo indicación expresa en contrario, los contenidos propios publicados en este sitio, incluyendo textos, fotografías, videos, piezas gráficas, logotipos, emblemas, diseños, elementos audiovisuales y demás materiales, se encuentran protegidos por la normativa aplicable en materia de propiedad intelectual.",
-          "El acceso al sitio no implica la cesión ni transferencia de derechos de propiedad intelectual.",
-          "Queda prohibida la reproducción, distribución, modificación, comunicación pública o utilización comercial de los contenidos protegidos sin la correspondiente autorización de sus titulares, salvo en aquellos casos permitidos por la legislación vigente.",
-          "Los contenidos pertenecientes a terceros continúan siendo propiedad de sus respectivos titulares.",
+        blocks: [
+          { type: "p", text: "Salvo indicación expresa en contrario, los contenidos propios publicados en este sitio, incluyendo textos, fotografías, videos, piezas gráficas, logotipos, emblemas, diseños, elementos audiovisuales y demás materiales, se encuentran protegidos por la normativa aplicable en materia de propiedad intelectual." },
+          { type: "p", text: "El acceso al sitio no implica la cesión ni transferencia de derechos de propiedad intelectual." },
+          { type: "p", text: "Queda prohibida la reproducción, distribución, modificación, comunicación pública o utilización comercial de los contenidos protegidos sin la correspondiente autorización de sus titulares, salvo en aquellos casos permitidos por la legislación vigente." },
+          { type: "p", text: "Los contenidos pertenecientes a terceros continúan siendo propiedad de sus respectivos titulares." },
         ],
       },
       {
         heading: "5. Contenidos y enlaces de terceros",
-        paragraphs: [
-          "El sitio puede incluir enlaces hacia páginas web, plataformas, redes sociales u otros servicios administrados por terceros.",
-          "ADEEMA no controla necesariamente el contenido, disponibilidad, funcionamiento o políticas de privacidad de dichos sitios externos. El acceso a ellos se realiza bajo responsabilidad del usuario y de acuerdo con las condiciones establecidas por sus respectivos titulares.",
+        blocks: [
+          { type: "p", text: "El sitio puede incluir enlaces hacia páginas web, plataformas, redes sociales u otros servicios administrados por terceros." },
+          { type: "p", text: "ADEEMA no controla necesariamente el contenido, disponibilidad, funcionamiento o políticas de privacidad de dichos sitios externos. El acceso a ellos se realiza bajo responsabilidad del usuario y de acuerdo con las condiciones establecidas por sus respectivos titulares." },
         ],
       },
       {
         heading: "6. Formularios y comunicaciones",
-        paragraphs: [
-          "El sitio puede disponer de formularios de contacto, suscripción a comunicaciones, inscripción a actividades u otros mecanismos destinados a facilitar la comunicación con ADEEMA.",
-          "La información proporcionada a través de estos medios será tratada de acuerdo con la Política de Privacidad disponible en este sitio.",
+        blocks: [
+          { type: "p", text: "El sitio puede disponer de formularios de contacto, suscripción a comunicaciones, inscripción a actividades u otros mecanismos destinados a facilitar la comunicación con ADEEMA." },
+          { type: "p", text: "La información proporcionada a través de estos medios será tratada de acuerdo con la Política de Privacidad disponible en este sitio." },
         ],
       },
       {
         heading: "7. Disponibilidad del sitio",
-        paragraphs: [
-          "ADEEMA podrá realizar tareas de mantenimiento, actualización o modificación del sitio, lo que eventualmente podrá generar interrupciones temporales del servicio.",
-          "Asimismo, ADEEMA no garantiza que el sitio permanezca disponible de manera permanente ni que se encuentre completamente libre de errores o interrupciones.",
+        blocks: [
+          { type: "p", text: "ADEEMA podrá realizar tareas de mantenimiento, actualización o modificación del sitio, lo que eventualmente podrá generar interrupciones temporales del servicio." },
+          { type: "p", text: "Asimismo, ADEEMA no garantiza que el sitio permanezca disponible de manera permanente ni que se encuentre completamente libre de errores o interrupciones." },
         ],
       },
       {
         heading: "8. Modificaciones",
-        paragraphs: [
-          "ADEEMA podrá modificar, actualizar o reemplazar estos Términos y Condiciones cuando resulte necesario.",
-          "La versión vigente será aquella publicada en adeema.org al momento de su consulta.",
+        blocks: [
+          { type: "p", text: "ADEEMA podrá modificar, actualizar o reemplazar estos Términos y Condiciones cuando resulte necesario." },
+          { type: "p", text: "La versión vigente será aquella publicada en adeema.org al momento de su consulta." },
         ],
       },
       {
         heading: "9. Legislación aplicable",
-        paragraphs: [
-          "Estos Términos y Condiciones se regirán por las leyes de la República Argentina.",
-          "Cualquier cuestión que pudiera surgir en relación con el uso del sitio será sometida a la jurisdicción que resulte legalmente competente.",
+        blocks: [
+          { type: "p", text: "Estos Términos y Condiciones se regirán por las leyes de la República Argentina." },
+          { type: "p", text: "Cualquier cuestión que pudiera surgir en relación con el uso del sitio será sometida a la jurisdicción que resulte legalmente competente." },
+        ],
+      },
+    ],
+    contact: {
+      heading: "10. Contacto",
+      orgName: "Asociación de Deportes Electrónicos y Electromecánicos de Argentina (ADEEMA)",
+      emailLabel: "Correo electrónico:",
+      email: "mcabrera@adeema.org",
+      websiteLabel: "Sitio web:",
+      website: "https://adeema.org/",
+    },
+  },
+  privacidad: {
+    title: "Política de Privacidad",
+    lastUpdated: "Última actualización: septiembre de 2026",
+    intro: [
+      "En la Asociación de Deportes Electrónicos y Electromecánicos de Argentina (ADEEMA) valoramos la privacidad de las personas que visitan y utilizan nuestro sitio web.",
+      "Esta Política de Privacidad explica qué información podemos recopilar a través de adeema.org, con qué finalidad puede ser utilizada y cuáles son los derechos de las personas respecto del tratamiento de sus datos personales.",
+    ],
+    sections: [
+      {
+        heading: "1. Responsable del tratamiento",
+        blocks: [
+          { type: "p", text: "El responsable del tratamiento de los datos personales recopilados a través de este sitio es la Asociación de Deportes Electrónicos y Electromecánicos de Argentina (ADEEMA)." },
+          { type: "p", text: "Para consultas relacionadas con el tratamiento de datos personales puede comunicarse a: mcabrera@adeema.org." },
+        ],
+      },
+      {
+        heading: "2. Información que podemos recopilar",
+        blocks: [
+          { type: "p", text: "Dependiendo de las funcionalidades disponibles en el sitio, podemos recopilar información proporcionada voluntariamente por los usuarios, como:" },
+          {
+            type: "list",
+            items: [
+              "Nombre y apellido.",
+              "Dirección de correo electrónico.",
+              "Organización o institución a la que pertenece.",
+              "Información incluida en mensajes enviados mediante formularios de contacto.",
+              "Datos necesarios para gestionar inscripciones o solicitudes.",
+            ],
+          },
+          { type: "p", text: "Asimismo, determinados datos técnicos pueden ser recopilados automáticamente durante la navegación, como información relacionada con el dispositivo, navegador, dirección IP u otros datos necesarios para garantizar el funcionamiento y la seguridad del sitio." },
+        ],
+      },
+      {
+        heading: "3. Finalidad del tratamiento",
+        blocks: [
+          { type: "p", text: "Los datos personales podrán ser utilizados para:" },
+          {
+            type: "list",
+            items: [
+              "Responder consultas y solicitudes.",
+              "Gestionar comunicaciones con usuarios.",
+              "Administrar inscripciones a actividades, eventos o programas cuando corresponda.",
+              "Enviar comunicaciones institucionales cuando la persona se haya suscripto voluntariamente.",
+              "Mejorar la experiencia y el funcionamiento del sitio.",
+              "Mantener la seguridad de la plataforma.",
+              "Cumplir con obligaciones legales cuando corresponda.",
+            ],
+          },
+          { type: "p", text: "ADEEMA no utilizará los datos personales para finalidades incompatibles con aquellas para las cuales fueron recopilados." },
+        ],
+      },
+      {
+        heading: "4. Comunicaciones institucionales",
+        blocks: [
+          { type: "p", text: "Cuando una persona se suscriba voluntariamente a comunicaciones institucionales, podrá recibir información relacionada con actividades, eventos, novedades, programas y otras iniciativas de ADEEMA." },
+          { type: "p", text: "La persona podrá solicitar dejar de recibir dichas comunicaciones en cualquier momento." },
+        ],
+      },
+      {
+        heading: "5. Conservación de los datos",
+        blocks: [
+          { type: "p", text: "Los datos serán conservados durante el tiempo necesario para cumplir con las finalidades para las cuales fueron recopilados o mientras exista una obligación legal que requiera su conservación." },
+        ],
+      },
+      {
+        heading: "6. Seguridad",
+        blocks: [
+          { type: "p", text: "ADEEMA adopta medidas razonables destinadas a proteger los datos personales frente a accesos, modificaciones, divulgaciones o usos no autorizados." },
+          { type: "p", text: "Sin perjuicio de ello, ningún sistema conectado a Internet puede garantizar una seguridad absoluta." },
+        ],
+      },
+      {
+        heading: "7. Servicios de terceros",
+        blocks: [
+          { type: "p", text: "El sitio puede utilizar servicios tecnológicos proporcionados por terceros, tales como servicios de alojamiento, análisis, formularios, envío de comunicaciones u otras herramientas necesarias para su funcionamiento." },
+          { type: "p", text: "Cuando estos servicios impliquen tratamiento de datos personales, dicho tratamiento podrá estar sujeto a las condiciones y políticas de privacidad de los respectivos proveedores." },
+        ],
+      },
+      {
+        heading: "8. Derechos de los titulares de datos",
+        blocks: [
+          { type: "p", text: "Las personas tienen derecho a conocer qué datos personales se encuentran registrados, solicitar su actualización o rectificación cuando sean incorrectos y, cuando corresponda, solicitar su supresión o confidencialidad, de acuerdo con la legislación aplicable." },
+          { type: "p", text: "Las solicitudes relacionadas con datos personales podrán realizarse a través de: mcabrera@adeema.org." },
+        ],
+      },
+      {
+        heading: "9. Cambios en esta Política",
+        blocks: [
+          { type: "p", text: "ADEEMA podrá actualizar esta Política de Privacidad cuando resulte necesario para reflejar cambios en el sitio, en los servicios utilizados o en la normativa aplicable." },
+          { type: "p", text: "La versión vigente será la publicada en adeema.org." },
         ],
       },
     ],

@@ -24,10 +24,9 @@ function linkifyEmail(text: string): ReactNode {
   );
 }
 
-// Página genérica para /legal/:page — hoy solo existe "terms" (Términos y
-// Condiciones) en src/data/content.ts (legalPages); cuando llegue la
-// Política de Privacidad se suma como "privacy" ahí, sin tocar este
-// componente. Si la ruta no matchea ninguna clave, vuelve al home.
+// Página genérica para /legal/:page — sirve cualquier clave de
+// legalPages (src/data/content.ts): hoy "terminos" y "privacidad". Si la
+// ruta no matchea ninguna, vuelve al home.
 export default function Legal() {
   const { legalPages } = useContent();
   const ui = useUi();
@@ -70,11 +69,21 @@ export default function Legal() {
                 {section.heading}
               </h2>
               <div className="flex flex-col gap-4">
-                {section.paragraphs.map((paragraph, i) => (
-                  <p key={i} className="text-base leading-relaxed text-muted-dark">
-                    {linkifyEmail(paragraph)}
-                  </p>
-                ))}
+                {section.blocks.map((block, i) =>
+                  block.type === "list" ? (
+                    <ul key={i} className="flex flex-col gap-2 pl-5">
+                      {block.items.map((item, j) => (
+                        <li key={j} className="list-disc text-base leading-relaxed text-muted-dark marker:text-accent">
+                          {linkifyEmail(item)}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p key={i} className="text-base leading-relaxed text-muted-dark">
+                      {linkifyEmail(block.text)}
+                    </p>
+                  ),
+                )}
               </div>
             </Reveal>
           ))}
