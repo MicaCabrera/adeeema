@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useContent } from "../i18n/useContent";
 
 function InstagramIcon() {
@@ -96,11 +96,18 @@ export default function Footer() {
         <div className="flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/40 md:flex-row md:items-center md:justify-between">
           <span>{footer.copyright}</span>
           <div className="flex gap-6">
-            {footer.legal.map((item) => (
-              <a key={item} href="#" className="transition-colors hover:text-accent">
-                {item}
-              </a>
-            ))}
+            {footer.legal.map((item) =>
+              item.href.startsWith("/") ? (
+                <Link key={item.label} to={item.href} className="transition-colors hover:text-accent">
+                  {item.label}
+                </Link>
+              ) : (
+                // Todavía no hay página para este link (ver Política de privacidad).
+                <a key={item.label} href={item.href} className="transition-colors hover:text-accent">
+                  {item.label}
+                </a>
+              ),
+            )}
           </div>
         </div>
       </div>

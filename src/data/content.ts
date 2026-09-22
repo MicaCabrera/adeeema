@@ -241,7 +241,122 @@ export const footer = {
     { label: "Contacto", href: "#contacto" },
   ],
   socialTitle: "Social",
-  legal: ["Términos y condiciones", "Política de privacidad"],
+  // href "#": todavía no hay página para ese link (ver Política de privacidad).
+  legal: [
+    { label: "Términos y condiciones", href: "/legal/terminos" },
+    { label: "Política de privacidad", href: "#" },
+  ],
   backToTop: "Volver arriba",
   copyright: `© ${new Date().getFullYear()} ADEEMA. Todos los derechos reservados.`,
+};
+
+// Páginas legales (Términos y Condiciones, Política de Privacidad) — el
+// mismo componente Legal.tsx (src/components/Legal.tsx) renderiza
+// cualquier clave de acá según la ruta /legal/:page.
+export interface LegalSection {
+  heading: string;
+  paragraphs: string[];
+}
+
+export interface LegalPage {
+  title: string;
+  lastUpdated: string;
+  intro: string[];
+  sections: LegalSection[];
+  contact: {
+    heading: string;
+    orgName: string;
+    emailLabel: string;
+    email: string;
+    websiteLabel: string;
+    website: string;
+  };
+}
+
+export const legalPages: { terminos: LegalPage } = {
+  terminos: {
+    title: "Términos y Condiciones",
+    lastUpdated: "Última actualización: septiembre de 2026",
+    intro: [
+      "Bienvenido/a al sitio web oficial de la Asociación de Deportes Electrónicos y Electromecánicos de Argentina (ADEEMA).",
+      "El acceso y uso del sitio web adeema.org implica la aceptación de los presentes Términos y Condiciones. Si no está de acuerdo con alguno de ellos, le recomendamos no utilizar el sitio.",
+    ],
+    sections: [
+      {
+        heading: "1. Identificación",
+        paragraphs: [
+          "El sitio web https://adeema.org/ es titularidad de la Asociación de Deportes Electrónicos y Electromecánicos de Argentina (ADEEMA).",
+          "Para consultas relacionadas con el sitio web, puede comunicarse a través de mcabrera@adeema.org.",
+        ],
+      },
+      {
+        heading: "2. Uso del sitio",
+        paragraphs: [
+          "El sitio tiene como finalidad brindar información sobre ADEEMA, sus actividades, proyectos, programas, iniciativas, eventos, contenidos educativos, noticias y demás acciones vinculadas con sus objetivos institucionales.",
+          "El usuario se compromete a utilizar el sitio de manera lícita, responsable y conforme a estos Términos y Condiciones.",
+          "Queda prohibido utilizar el sitio para realizar actividades que puedan afectar su funcionamiento, seguridad, disponibilidad o integridad, así como intentar acceder sin autorización a sistemas, bases de datos o funcionalidades restringidas.",
+        ],
+      },
+      {
+        heading: "3. Contenidos",
+        paragraphs: [
+          "ADEEMA procura que la información publicada en el sitio sea clara y se encuentre actualizada. No obstante, determinados contenidos pueden modificarse, actualizarse o retirarse sin previo aviso.",
+          "Las publicaciones, noticias, fechas, actividades, programas y demás información institucional se proporcionan con fines informativos.",
+          "Cuando el sitio incluya contenidos provenientes de terceros, estos podrán encontrarse sujetos a sus propias condiciones y políticas.",
+        ],
+      },
+      {
+        heading: "4. Propiedad intelectual",
+        paragraphs: [
+          "Salvo indicación expresa en contrario, los contenidos propios publicados en este sitio, incluyendo textos, fotografías, videos, piezas gráficas, logotipos, emblemas, diseños, elementos audiovisuales y demás materiales, se encuentran protegidos por la normativa aplicable en materia de propiedad intelectual.",
+          "El acceso al sitio no implica la cesión ni transferencia de derechos de propiedad intelectual.",
+          "Queda prohibida la reproducción, distribución, modificación, comunicación pública o utilización comercial de los contenidos protegidos sin la correspondiente autorización de sus titulares, salvo en aquellos casos permitidos por la legislación vigente.",
+          "Los contenidos pertenecientes a terceros continúan siendo propiedad de sus respectivos titulares.",
+        ],
+      },
+      {
+        heading: "5. Contenidos y enlaces de terceros",
+        paragraphs: [
+          "El sitio puede incluir enlaces hacia páginas web, plataformas, redes sociales u otros servicios administrados por terceros.",
+          "ADEEMA no controla necesariamente el contenido, disponibilidad, funcionamiento o políticas de privacidad de dichos sitios externos. El acceso a ellos se realiza bajo responsabilidad del usuario y de acuerdo con las condiciones establecidas por sus respectivos titulares.",
+        ],
+      },
+      {
+        heading: "6. Formularios y comunicaciones",
+        paragraphs: [
+          "El sitio puede disponer de formularios de contacto, suscripción a comunicaciones, inscripción a actividades u otros mecanismos destinados a facilitar la comunicación con ADEEMA.",
+          "La información proporcionada a través de estos medios será tratada de acuerdo con la Política de Privacidad disponible en este sitio.",
+        ],
+      },
+      {
+        heading: "7. Disponibilidad del sitio",
+        paragraphs: [
+          "ADEEMA podrá realizar tareas de mantenimiento, actualización o modificación del sitio, lo que eventualmente podrá generar interrupciones temporales del servicio.",
+          "Asimismo, ADEEMA no garantiza que el sitio permanezca disponible de manera permanente ni que se encuentre completamente libre de errores o interrupciones.",
+        ],
+      },
+      {
+        heading: "8. Modificaciones",
+        paragraphs: [
+          "ADEEMA podrá modificar, actualizar o reemplazar estos Términos y Condiciones cuando resulte necesario.",
+          "La versión vigente será aquella publicada en adeema.org al momento de su consulta.",
+        ],
+      },
+      {
+        heading: "9. Legislación aplicable",
+        paragraphs: [
+          "Estos Términos y Condiciones se regirán por las leyes de la República Argentina.",
+          "Cualquier cuestión que pudiera surgir en relación con el uso del sitio será sometida a la jurisdicción que resulte legalmente competente.",
+        ],
+      },
+    ],
+    contact: {
+      heading: "10. Contacto",
+      orgName: "Asociación de Deportes Electrónicos y Electromecánicos de Argentina (ADEEMA)",
+      emailLabel: "Correo electrónico:",
+      email: "mcabrera@adeema.org",
+      websiteLabel: "Sitio web:",
+      website: "https://adeema.org/",
+    },
+  },
 };

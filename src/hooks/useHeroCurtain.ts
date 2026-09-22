@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -18,7 +18,13 @@ const ENABLE_HERO_DIM = false;
  * siendo 100% nativo, ScrollTrigger solo lee la posición de scroll.
  */
 export function useHeroCurtain() {
-  useEffect(() => {
+  // useLayoutEffect (no useEffect): pin:true SIEMPRE envuelve el trigger en
+  // un div.pin-spacer propio de GSAP, aunque pinSpacing sea false (eso solo
+  // evita que reserve espacio extra, no evita el wrapper). El cleanup tiene
+  // que revertirlo ANTES de que React intente desmontar el nodo — si no,
+  // "Failed to execute 'removeChild'" al navegar afuera del home, que
+  // aborta el render de toda la app.
+  useLayoutEffect(() => {
     if (!ENABLE_CURTAIN) return;
 
     let ctx: gsap.Context | undefined;

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -60,7 +60,17 @@ function PinnedMissionVision() {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeIndexRef = useRef(0);
 
-  useEffect(() => {
+  // useLayoutEffect (no useEffect): el cleanup tiene que matar el
+  // ScrollTrigger y devolver el <section> a su posición original ANTES de
+  // que React intente desmontarlo. Como este pin usa pinSpacing normal (a
+  // diferencia de las cortinas de useHeroCurtain/useMissionVisionCurtain),
+  // GSAP envuelve el <section> en un div.pin-spacer propio, fuera del
+  // control de React — si el cleanup corre después del commit (como pasa
+  // con useEffect al desmontar), React intenta sacar el nodo de un padre
+  // que ya no es el que recuerda y tira "Failed to execute 'removeChild'",
+  // lo que aborta el render de toda la app (pantalla en negro) al navegar
+  // afuera del home mientras esta sección está pineada.
+  useLayoutEffect(() => {
     const section = sectionRef.current;
     if (!section) return undefined;
 

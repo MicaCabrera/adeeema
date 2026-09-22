@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -38,7 +38,9 @@ const MOBILE_QUERY = "(max-width: 1023.98px)";
  * tampoco se toca.
  */
 export function useMissionVisionCurtain() {
-  useEffect(() => {
+  // useLayoutEffect: mismo motivo que en useHeroCurtain — el cleanup tiene
+  // que revertir el pin-spacer de GSAP antes de que React desmonte el nodo.
+  useLayoutEffect(() => {
     if (!ENABLE_CURTAIN) return;
 
     let ctx: gsap.Context | undefined;

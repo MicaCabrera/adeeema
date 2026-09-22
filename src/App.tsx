@@ -12,6 +12,7 @@ import News from "./components/News";
 import NewsDetail from "./components/NewsDetail";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import Legal from "./components/Legal";
 import { useHeroCurtain } from "./hooks/useHeroCurtain";
 
 function ScrollManager() {
@@ -58,6 +59,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/actualidad/:slug" element={<NewsDetail />} />
+          <Route path="/legal/:page" element={<Legal />} />
         </Routes>
       </main>
       <Footer />
