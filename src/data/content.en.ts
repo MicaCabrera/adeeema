@@ -42,7 +42,7 @@ export const institutional: typeof es.institutional = {
 
 export const network: typeof es.network = {
   eyebrow: "Partnership network",
-  headingParts: ["Partnership", "network"],
+  headingParts: ["Network of", "partnership"],
   title:
     "We build strategic links between institutions, companies and communities to drive technological and academic development.",
   items: [
