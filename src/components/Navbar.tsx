@@ -383,7 +383,7 @@ export default function Navbar() {
                 className="mt-auto flex flex-col gap-4 pt-8"
               >
                 <div className="flex items-center justify-between gap-3 rounded-[4px] bg-white/10 p-3">
-                  <CtaButton href={toHomeAnchor("#login")} onClick={closeMenu} squareClassName="bg-secondary">
+                  <CtaButton href={toHomeAnchor("#login")} onClick={closeMenu} squareClassName="bg-secondary" size="touch">
                     {ui.signIn}
                   </CtaButton>
                   <LangSwitcher dropdownAlign="up" />

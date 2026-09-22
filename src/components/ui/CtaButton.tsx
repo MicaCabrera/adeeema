@@ -7,6 +7,11 @@ import { site } from "../../data/content";
 // tipografía de todos los botones de la página, sin importar la sección ni
 // el largo del texto de cada uno.
 //
+// Única excepción: prop `size="touch"`, pensada solo para el CTA "Iniciar
+// sesión" del menú full-screen mobile, donde el botón necesita cumplir el
+// área táctil mínima (alto 48px; el ancho ya lo da el contenido/padding).
+// No se usa en ningún otro lugar del sitio.
+//
 // Variante "primary" (default): rectángulo de texto blanco + cuadrado azul
 // de marca con flecha, separados por gap chico. En hover, la flecha escapa
 // arriba-izquierda mientras el emblema de ADEEMA entra desde abajo-izquierda.
@@ -44,6 +49,16 @@ const SIZE = {
   gap: "gap-1.5 md:gap-1",
 };
 
+// Variante "touch": mismo diseño, alto 48px fijo (área táctil mínima) para
+// el CTA del menú full-screen mobile. Ver comentario arriba.
+const SIZE_TOUCH = {
+  ...SIZE,
+  square: "w-12",
+  height: "h-12",
+  icon: "h-4 w-4",
+  emblem: "h-4 w-4",
+};
+
 interface CtaButtonProps {
   children: ReactNode;
   variant?: "primary" | "secondary";
@@ -54,6 +69,8 @@ interface CtaButtonProps {
   /** Recolorea el cuadrado del arrow (variante primary) para los casos puntuales
    * donde el botón se usa sobre un fondo que ya es accent (#034BFF). */
   squareClassName?: string;
+  /** "touch": alto 48px fijo, solo para el CTA del menú full-screen mobile. */
+  size?: "default" | "touch";
   onClick?: () => void;
   target?: string;
   rel?: string;
@@ -67,6 +84,7 @@ export default function CtaButton({
   type,
   className = "",
   squareClassName = "bg-accent",
+  size = "default",
   onClick,
   target,
   rel,
@@ -75,11 +93,12 @@ export default function CtaButton({
   const componentProps = href
     ? { href, onClick, target, rel }
     : { onClick, type: type ?? (as === "button" ? "button" : undefined) };
+  const S = size === "touch" ? SIZE_TOUCH : SIZE;
 
   if (variant === "secondary") {
     return (
       <Component
-        className={`group inline-flex items-center justify-center overflow-hidden rounded bg-paper/10 font-semibold uppercase tracking-widest text-paper/70 backdrop-blur-sm transition-colors duration-500 ease-in-out hover:bg-paper/15 hover:text-paper ${SIZE.height} ${SIZE.text} ${className}`}
+        className={`group inline-flex items-center justify-center overflow-hidden rounded bg-paper/10 font-semibold uppercase tracking-widest text-paper/70 backdrop-blur-sm transition-colors duration-500 ease-in-out hover:bg-paper/15 hover:text-paper ${S.height} ${S.text} ${className}`}
         {...(componentProps as object)}
       >
         <span className="relative inline-block overflow-hidden">
@@ -99,24 +118,24 @@ export default function CtaButton({
   }
 
   return (
-    <Component className={`group inline-flex items-stretch ${SIZE.gap} ${className}`} {...(componentProps as object)}>
+    <Component className={`group inline-flex items-stretch ${S.gap} ${className}`} {...(componentProps as object)}>
       <span
-        className={`relative z-0 flex items-center rounded bg-paper ${SIZE.text} font-semibold uppercase tracking-widest text-ink transition-colors duration-300 group-hover:bg-paper/90`}
+        className={`relative z-0 flex items-center rounded bg-paper ${S.text} font-semibold uppercase tracking-widest text-ink transition-colors duration-300 group-hover:bg-paper/90`}
       >
         {children}
       </span>
 
       <span
         aria-hidden="true"
-        className={`relative z-10 aspect-square shrink-0 overflow-hidden rounded transition-colors duration-300 group-hover:bg-paper/90 ${squareClassName} ${SIZE.square}`}
+        className={`relative z-10 aspect-square shrink-0 overflow-hidden rounded transition-colors duration-300 group-hover:bg-paper/90 ${squareClassName} ${S.square}`}
       >
         <span className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-in-out group-hover:-translate-x-full group-hover:-translate-y-full">
-          <ArrowIcon className={`${SIZE.icon} text-white`} />
+          <ArrowIcon className={`${S.icon} text-white`} />
         </span>
         <span className="absolute inset-0 flex -translate-x-full translate-y-full items-center justify-center transition-transform duration-300 ease-in-out group-hover:translate-x-0 group-hover:translate-y-0">
           <span
             aria-hidden="true"
-            className={`${SIZE.emblem} bg-ink`}
+            className={`${S.emblem} bg-ink`}
             style={{
               maskImage: `url(${site.logo})`,
               maskSize: "contain",
