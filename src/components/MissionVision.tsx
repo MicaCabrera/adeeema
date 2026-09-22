@@ -22,7 +22,7 @@ const SCROLL_PER_STEP = 900; // px de scroll "virtual" que consume cada concepto
 
 function ConceptCard({ data }: { data: (typeof concepts)[number] }) {
   return (
-    <div className="relative flex min-h-[100svh] items-start overflow-hidden">
+    <div className="relative flex min-h-dvh items-start overflow-hidden">
       <img src={data.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0 bg-gradient-to-b from-ink/90 from-0% via-ink/60 via-55% to-ink/10 to-90%" />
 
