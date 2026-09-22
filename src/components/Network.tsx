@@ -81,8 +81,8 @@ export default function Network() {
                       initial={false}
                       animate={{ opacity: highlighted ? 1 : 0 }}
                       transition={{
-                        layout: { type: "spring", stiffness: 600, damping: 45, mass: 0.8 },
-                        opacity: { duration: 0.15, ease: "easeOut" },
+                        layout: { type: "spring", stiffness: 420, damping: 42, mass: 0.9 },
+                        opacity: { duration: 0.25, ease: "easeOut" },
                       }}
                     />
                   )}
@@ -90,7 +90,7 @@ export default function Network() {
                   {/* Miniatura: emblema ADEEMA en reposo, imagen en hover */}
                   <div className="relative h-40 w-full shrink-0 overflow-hidden bg-ink/[0.04] sm:h-auto sm:w-[180px] md:w-[260px] lg:w-[320px]">
                     <div
-                      className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
+                      className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${
                         highlighted ? "opacity-0" : "opacity-100"
                       }`}
                     >
@@ -103,7 +103,7 @@ export default function Network() {
                     <img
                       src={item.image}
                       alt=""
-                      className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+                      className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
                         highlighted ? "opacity-100" : "opacity-0"
                       }`}
                     />
@@ -112,7 +112,7 @@ export default function Network() {
                   {/* Título */}
                   <div className="relative z-10 flex w-full shrink-0 items-center px-6 py-6 sm:w-[200px] sm:py-8 md:w-[280px] md:px-8 lg:w-[340px]">
                     <h3
-                      className={`display-font text-xl font-bold uppercase leading-[1.05] transition-colors duration-300 md:text-2xl lg:text-[28px] ${
+                      className={`display-font text-xl font-bold uppercase leading-[1.05] transition-colors duration-500 md:text-2xl lg:text-[28px] ${
                         highlighted ? "text-white" : "text-ink"
                       }`}
                     >
@@ -123,7 +123,7 @@ export default function Network() {
                   {/* Descripción */}
                   <div className="relative z-10 flex w-full flex-1 items-center px-6 pb-6 sm:px-4 sm:py-8 md:px-6">
                     <p
-                      className={`max-w-xl text-sm leading-relaxed transition-colors duration-300 md:text-base ${
+                      className={`max-w-xl text-sm leading-relaxed transition-colors duration-500 md:text-base ${
                         highlighted ? "text-white/70" : "text-muted-dark"
                       }`}
                     >
@@ -134,7 +134,7 @@ export default function Network() {
                   {/* Número */}
                   <div className="relative z-10 flex w-full shrink-0 items-center justify-end px-6 pb-6 sm:w-24 sm:py-8 md:w-28 md:px-8">
                     <span
-                      className={`display-font text-2xl font-bold tabular-nums transition-colors duration-300 md:text-3xl ${
+                      className={`display-font text-2xl font-bold tabular-nums transition-colors duration-500 md:text-3xl ${
                         highlighted ? "text-white" : "text-accent"
                       }`}
                     >
