@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent, type RefObject } from "react";
+import { createPortal } from "react-dom";
 import CtaButton from "./ui/CtaButton";
 import Eyebrow from "./ui/Eyebrow";
 import { useContent, useUi } from "../i18n/useContent";
@@ -100,11 +101,19 @@ function FloatingTextarea({ id, label, required }: { id: string; label: string; 
   );
 }
 
+type SubmitStatus = "idle" | "loading" | "success" | "error";
+
+// La función serverless de Vercel (api/contact.ts) es la que habla con
+// Web3Forms — acá no hay access key ni fetch directo a un servicio externo,
+// así la key nunca queda en el bundle del cliente.
+const CONTACT_ENDPOINT = "/api/contact";
+
 export default function Contact() {
   const { contact } = useContent();
   const ui = useUi();
   const [open, setOpen] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<SubmitStatus>("idle");
+  const [errorMessage, setErrorMessage] = useState("");
   const triggerRef = useRef<HTMLSpanElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
@@ -112,9 +121,49 @@ export default function Contact() {
   const openDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    // Campos requeridos: si falta alguno no se llega a mandar el fetch.
+    // (El HTML `required` de cada input ya bloquea el submit nativo antes de
+    // esto; este chequeo es una segunda validación explícita en JS.)
+    const name = String(data.get("contacto-nombre") ?? "").trim();
+    const email = String(data.get("contacto-email") ?? "").trim();
+    const message = String(data.get("contacto-mensaje") ?? "").trim();
+    const reason = String(data.get("contacto-motivo") ?? "").trim();
+
+    if (!name || !email || !message) {
+      setStatus("error");
+      setErrorMessage(ui.contactValidationError);
+      return;
+    }
+
+    setStatus("loading");
+    setErrorMessage("");
+
+    try {
+      const res = await fetch(CONTACT_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, reason, message }),
+      });
+
+      const result = await res.json().catch(() => null);
+      if (!res.ok || !result?.success) {
+        throw new Error(result?.message || `api/contact respondió ${res.status}`);
+      }
+
+      setStatus("success");
+      form.reset(); // solo se pierde lo escrito cuando el envío salió bien
+    } catch (err) {
+      if (import.meta.env.DEV) {
+        console.warn("[Contact] error enviando el formulario", err);
+      }
+      setStatus("error");
+      setErrorMessage(ui.contactSendError);
+    }
   };
 
   useEffect(() => {
@@ -187,72 +236,87 @@ export default function Contact() {
         </div>
       </div>
 
-      <div className={`fixed inset-0 z-50 ${open ? "" : "pointer-events-none"}`} aria-hidden={!open}>
-        <div
-          onClick={closeDrawer}
-          className={`absolute inset-0 bg-black transition-opacity duration-300 ease-out ${open ? "opacity-70" : "opacity-0"}`}
-        />
+      {/* Portal a document.body: si el panel quedara anidado en esta sección
+          (que tiene overflow-hidden por la foto de fondo), los navegadores
+          recortan los elementos fixed a los límites de ese ancestro — el
+          panel se "cortaba" al abrir el drawer con la página scrolleada. Con
+          el portal queda siempre pegado al viewport real. */}
+      {createPortal(
+        <div className={`fixed inset-0 z-50 ${open ? "" : "pointer-events-none"}`} aria-hidden={!open}>
+          <div
+            onClick={closeDrawer}
+            className={`absolute inset-0 bg-black transition-opacity duration-300 ease-out ${open ? "opacity-70" : "opacity-0"}`}
+          />
 
-        <div
-          ref={panelRef}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="contacto-panel-title"
-          className={`absolute right-0 top-0 flex h-full w-full flex-col overflow-hidden bg-accent p-6 shadow-2xl transition-transform duration-300 ease-out sm:w-[45%] sm:min-w-[420px] sm:p-8 md:p-10 ${
-            open ? "translate-x-0" : "translate-x-full"
-          }`}
-        >
-          <div className="mb-6 flex shrink-0 items-center justify-between">
-            <Eyebrow label={contact.eyebrow} textClassName="text-white" />
-            <button
-              type="button"
-              onClick={closeDrawer}
-              aria-label={ui.close}
-              className="text-white/70 transition-colors duration-200 hover:text-white"
-            >
-              <CloseIcon className="h-5 w-5" />
-            </button>
-          </div>
-
-          {submitted ? (
-            <div className="flex flex-1 flex-col items-start justify-center gap-3">
-              <h3 className="text-2xl font-medium text-white md:text-3xl">{contact.success.title}</h3>
-              <p className="text-sm text-white/80">{contact.success.paragraph}</p>
+          <div
+            ref={panelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="contacto-panel-title"
+            className={`absolute right-0 top-0 flex h-full w-full flex-col overflow-hidden bg-accent p-6 shadow-2xl transition-transform duration-300 ease-out sm:w-[45%] sm:min-w-[420px] sm:p-8 md:p-10 ${
+              open ? "translate-x-0" : "translate-x-full"
+            }`}
+          >
+            <div className="mb-6 flex shrink-0 items-center justify-between">
+              <Eyebrow label={contact.eyebrow} textClassName="text-white" />
+              <button
+                type="button"
+                onClick={closeDrawer}
+                aria-label={ui.close}
+                className="text-white/70 transition-colors duration-200 hover:text-white"
+              >
+                <CloseIcon className="h-5 w-5" />
+              </button>
             </div>
-          ) : (
-            <>
-              <h3 id="contacto-panel-title" className="shrink-0 text-2xl font-medium leading-tight text-white md:text-3xl">
-                {contact.form.title}
-              </h3>
-              <p className="mt-2 shrink-0 text-sm text-white/80">{contact.form.subtitle}</p>
 
-              <form onSubmit={handleSubmit} className="mt-6 flex min-h-0 flex-1 flex-col gap-4 overflow-hidden">
-                <FloatingInput
-                  id="contacto-nombre"
-                  label={contact.form.fields.name}
-                  required
-                  inputRef={firstFieldRef}
-                />
-                <FloatingInput id="contacto-email" label={contact.form.fields.email} type="email" required />
-                <FloatingSelect id="contacto-motivo" label={contact.form.fields.reason} required />
-                <FloatingTextarea id="contacto-mensaje" label={contact.form.fields.message} required />
+            {status === "success" ? (
+              <div className="flex flex-1 flex-col items-start justify-center gap-3">
+                <h3 className="text-2xl font-medium text-white md:text-3xl">{contact.success.title}</h3>
+                <p className="text-sm text-white/80">{contact.success.paragraph}</p>
+              </div>
+            ) : (
+              <>
+                <h3 id="contacto-panel-title" className="shrink-0 text-2xl font-medium leading-tight text-white md:text-3xl">
+                  {contact.form.title}
+                </h3>
+                <p className="mt-2 shrink-0 text-sm text-white/80">{contact.form.subtitle}</p>
 
-                <div className="mt-8 md:mt-2">
-                  <CtaButton
-                    as="button"
-                    type="submit"
-                    className="w-full justify-center"
-                    squareClassName="bg-secondary"
-                    size="mobile"
-                  >
-                    {contact.form.submit}
-                  </CtaButton>
-                </div>
-              </form>
-            </>
-          )}
-        </div>
-      </div>
+                <form onSubmit={handleSubmit} className="mt-6 flex min-h-0 flex-1 flex-col gap-4 overflow-hidden">
+                  <FloatingInput
+                    id="contacto-nombre"
+                    label={contact.form.fields.name}
+                    required
+                    inputRef={firstFieldRef}
+                  />
+                  <FloatingInput id="contacto-email" label={contact.form.fields.email} type="email" required />
+                  <FloatingSelect id="contacto-motivo" label={contact.form.fields.reason} required />
+                  <FloatingTextarea id="contacto-mensaje" label={contact.form.fields.message} required />
+
+                  {status === "error" && (
+                    <p role="alert" className="shrink-0 text-xs text-white">
+                      {errorMessage}
+                    </p>
+                  )}
+
+                  <div className="mt-8 md:mt-2">
+                    <CtaButton
+                      as="button"
+                      type="submit"
+                      className="w-full justify-center"
+                      squareClassName="bg-secondary"
+                      size="mobile"
+                      disabled={status === "loading"}
+                    >
+                      {status === "loading" ? ui.contactSending : contact.form.submit}
+                    </CtaButton>
+                  </div>
+                </form>
+              </>
+            )}
+          </div>
+        </div>,
+        document.body,
+      )}
     </section>
   );
 }

@@ -89,6 +89,9 @@ interface CtaButtonProps {
    *  al CTA del Hero); en md+ es idéntico al tamaño default.
    *  "touch": alto 48px fijo, solo para el CTA del menú full-screen mobile. */
   size?: "default" | "touch" | "mobile";
+  /** Solo tiene efecto con as="button" (ignorado en links). Atenúa el botón
+   * y bloquea el click/hover — usado mientras un formulario está enviándose. */
+  disabled?: boolean;
   onClick?: () => void;
   target?: string;
   rel?: string;
@@ -103,6 +106,7 @@ export default function CtaButton({
   className = "",
   squareClassName = "bg-accent",
   size = "default",
+  disabled,
   onClick,
   target,
   rel,
@@ -110,13 +114,13 @@ export default function CtaButton({
   const Component = (href ? "a" : as) as "a" | "button";
   const componentProps = href
     ? { href, onClick, target, rel }
-    : { onClick, type: type ?? (as === "button" ? "button" : undefined) };
+    : { onClick, type: type ?? (as === "button" ? "button" : undefined), disabled };
   const S = size === "touch" ? SIZE_TOUCH : size === "mobile" ? SIZE_MOBILE : SIZE;
 
   if (variant === "secondary") {
     return (
       <Component
-        className={`group inline-flex items-center justify-center overflow-hidden rounded bg-paper/10 font-semibold uppercase tracking-widest text-paper/70 backdrop-blur-sm transition-colors duration-500 ease-in-out hover:bg-paper/15 hover:text-paper ${S.height} ${S.text} ${className}`}
+        className={`group inline-flex items-center justify-center overflow-hidden rounded bg-paper/10 font-semibold uppercase tracking-widest text-paper/70 backdrop-blur-sm transition-colors duration-500 ease-in-out hover:bg-paper/15 hover:text-paper disabled:pointer-events-none disabled:opacity-60 ${S.height} ${S.text} ${className}`}
         {...(componentProps as object)}
       >
         <span className="relative inline-block overflow-hidden">
@@ -136,7 +140,10 @@ export default function CtaButton({
   }
 
   return (
-    <Component className={`group inline-flex items-stretch ${S.gap} ${className}`} {...(componentProps as object)}>
+    <Component
+      className={`group inline-flex items-stretch disabled:pointer-events-none disabled:opacity-60 ${S.gap} ${className}`}
+      {...(componentProps as object)}
+    >
       <span
         className={`relative z-0 flex items-center rounded bg-paper ${S.text} font-semibold uppercase tracking-widest text-ink transition-colors duration-300 group-hover:bg-paper/90`}
       >

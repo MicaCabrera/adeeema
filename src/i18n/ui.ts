@@ -21,11 +21,14 @@ const es = {
   comingSoon: "Contenido próximamente.",
   newsCategories: "Categorías",
   newsAll: "Todas las noticias",
-  newsEyebrow: "Actualidad y prensa",
+  newsEyebrow: "Noticias",
   newsTitleLead: "Actualidad",
   newsTitleAccent: "& Prensa",
   newsEmpty: "No hay noticias en esta categoría todavía.",
   back: "Volver",
+  contactSending: "Enviando…",
+  contactValidationError: "Completá nombre, email y mensaje antes de enviar.",
+  contactSendError: "No pudimos enviar tu mensaje. Probá de nuevo en unos segundos.",
 };
 
 export type UiDict = typeof es;
@@ -48,11 +51,14 @@ const en: UiDict = {
   comingSoon: "Content coming soon.",
   newsCategories: "Categories",
   newsAll: "All news",
-  newsEyebrow: "News & Press",
+  newsEyebrow: "News",
   newsTitleLead: "News",
   newsTitleAccent: "& Press",
   newsEmpty: "There are no news in this category yet.",
   back: "Back",
+  contactSending: "Sending…",
+  contactValidationError: "Fill in name, email and message before sending.",
+  contactSendError: "We couldn't send your message. Please try again in a few seconds.",
 };
 
 export const ui = { es, en };

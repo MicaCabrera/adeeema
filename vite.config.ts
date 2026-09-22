@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import { defineConfig, type Plugin } from 'vite'
+import { defineConfig, loadEnv, type Plugin } from 'vite'
 
 // En producción /api/news lo sirve Vercel (carpeta api/). En `vite dev` no hay
 // runtime de funciones serverless, así que este plugin monta el mismo handler
@@ -18,7 +18,29 @@ function apiNewsDevMiddleware(): Plugin {
   }
 }
 
+// Mismo patrón para /api/contact. WEB3FORMS_KEY no tiene prefijo VITE_ a
+// propósito (no debe llegar nunca al bundle del cliente), así que acá la
+// cargamos a mano con loadEnv() y la inyectamos en process.env, tal como en
+// Vercel la inyecta el propio runtime a partir de las env vars del proyecto.
+function apiContactDevMiddleware(): Plugin {
+  return {
+    name: 'api-contact-dev-middleware',
+    apply: 'serve',
+    configureServer(server) {
+      const env = loadEnv(server.config.mode, process.cwd(), '')
+      if (env.WEB3FORMS_KEY && !process.env.WEB3FORMS_KEY) {
+        process.env.WEB3FORMS_KEY = env.WEB3FORMS_KEY
+      }
+
+      server.middlewares.use('/api/contact', async (req, res) => {
+        const mod = await server.ssrLoadModule('/api/contact.ts')
+        await mod.default(req, res)
+      })
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), apiNewsDevMiddleware()],
+  plugins: [react(), tailwindcss(), apiNewsDevMiddleware(), apiContactDevMiddleware()],
 })
