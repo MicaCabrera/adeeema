@@ -21,6 +21,7 @@ export default function Navbar() {
   );
 
   const [activeHref, setActiveHref] = useState<string | null>(null);
+  const [navbarTheme, setNavbarTheme] = useState<"dark" | "light">("dark");
   const [menuOpen, setMenuOpen] = useState(false);
   const [closing, setClosing] = useState(false);
   const [prevMenuOpen, setPrevMenuOpen] = useState(false);
@@ -64,6 +65,59 @@ export default function Navbar() {
           setActiveHref(`#${closest.target.id}`);
         },
         { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
+      );
+      sections.forEach((section) => observer!.observe(section));
+    };
+
+    rafId = requestAnimationFrame(trySetup);
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      if (observer) observer.disconnect();
+    };
+  }, []);
+
+  // Tema de la barra mobile (logo blanco u oscuro): qué sección queda justo
+  // detrás de la franja donde vive el navbar fijo, para que el logo (sin
+  // fondo propio) se siga viendo sobre secciones de fondo claro (Academy,
+  // Network, News) igual que sobre las oscuras (Hero, Institutional, etc.).
+  useEffect(() => {
+    let observer: IntersectionObserver | undefined;
+    let rafId: number;
+    let attempts = 0;
+    const MAX_ATTEMPTS = 240;
+    const sectionIds = [
+      "inicio",
+      "institucional",
+      "red-articulacion",
+      "mision-vision",
+      "academy",
+      "media",
+      "comunidad",
+      "noticias",
+      "contacto",
+    ];
+    const lightSections = new Set(["red-articulacion", "academy", "noticias"]);
+
+    const trySetup = () => {
+      const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean) as Element[];
+
+      attempts += 1;
+      if (sections.length < sectionIds.length && attempts < MAX_ATTEMPTS) {
+        rafId = requestAnimationFrame(trySetup);
+        return;
+      }
+      if (sections.length === 0) return;
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.filter((entry) => entry.isIntersecting);
+          if (visible.length === 0) return;
+          const closest = visible.reduce((best, entry) =>
+            entry.intersectionRatio > best.intersectionRatio ? entry : best
+          );
+          setNavbarTheme(lightSections.has(closest.target.id) ? "light" : "dark");
+        },
+        { rootMargin: "0px 0px -90% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
       );
       sections.forEach((section) => observer!.observe(section));
     };
@@ -250,13 +304,19 @@ export default function Navbar() {
       </div>
 
       {/* Navbar mobile / tablet (<1280px) */}
-      <div className="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-white/10 bg-ink/80 px-4 py-3 backdrop-blur-lg sm:px-6 xl:hidden">
+      <div className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-4 py-3 sm:px-6 xl:hidden">
         <a
           href={toHomeAnchor("#inicio")}
           aria-label={ui.goHome}
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[4px] bg-ink/70 transition-colors duration-200"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[4px] transition-colors duration-200"
         >
-          <img src={site.logo} alt={site.name} className="h-6 w-6 object-contain brightness-0 invert" />
+          <img
+            src={site.logo}
+            alt={site.name}
+            className={`h-6 w-6 object-contain brightness-0 transition-[filter] duration-300 ${
+              navbarTheme === "dark" ? "invert" : ""
+            }`}
+          />
         </a>
 
         <button
@@ -292,37 +352,42 @@ export default function Navbar() {
           style={{ clipPath: "inset(0 0 100% 0)" }}
           className="fixed inset-0 z-40 flex flex-col bg-accent xl:hidden"
         >
-          <div className="flex-1 overflow-y-auto px-6 pb-28 pt-16 sm:px-10">
-            <nav aria-label={ui.mobileNav} className="flex flex-col">
-              {nav.map((link, index) => (
-                <a
-                  key={link.href}
-                  ref={(el) => {
-                    mobileItemRefs.current[index] = el;
-                  }}
-                  href={toHomeAnchor(link.href)}
-                  onClick={closeMenu}
-                  className="group flex items-center justify-between border-b border-white/20 py-4 text-3xl font-semibold text-white transition-colors sm:text-4xl"
-                >
-                  <span>{navT[index]?.label ?? link.label}</span>
-                  <span aria-hidden="true" className="text-secondary opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                    →
-                  </span>
-                </a>
-              ))}
-            </nav>
+          <div className="flex-1 overflow-y-auto px-6 pb-10 pt-20 sm:px-10 sm:pt-24">
+            {/* min-h-full + flex-col empuja el bloque de CTA/idioma hacia el
+                fondo del alto disponible (mt-auto) sin usar position: fixed,
+                así nunca se superpone al contenido ni queda pegado al borde. */}
+            <div className="flex min-h-full flex-col">
+              <nav aria-label={ui.mobileNav} className="flex flex-col">
+                {nav.map((link, index) => (
+                  <a
+                    key={link.href}
+                    ref={(el) => {
+                      mobileItemRefs.current[index] = el;
+                    }}
+                    href={toHomeAnchor(link.href)}
+                    onClick={closeMenu}
+                    className="group flex items-center justify-between border-b border-white/20 py-4 text-3xl font-semibold text-white transition-colors sm:text-4xl"
+                  >
+                    <span>{navT[index]?.label ?? link.label}</span>
+                    <span aria-hidden="true" className="text-secondary opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                      →
+                    </span>
+                  </a>
+                ))}
+              </nav>
 
-            <div
-              ref={(el) => {
-                mobileItemRefs.current[nav.length] = el;
-              }}
-              className="mt-8 flex flex-col gap-4"
-            >
-              <div className="flex items-center justify-between gap-3 rounded-[4px] bg-white/10 p-3">
-                <CtaButton href={toHomeAnchor("#login")} onClick={closeMenu} squareClassName="bg-secondary">
-                  {ui.signIn}
-                </CtaButton>
-                <LangSwitcher dropdownAlign="up" />
+              <div
+                ref={(el) => {
+                  mobileItemRefs.current[nav.length] = el;
+                }}
+                className="mt-auto flex flex-col gap-4 pt-8"
+              >
+                <div className="flex items-center justify-between gap-3 rounded-[4px] bg-white/10 p-3">
+                  <CtaButton href={toHomeAnchor("#login")} onClick={closeMenu} squareClassName="bg-secondary">
+                    {ui.signIn}
+                  </CtaButton>
+                  <LangSwitcher dropdownAlign="up" />
+                </div>
               </div>
             </div>
           </div>

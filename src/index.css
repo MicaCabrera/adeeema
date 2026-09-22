@@ -92,6 +92,22 @@
   display: none;
 }
 
+/* Scroll interno de paneles sobre fondo claro (ej. acordeón de categorías de News) */
+.scrollbar-thin-light {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(21, 21, 21, 0.15) transparent;
+}
+.scrollbar-thin-light::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollbar-thin-light::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin-light::-webkit-scrollbar-thumb {
+  background: rgba(21, 21, 21, 0.15);
+  border-radius: 9999px;
+}
+
 /* ---------- Usado por el drawer de Contacto (patrón adeema-main) ---------- */
 .section-padding {
   padding-top: clamp(2.5rem, 2.1rem + 2vw, 4rem);

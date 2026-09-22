@@ -36,12 +36,12 @@ function ArrowIcon({ className }: { className?: string }) {
 
 // Medidas del CTA del Hero — única fuente de verdad de tamaño para todo el sitio.
 const SIZE = {
-  square: "w-8 md:w-9",
-  height: "h-8 md:h-9",
-  icon: "h-3 w-3 md:h-3.5 md:w-3.5",
-  emblem: "h-3.5 w-3.5",
-  text: "px-4 text-xs",
-  gap: "gap-1",
+  square: "w-10 md:w-9",
+  height: "h-10 md:h-9",
+  icon: "h-3.5 w-3.5 md:h-3.5 md:w-3.5",
+  emblem: "h-4 w-4 md:h-3.5 md:w-3.5",
+  text: "px-5 text-sm md:px-4 md:text-xs",
+  gap: "gap-1.5 md:gap-1",
 };
 
 interface CtaButtonProps {

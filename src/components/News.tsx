@@ -1,7 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, ArrowRight, ChevronDown } from "lucide-react";
 import Reveal from "./ui/Reveal";
+import WindowedDots from "./ui/WindowedDots";
 import { useContent, useUi } from "../i18n/useContent";
 import { newsCategoryGroups, getNewsItemsSorted, formatNewsDate } from "../data/news";
 import { mergeNews, type DisplayNewsItem } from "../data/externalNews";
@@ -16,8 +18,19 @@ export default function News() {
   const externalItems = useExternalNews();
   const [activeSubcategory, setActiveSubcategory] = useState<string | null>(null);
   const [page, setPage] = useState(0);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const carouselTrackRef = useRef<HTMLDivElement>(null);
+  const [carouselActive, setCarouselActive] = useState(0);
 
   const sortedItems = useMemo(() => mergeNews(ownItems, externalItems), [externalItems]);
+
+  // Cuando llegan las noticias externas, las cards del carrusel se reordenan
+  // por fecha y el navegador puede correr el scroll horizontal solo (scroll
+  // anchoring) para "compensar" el cambio. Se fuerza de nuevo al principio.
+  useEffect(() => {
+    setCarouselActive(0);
+    carouselTrackRef.current?.scrollTo({ left: 0 });
+  }, [externalItems]);
 
   const getSubcategoryCount = (subcategory: string) =>
     sortedItems.filter((item) => item.subcategory === subcategory).length;
@@ -33,71 +46,147 @@ export default function News() {
   const selectSubcategory = (subcategory: string | null) => {
     setActiveSubcategory(subcategory);
     setPage(0);
+    setFiltersOpen(false);
+    setCarouselActive(0);
+    carouselTrackRef.current?.scrollTo({ left: 0 });
   };
+
+  const carouselCardStep = () => {
+    const track = carouselTrackRef.current;
+    const card = track?.firstElementChild as HTMLElement | null;
+    return (card?.offsetWidth ?? 300) + 24;
+  };
+
+  const scrollCarouselByCard = (dir: 1 | -1) => {
+    const track = carouselTrackRef.current;
+    if (!track) return;
+    track.scrollBy({ left: dir * carouselCardStep(), behavior: "smooth" });
+  };
+
+  const scrollCarouselToIndex = (index: number) => {
+    const track = carouselTrackRef.current;
+    if (!track) return;
+    track.scrollTo({ left: index * carouselCardStep(), behavior: "smooth" });
+  };
+
+  const handleCarouselScroll = () => {
+    const track = carouselTrackRef.current;
+    if (!track) return;
+    const index = Math.round(track.scrollLeft / carouselCardStep());
+    setCarouselActive(Math.min(Math.max(index, 0), filteredItems.length - 1));
+  };
+
+  const filtersList = (
+    <>
+      <button
+        type="button"
+        onClick={() => selectSubcategory(null)}
+        className={`mb-2 flex w-full items-center justify-between gap-3 border-b border-ink/10 px-3 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wide transition-colors ${
+          activeSubcategory === null ? "text-accent" : "text-ink hover:text-accent"
+        }`}
+      >
+        <span>{ui.newsAll}</span>
+        <span className={activeSubcategory === null ? "text-accent" : "text-muted-dark"}>
+          {sortedItems.length}
+        </span>
+      </button>
+
+      <div className="flex flex-col gap-8">
+        {newsCategoryGroups.map((group) => (
+          <div key={group.group}>
+            <div className="mb-2 bg-ink/[0.04] px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-widest text-muted-dark">
+              {group.group}
+            </div>
+            <ul>
+              {group.subcategories.map((sub) => {
+                const count = getSubcategoryCount(sub);
+                const active = activeSubcategory === sub;
+                return (
+                  <li key={sub}>
+                    <button
+                      type="button"
+                      onClick={() => selectSubcategory(active ? null : sub)}
+                      className={`flex w-full items-center justify-between gap-3 border-b border-ink/10 px-3 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wide transition-colors ${
+                        active ? "text-accent" : "text-ink hover:text-accent"
+                      }`}
+                    >
+                      <span>{sub}</span>
+                      <span className={active ? "text-accent" : "text-muted-dark"}>{count}</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </>
+  );
 
   return (
     <section id="noticias" className="relative bg-paper px-6 py-28 text-ink md:px-10 md:py-32">
       <div className="mx-auto max-w-[1600px]">
         <div className="flex flex-col gap-12 lg:flex-row lg:gap-16">
-          <Reveal className="w-full shrink-0 lg:w-64">
-            <h3 className="display-font mb-6 text-2xl font-bold uppercase leading-none text-ink">
-              {ui.newsCategories}
-            </h3>
+          <Reveal className="order-2 w-full shrink-0 lg:order-1 lg:w-64">
+            {/* Desktop/tablet (>= sm): columna de filtros siempre visible, sin acordeón */}
+            <div className="hidden sm:block">
+              <h3 className="display-font mb-6 text-2xl font-bold uppercase leading-none text-ink">
+                {ui.newsCategories}
+              </h3>
+              {filtersList}
+            </div>
 
-            <button
-              type="button"
-              onClick={() => selectSubcategory(null)}
-              className={`mb-2 flex w-full items-center justify-between gap-3 border-b border-ink/10 px-3 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wide transition-colors ${
-                activeSubcategory === null ? "text-accent" : "text-ink hover:text-accent"
-              }`}
-            >
-              <span>{ui.newsAll}</span>
-              <span className={activeSubcategory === null ? "text-accent" : "text-muted-dark"}>
-                {sortedItems.length}
-              </span>
-            </button>
+            {/* Mobile (< sm): acordeón colapsable, arranca cerrado */}
+            <div className="sm:hidden">
+              <button
+                type="button"
+                onClick={() => setFiltersOpen((open) => !open)}
+                aria-expanded={filtersOpen}
+                className="flex w-full items-center justify-between gap-3 border-b border-ink/10 pb-4"
+              >
+                <span className="display-font text-2xl font-bold uppercase leading-none text-ink">
+                  {ui.newsCategories}
+                </span>
+                <ChevronDown
+                  className={`h-5 w-5 shrink-0 text-ink transition-transform duration-300 ${
+                    filtersOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
 
-            <div className="flex flex-col gap-8">
-              {newsCategoryGroups.map((group) => (
-                <div key={group.group}>
-                  <div className="mb-2 bg-ink/[0.04] px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-widest text-muted-dark">
-                    {group.group}
-                  </div>
-                  <ul>
-                    {group.subcategories.map((sub) => {
-                      const count = getSubcategoryCount(sub);
-                      const active = activeSubcategory === sub;
-                      return (
-                        <li key={sub}>
-                          <button
-                            type="button"
-                            onClick={() => selectSubcategory(active ? null : sub)}
-                            className={`flex w-full items-center justify-between gap-3 border-b border-ink/10 px-3 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wide transition-colors ${
-                              active ? "text-accent" : "text-ink hover:text-accent"
-                            }`}
-                          >
-                            <span>{sub}</span>
-                            <span className={active ? "text-accent" : "text-muted-dark"}>{count}</span>
-                          </button>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              ))}
+              <AnimatePresence initial={false}>
+                {filtersOpen && (
+                  <motion.div
+                    key="news-filters-panel"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="scrollbar-thin-light max-h-[60vh] overflow-y-auto pt-4">{filtersList}</div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </Reveal>
 
-          <div className="min-w-0 flex-1">
-            <Reveal className="mb-10 border-b border-ink/10 pb-6">
+          {/* contents en mobile: título, filtros y grilla pasan a ser hermanos
+              directos del flex de arriba, así el order de cada uno decide el
+              orden visual (título, categorías, cards). Desde lg vuelve a ser
+              una columna normal (título + grilla) al lado del sidebar. */}
+          <div className="contents lg:flex lg:min-w-0 lg:flex-1 lg:flex-col lg:order-2">
+            <Reveal className="order-1 mb-10 border-b border-ink/10 pb-6 lg:order-none">
               <h2 className="display-font text-4xl font-bold uppercase leading-[0.95] text-ink md:text-5xl">
                 {ui.newsTitleLead} <span className="text-secondary">{ui.newsTitleAccent}</span>
               </h2>
             </Reveal>
 
-            {pageItems.length > 0 ? (
+            <div className="order-3 min-w-0 lg:order-none">
+            {filteredItems.length > 0 ? (
               <>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                {/* Desktop/tablet (>= sm): grilla paginada, sin cambios */}
+                <div className="hidden gap-6 sm:grid sm:grid-cols-2 xl:grid-cols-3">
                   {pageItems.map((item, i) => (
                     <Reveal key={item.slug} delay={i * 0.06}>
                       <NewsCard item={item} logo={site.logo} />
@@ -106,7 +195,7 @@ export default function News() {
                 </div>
 
                 {pageCount > 1 && (
-                  <Reveal className="mt-10 flex items-center justify-center gap-6">
+                  <Reveal className="mt-10 hidden items-center justify-center gap-6 sm:flex">
                     <button
                       type="button"
                       onClick={() => setPage((p) => Math.max(0, p - 1))}
@@ -142,12 +231,62 @@ export default function News() {
                     </button>
                   </Reveal>
                 )}
+
+                {/* Mobile (< sm): carrusel horizontal, mismo patrón que Academy */}
+                <div className="sm:hidden">
+                  <div
+                    ref={carouselTrackRef}
+                    onScroll={handleCarouselScroll}
+                    className="no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-2"
+                  >
+                    {filteredItems.map((item, i) => (
+                      <Reveal
+                        key={item.slug}
+                        delay={i * 0.06}
+                        y={0}
+                        className="w-[calc(100vw-3rem)] shrink-0 snap-start snap-always"
+                      >
+                        <NewsCard item={item} logo={site.logo} />
+                      </Reveal>
+                    ))}
+                  </div>
+
+                  {filteredItems.length > 1 && (
+                    <Reveal className="mt-8 flex items-center justify-center gap-6">
+                      <button
+                        type="button"
+                        onClick={() => scrollCarouselByCard(-1)}
+                        aria-label={ui.previous}
+                        className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-sm border border-ink/10 text-ink/50 transition-colors duration-300 before:absolute before:-inset-1 before:content-[''] hover:border-accent hover:text-accent"
+                      >
+                        <ArrowLeft className="h-4 w-4" />
+                      </button>
+
+                      <WindowedDots
+                        count={filteredItems.length}
+                        active={carouselActive}
+                        onSelect={scrollCarouselToIndex}
+                        getLabel={(i) => `${ui.goTo} ${filteredItems[i].title}`}
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() => scrollCarouselByCard(1)}
+                        aria-label={ui.next}
+                        className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-sm border border-ink/10 text-ink/50 transition-colors duration-300 before:absolute before:-inset-1 before:content-[''] hover:border-accent hover:text-accent"
+                      >
+                        <ArrowRight className="h-4 w-4" />
+                      </button>
+                    </Reveal>
+                  )}
+                </div>
               </>
             ) : (
               <p className="py-16 text-center text-sm text-muted-dark">
                 {ui.newsEmpty}
               </p>
             )}
+            </div>
           </div>
         </div>
       </div>
