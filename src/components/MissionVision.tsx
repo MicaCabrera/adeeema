@@ -24,9 +24,9 @@ function ConceptCard({ data }: { data: (typeof concepts)[number] }) {
   return (
     <div className="relative flex min-h-[100svh] items-start overflow-hidden">
       <img src={data.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-b from-ink/85 via-ink/40 to-ink/10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-ink/90 from-0% via-ink/60 via-55% to-ink/10 to-90%" />
 
-      <div className="relative w-full px-6 pt-28 md:px-10 md:pt-32">
+      <div className="relative w-full px-6 pt-32 md:px-10 md:pt-36">
         <div className="mx-auto max-w-[1600px]">
           <div className="flex flex-col gap-6">
             <h2 className="display-font text-6xl font-bold uppercase leading-none text-white md:text-8xl">
