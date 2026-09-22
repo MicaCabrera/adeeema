@@ -38,7 +38,17 @@ export default function Academy() {
   return (
     <section
       id="academy"
-      className="relative bg-paper [--gutter:max(1.5rem,calc((100vw-1600px)/2))] md:[--gutter:max(2.5rem,calc((100vw-1600px)/2))] lg:[--gutter:calc(max(2.5rem,calc((100vw-1600px)/2))+240px+4rem)]"
+      // --gutter: margen izquierdo del eyebrow/título/párrafo, y también el
+      // que sigue usando el cálculo de ANCHO de las cards en lg (no tocar:
+      // cambiarlo achica/agranda las cards). A partir de lg suma el ancho de
+      // esa columna de texto (240px + 4rem).
+      // --gutter-carousel: solo controla la POSICIÓN de arranque del
+      // carrusel (su padding-left), no el tamaño de las cards. Mismo valor
+      // que --gutter en mobile/md (24px / 40px), pero SIN esa suma extra de
+      // lg — es exactamente el mismo padding izquierdo que usa el título de
+      // "Misión y Visión" (px-6 md:px-10), para que ambos arranquen
+      // alineados en el mismo punto horizontal.
+      className="relative bg-paper [--gutter:max(1.5rem,calc((100vw-1600px)/2))] md:[--gutter:max(2.5rem,calc((100vw-1600px)/2))] lg:[--gutter:calc(max(2.5rem,calc((100vw-1600px)/2))+240px+4rem)] [--gutter-carousel:max(1.5rem,calc((100vw-1600px)/2))] md:[--gutter-carousel:max(2.5rem,calc((100vw-1600px)/2))]"
     >
       <div className="pl-[var(--gutter)] pr-6 pb-16 pt-28 md:pr-10 md:pb-16 md:pt-32">
         <div className="max-w-2xl text-left">
@@ -59,7 +69,7 @@ export default function Academy() {
         <div
           ref={trackRef}
           onScroll={handleScroll}
-          className="no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-2 pl-[var(--gutter)] scroll-pl-[var(--gutter)] pr-6 md:pr-10"
+          className="no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-2 pl-[var(--gutter-carousel)] scroll-pl-[var(--gutter-carousel)] pr-6 md:pr-10"
         >
           {academy.items.map((item, i) => (
             <Reveal

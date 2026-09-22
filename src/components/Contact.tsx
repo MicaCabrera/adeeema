@@ -281,7 +281,7 @@ export default function Contact() {
                 </h3>
                 <p className="mt-2 shrink-0 text-sm text-white/80">{contact.form.subtitle}</p>
 
-                <form onSubmit={handleSubmit} className="mt-6 flex min-h-0 flex-1 flex-col gap-4 overflow-hidden">
+                <form onSubmit={handleSubmit} className="mt-6 flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto">
                   <FloatingInput
                     id="contacto-nombre"
                     label={contact.form.fields.name}

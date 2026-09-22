@@ -85,12 +85,24 @@ export default async function handler(
     return;
   }
 
+  // Web3Forms rechaza (403, "not allowed... use client side") los pedidos
+  // que no parecen venir de un navegador real — un fetch de servidor sin
+  // estos headers cae ahí siempre, sin importar la IP. Se arman a partir
+  // del propio request que llegó a esta función (mismo origen que el sitio).
+  const origin =
+    (Array.isArray(req.headers.origin) ? req.headers.origin[0] : req.headers.origin) ||
+    (req.headers.host ? `https://${req.headers.host}` : "https://adeeema-ii.vercel.app");
+
   try {
     const upstream = await fetch(WEB3FORMS_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        Origin: origin,
+        Referer: `${origin}/`,
       },
       body: JSON.stringify({
         access_key: accessKey,
