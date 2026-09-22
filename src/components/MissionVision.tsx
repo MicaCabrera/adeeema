@@ -4,6 +4,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { mission, vision } from "../data/content";
 import { useContent } from "../i18n/useContent";
+import {
+  useMissionVisionCurtain,
+  MISION_PANEL_ID,
+  VISION_PANEL_ID,
+} from "../hooks/useMissionVisionCurtain";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,9 +25,9 @@ function useConcepts() {
 
 const SCROLL_PER_STEP = 900; // px de scroll "virtual" que consume cada concepto durante el pin
 
-function ConceptCard({ data }: { data: (typeof concepts)[number] }) {
+function ConceptCard({ data, id }: { data: (typeof concepts)[number]; id?: string }) {
   return (
-    <div className="relative flex min-h-dvh items-start overflow-hidden">
+    <div id={id} className="relative flex min-h-dvh items-start overflow-hidden">
       <img src={data.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0 bg-gradient-to-b from-ink/90 from-0% via-ink/60 via-55% to-ink/10 to-90%" />
 
@@ -179,17 +184,24 @@ function PinnedMissionVision() {
   );
 }
 
-// Mobile/tablet (<1024px): sin pin (evita el scroll-hijack en pantallas
-// chicas). Los conceptos quedan apilados en flujo normal, cada uno con su
-// propia imagen de fondo — mismo contenido, sin el efecto de relleno ni la
-// acumulación de títulos.
+// Mobile/tablet (<1024px): sin pin de scrub (evita el scroll-hijack en
+// pantallas chicas). Los conceptos quedan apilados en flujo normal, cada uno
+// con su propia imagen de fondo — mismo contenido, sin el efecto de relleno
+// ni la acumulación de títulos. El swipe/scroll de "Misión" a "Visión" sí
+// dispara el mismo efecto cortina que Hero → Institutional (ver
+// useMissionVisionCurtain), pero solo en este breakpoint.
 function StackedMissionVision() {
   const translated = useConcepts();
+  useMissionVisionCurtain();
 
   return (
     <div className="lg:hidden">
-      {translated.map((c) => (
-        <ConceptCard key={c.image} data={c} />
+      {translated.map((c, i) => (
+        <ConceptCard
+          key={c.image}
+          data={c}
+          id={i === 0 ? MISION_PANEL_ID : i === 1 ? VISION_PANEL_ID : undefined}
+        />
       ))}
     </div>
   );

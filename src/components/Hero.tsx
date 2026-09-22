@@ -8,7 +8,7 @@ export default function Hero() {
   return (
     <section
       id="inicio"
-      className="relative isolate flex min-h-screen w-full flex-col overflow-hidden bg-ink pt-36 pb-14 md:pb-16"
+      className="relative isolate flex min-h-screen w-full flex-col overflow-hidden bg-ink pt-36 pb-20 md:pb-16"
     >
       {/* background layers */}
       <div className="absolute inset-0 -z-20">
@@ -48,8 +48,16 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.6 }}
             className="flex flex-wrap items-center gap-5 pt-8"
           >
-            <CtaButton href={hero.ctaPrimary.href}>{hero.ctaPrimary.label}</CtaButton>
-            <CtaButton href={hero.ctaSecondary.href} variant="secondary" target="_blank" rel="noreferrer">
+            <CtaButton href={hero.ctaPrimary.href} size="heroMobile">
+              {hero.ctaPrimary.label}
+            </CtaButton>
+            <CtaButton
+              href={hero.ctaSecondary.href}
+              variant="secondary"
+              target="_blank"
+              rel="noreferrer"
+              size="heroMobile"
+            >
               {hero.ctaSecondary.label}
             </CtaButton>
           </motion.div>
@@ -58,7 +66,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.75 }}
-            className="max-w-md pt-8 text-sm leading-relaxed text-white/70 md:text-base"
+            className="max-w-md pt-8 text-base leading-relaxed text-white/70 mb-4 md:mb-0"
           >
             {hero.kicker}
           </motion.p>

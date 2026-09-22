@@ -59,6 +59,19 @@ const SIZE_TOUCH = {
   emblem: "h-4 w-4",
 };
 
+// Variante "heroMobile": los valores md: son idénticos a SIZE (desktop no
+// cambia), pero en mobile el CTA es un poco más grande. Solo para los dos
+// CTA del Hero.
+const SIZE_HERO_MOBILE = {
+  ...SIZE,
+  square: "w-12 md:w-9",
+  height: "h-12 md:h-9",
+  icon: "h-4 w-4 md:h-3.5 md:w-3.5",
+  emblem: "h-5 w-5 md:h-3.5 md:w-3.5",
+  text: "px-6 text-base md:px-4 md:text-xs",
+  gap: "gap-2 md:gap-1",
+};
+
 interface CtaButtonProps {
   children: ReactNode;
   variant?: "primary" | "secondary";
@@ -69,8 +82,10 @@ interface CtaButtonProps {
   /** Recolorea el cuadrado del arrow (variante primary) para los casos puntuales
    * donde el botón se usa sobre un fondo que ya es accent (#034BFF). */
   squareClassName?: string;
-  /** "touch": alto 48px fijo, solo para el CTA del menú full-screen mobile. */
-  size?: "default" | "touch";
+  /** "touch": alto 48px fijo, solo para el CTA del menú full-screen mobile.
+   *  "heroMobile": un poco más grande en mobile, solo para los CTA del Hero
+   *  (en md+ es idéntico al tamaño default). */
+  size?: "default" | "touch" | "heroMobile";
   onClick?: () => void;
   target?: string;
   rel?: string;
@@ -93,7 +108,7 @@ export default function CtaButton({
   const componentProps = href
     ? { href, onClick, target, rel }
     : { onClick, type: type ?? (as === "button" ? "button" : undefined) };
-  const S = size === "touch" ? SIZE_TOUCH : SIZE;
+  const S = size === "touch" ? SIZE_TOUCH : size === "heroMobile" ? SIZE_HERO_MOBILE : SIZE;
 
   if (variant === "secondary") {
     return (
