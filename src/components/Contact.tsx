@@ -66,8 +66,8 @@ function FloatingSelect({ id, label, required }: { id: string; label: string; re
           {contact.form.fields.reasonPlaceholder}
         </option>
         {contact.form.fields.reasonOptions.map((opt) => (
-          <option key={opt} value={opt} className="bg-panel text-white">
-            {opt}
+          <option key={opt.value} value={opt.value} className="bg-panel text-white">
+            {opt.label}
           </option>
         ))}
       </select>

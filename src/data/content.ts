@@ -208,11 +208,12 @@ export const contact = {
       email: "Email",
       reason: "Motivo de la Consulta",
       reasonPlaceholder: "Seleccionar…",
+      // "value" es una clave estable, igual en todos los idiomas; solo "label" se traduce.
       reasonOptions: [
-        "Alianzas y Convenios Marco",
-        "Patrocinio y Sponsors",
-        "Consultas de Academy",
-        "Prensa y Media",
+        { value: "alliances", label: "Alianzas y Convenios Marco" },
+        { value: "sponsorship", label: "Patrocinio y Sponsors" },
+        { value: "academy", label: "Consultas de Academy" },
+        { value: "press", label: "Prensa y Media" },
       ],
       message: "Mensaje / Propuesta",
     },
