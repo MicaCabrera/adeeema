@@ -105,7 +105,7 @@ export default function Academy() {
             type="button"
             onClick={() => scrollByCard(-1)}
             aria-label={ui.previous}
-            className="relative flex h-9 w-9 items-center justify-center rounded-sm border border-ink/10 text-ink/50 transition-colors duration-300 before:absolute before:-inset-1 before:content-[''] hover:border-accent/40 hover:text-accent"
+            className="relative flex h-9 w-9 items-center justify-center rounded-sm border border-ink/10 text-ink/50 transition-colors duration-300 before:absolute before:-inset-1 before:content-[''] hover:border-accent hover:text-accent"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
@@ -128,7 +128,7 @@ export default function Academy() {
             type="button"
             onClick={() => scrollByCard(1)}
             aria-label={ui.next}
-            className="relative flex h-9 w-9 items-center justify-center rounded-sm border border-ink/10 text-ink/50 transition-colors duration-300 before:absolute before:-inset-1 before:content-[''] hover:border-accent/40 hover:text-accent"
+            className="relative flex h-9 w-9 items-center justify-center rounded-sm border border-ink/10 text-ink/50 transition-colors duration-300 before:absolute before:-inset-1 before:content-[''] hover:border-accent hover:text-accent"
           >
             <ArrowRight className="h-4 w-4" />
           </button>

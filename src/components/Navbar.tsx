@@ -242,7 +242,7 @@ export default function Navbar() {
         <div className="pointer-events-auto flex h-12 shrink-0 items-center gap-1 rounded-[4px] bg-ink/70 px-1.5 backdrop-blur-lg">
           <a
             href={toHomeAnchor("#login")}
-            className="rounded-full px-3.5 py-2 text-[13px] font-medium text-white/60 transition-colors duration-200 hover:text-white"
+            className="rounded-full px-3.5 py-2 text-[13px] font-medium text-white/60 transition-colors duration-200 hover:text-accent"
           >
             {ui.signIn}
           </a>
