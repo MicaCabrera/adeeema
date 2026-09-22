@@ -113,10 +113,6 @@ export function getNewsItemBySlug(slug: string): NewsItem | undefined {
   return newsItems.find((item) => item.slug === slug);
 }
 
-export function getSubcategoryCount(subcategory: string): number {
-  return newsItems.filter((item) => item.subcategory === subcategory).length;
-}
-
 const MONTHS_ES = [
   "ENERO",
   "FEBRERO",

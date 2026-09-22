@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 
-# Variables de entorno (claves de Web3Forms, etc.) — nunca al repo.
+# Variables de entorno (keys de Resend, etc.) — nunca al repo.
 .env
 .env.*
 !.env.example

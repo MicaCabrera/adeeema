@@ -19,11 +19,6 @@ export interface ExternalNewsItem {
   subcategory: string;
 }
 
-export interface ExternalNewsResponse {
-  generatedAt: string;
-  items: ExternalNewsItem[];
-}
-
 /** Noticia lista para la card: propia o externa (con fuente y resumen). */
 export interface DisplayNewsItem extends NewsItem {
   source?: string;

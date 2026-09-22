@@ -30,7 +30,6 @@ export const hero = {
 
 export const institutional = {
   eyebrow: "Quiénes somos",
-  title: "Una asociación que conecta tecnología, conocimiento y comunidad.",
   headingParts: ["Tecnología,", "conocimiento", "y comunidad."],
   paragraph:
     "ADEEMA impulsa el impacto del gaming y las nuevas tecnologías en la sociedad. Articulamos comunidades, universidades, empresas e instituciones para conectar conocimiento, innovación y oportunidades, fortaleciendo las capacidades necesarias para el futuro.",
@@ -45,47 +44,39 @@ export const institutional = {
 export const network = {
   eyebrow: "Red de articulación",
   headingParts: ["Red de", "articulación"],
-  title:
-    "Construimos vínculos estratégicos entre instituciones, empresas y comunidades para impulsar el desarrollo tecnológico y académico.",
   items: [
     {
       index: "01",
-      tag: "Gobierno",
       title: "Municipios y Gobiernos",
       description: "Acercamos innovación, tecnología y formación a comunidades de todo el país.",
       image: "https://images.unsplash.com/photo-1627397159237-d2acb7f500af?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "02",
-      tag: "Instituciones",
       title: "Cámaras Empresariales e Instituciones",
       description: "Generamos alianzas y proyectos que fortalecen el desarrollo empresarial e institucional.",
       image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "03",
-      tag: "Educación",
       title: "Universidades y Colegios",
       description: "Conectamos educación, conocimiento e innovación para crear nuevas oportunidades de formación.",
       image: "https://images.unsplash.com/photo-1616428394230-ba242d33e3ba?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "04",
-      tag: "Innovación",
       title: "Centros Tech e Incubadoras",
       description: "Potenciamos talento, proyectos y emprendimientos que impulsan el futuro tecnológico.",
       image: "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "05",
-      tag: "Cooperación",
       title: "Organismos y Asociaciones",
       description: "Articulamos cooperación y alianzas para desarrollar iniciativas de impacto nacional e internacional.",
       image: "https://images.unsplash.com/photo-1591453214154-c95db71dbd83?auto=format&fit=crop&w=1200&q=80",
     },
     {
       index: "06",
-      tag: "Sponsors",
       title: "Empresas Tech y Sponsors",
       description: "Creamos oportunidades de colaboración, visibilidad y participación en nuevas iniciativas tecnológicas.",
       image: "https://images.unsplash.com/photo-1606857521015-7f9fcf423740?auto=format&fit=crop&w=1200&q=80",
@@ -118,7 +109,6 @@ export const vision = {
 // `image` de cada item: placeholder temático de Unsplash — ver nota en `network`.
 export const academy = {
   eyebrow: "Educación",
-  title: "ADEEMA Academy",
   paragraph:
     "El espacio de formación del ecosistema. Programas educativos estructurados para capacitar a las nuevas generaciones, profesionales y organizaciones en las competencias del futuro e innovación.",
   tag: "Academy",
@@ -157,7 +147,6 @@ export const academy = {
 // `image` de cada item: placeholder temático de Unsplash — ver nota en `network`.
 export const media = {
   eyebrow: "Adeema Media",
-  title: "ADEEMA Media",
   paragraph:
     "Conectando audiencias a través de contenidos estratégicos, streaming y producciones audiovisuales sobre innovación y cultura del gaming.",
   items: [
