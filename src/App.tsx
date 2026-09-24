@@ -13,6 +13,7 @@ import NewsDetail from "./components/NewsDetail";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import Legal from "./components/Legal";
+import SplashLoader from "./components/SplashLoader";
 import { useHeroCurtain } from "./hooks/useHeroCurtain";
 
 function ScrollManager() {
@@ -53,6 +54,7 @@ function HomePage() {
 export default function App() {
   return (
     <div className="min-h-screen bg-ink">
+      <SplashLoader />
       <Navbar />
       <ScrollManager />
       <main>

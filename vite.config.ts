@@ -1,5 +1,6 @@
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, loadEnv, type Plugin } from 'vite'
 
 // En producción /api/news lo sirve Vercel (carpeta api/). En `vite dev` no hay
@@ -46,4 +47,9 @@ function apiContactDevMiddleware(): Plugin {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss(), apiNewsDevMiddleware(), apiContactDevMiddleware()],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
 })
