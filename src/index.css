@@ -108,7 +108,7 @@
   border-radius: 9999px;
 }
 
-/* ---------- Usado por el drawer de Contacto (patrón adeema-main) ---------- */
+/* ---------- Usado por el drawer de Contacto ---------- */
 .section-padding {
   padding-top: clamp(2.5rem, 2.1rem + 2vw, 4rem);
   padding-bottom: clamp(2.5rem, 2.1rem + 2vw, 4rem);

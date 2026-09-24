@@ -2,7 +2,7 @@
 
 Sitio web de ADEEMA (Asociación de Deportes Electrónicos y Electromecánicos de Argentina), construido con React + TypeScript + Vite, Tailwind CSS v4, Framer Motion y GSAP (ScrollTrigger). Español e inglés (`src/i18n/`), con el español como idioma fuente.
 
-El contenido (institucional, red de articulación, misión/visión, ADEEMA Academy, ADEEMA Media, comunidad/newsletter, noticias y contacto) reproduce el del sitio real de ADEEMA. Paleta de marca: negro `#151515` (ink), Mint Cream `#f7fff7` (paper), Tech Blue `#1d5cba` (accent) y Dusty Denim `#6189c4` (secondary) — definida en `src/index.css`. Navbar, botón CTA y el drawer de contacto siguen el patrón visual del proyecto de referencia `adeema-main`.
+El contenido (institucional, red de articulación, misión/visión, ADEEMA Academy, ADEEMA Media, comunidad/newsletter, noticias y contacto) reproduce el del sitio real de ADEEMA. Paleta de marca: negro `#151515` (ink), Mint Cream `#f7fff7` (paper), Tech Blue `#1d5cba` (accent) y Dusty Denim `#6189c4` (secondary) — definida en `src/index.css`.
 
 ## Desarrollo
 

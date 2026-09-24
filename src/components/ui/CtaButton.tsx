@@ -22,9 +22,6 @@ import { site } from "../../data/content";
 // Variante "secondary": una sola pieza translúcida, misma altura que la
 // primaria. En hover el texto sale por la derecha y una copia entra por la
 // izquierda (slide, no fade).
-//
-// Adaptado del CtaButton de referencia (adeema-main) a los tokens de este
-// proyecto: bg-dark/text-dark -> ink, bg-brand-500 -> accent (#034BFF).
 
 function ArrowIcon({ className }: { className?: string }) {
   return (

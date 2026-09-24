@@ -1,4 +1,3 @@
-// Contenido extraído del sitio real de ADEEMA (https://adeema-three.vercel.app/)
 // No inventar copy nuevo acá: sólo reorganizar/adaptar el texto existente al nuevo layout.
 
 export const site = {
