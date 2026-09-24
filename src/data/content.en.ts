@@ -27,6 +27,8 @@ export const nav: typeof es.nav = [
 export const hero: typeof es.hero = {
   kicker: "Driving the technological, academic and cultural ecosystem of the future.",
   titleLines: ["ADE", "EMA"],
+  // Nombre oficial de la asociación: queda en español también en inglés.
+  subtitle: "Asociación de Deportes Electrónicos y Electromecánicos Argentina",
   ctaPrimary: { label: "Get involved", href: "#institucional" },
   ctaSecondary: { label: "Explore Academy", href: "#academy" },
 };

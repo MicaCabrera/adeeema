@@ -24,6 +24,7 @@ export const nav = [
 export const hero = {
   kicker: "Impulsando el ecosistema tecnológico, académico y cultural del futuro.",
   titleLines: ["ADE", "EMA"], // "ADE" en outline + "EMA" sólido, sobre una misma línea ("ADEEMA")
+  subtitle: "Asociación de Deportes Electrónicos y Electromecánicos Argentina",
   ctaPrimary: { label: "SUMATE", href: "#institucional" },
   ctaSecondary: { label: "Explorar Academy", href: "#academy" },
 };
