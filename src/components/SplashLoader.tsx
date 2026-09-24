@@ -138,35 +138,40 @@ export default function SplashLoader() {
             reducedMotion ? "bg-white/40" : "bg-white/15 [&.active]:bg-white"
           )}
         />
-        {/* Mobile: fila [emblema + ADEEMA] y la bajada debajo. Desktop: grilla
-            con el emblema ocupando las dos filas a la izquierda del texto (la
-            fila de mobile pasa a display:contents para que sus hijos entren en
-            la grilla). */}
-        <div className="flex flex-col items-center md:grid md:grid-cols-[auto_auto] md:items-center md:justify-items-start md:gap-x-3">
+        {/* Mobile: un bloque alineado a la izquierda, con la fila [emblema +
+            ADEEMA] y la bajada debajo, arrancando en el borde del emblema; el
+            bloque entero queda centrado bajo el spinner. Desktop: grilla con
+            el emblema ocupando las dos filas a la izquierda del texto (la fila
+            de mobile pasa a display:contents para que sus hijos entren en la
+            grilla). */}
+        <div className="flex flex-col items-start text-left md:grid md:grid-cols-[auto_auto] md:items-center md:justify-items-start md:gap-x-3">
           <div className="flex items-center gap-2 md:contents">
             {/* Mismo archivo que usan Navbar y Footer; es negro, así que se
-                pasa a blanco con el mismo filtro que ellos. */}
+                pasa a blanco con el mismo filtro que ellos. El PNG tiene un
+                margen transparente de 36/256 de su ancho: en mobile se
+                compensa (-2.7px a h-6) para que la figura quede alineada con
+                la bajada. */}
             <img
               src={site.logo}
               alt="ADEEMA"
               width={256}
               height={320}
               decoding="async"
-              className="h-6 w-auto object-contain brightness-0 invert md:row-span-2 md:h-14"
+              className="-ml-[2.7px] h-6 w-auto object-contain brightness-0 invert md:row-span-2 md:ml-0 md:h-14"
             />
-            {/* -mr-[0.1em]: tracking-widest deja 0.1em de aire después de la
-                última letra, que en mobile corre la fila centrada hacia la izquierda. */}
-            <span className="-mr-[0.1em] font-display text-base font-semibold tracking-widest text-white md:col-start-2 md:mr-0 md:text-xl">
+            <span className="font-display text-base font-semibold tracking-widest text-white md:col-start-2 md:text-xl">
               ADEEMA
             </span>
           </div>
           <span
             className={cn(
-              "mt-1.5 max-w-[260px] md:col-start-2 text-xs font-normal tracking-wide text-white/60 transition-opacity duration-500 ease-out md:max-w-none md:whitespace-nowrap md:text-sm",
+              "mt-1.5 whitespace-nowrap md:col-start-2 text-[11px] leading-snug font-normal tracking-wide text-white/60 transition-opacity duration-500 ease-out md:text-sm md:leading-5",
               showTagline ? "opacity-100" : "opacity-0"
             )}
           >
-            Asociación de Deportes Electrónicos y Electromecánicos Argentina
+            {/* Corte fijo en mobile (en vez de max-w): así la caja mide lo
+                mismo que el texto y el bloque queda centrado al píxel. */}
+            Asociación de Deportes Electrónicos <br className="md:hidden" />y Electromecánicos Argentina
           </span>
         </div>
       </div>
