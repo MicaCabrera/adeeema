@@ -369,7 +369,7 @@ export default function Navbar() {
           style={{ clipPath: "inset(0 0 100% 0)" }}
           className="fixed inset-0 z-40 flex flex-col bg-accent xl:hidden"
         >
-          <div className="flex-1 overflow-y-auto px-6 pb-10 pt-20 sm:px-10 sm:pt-24">
+          <div className="flex-1 overflow-y-auto px-6 pb-10 pt-28 sm:px-10 sm:pt-32">
             {/* min-h-full + flex-col empuja el bloque de CTA/idioma hacia el
                 fondo del alto disponible (mt-auto) sin usar position: fixed,
                 así nunca se superpone al contenido ni queda pegado al borde. */}
