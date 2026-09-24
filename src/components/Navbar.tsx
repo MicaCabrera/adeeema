@@ -142,15 +142,32 @@ export default function Navbar() {
 
   useEffect(() => {
     const tick = () => {
-      const link = nav.find((item) => item.href === activeHref);
-      if (!link) return;
+      const index = nav.findIndex((item) => item.href === activeHref);
+      if (index === -1) return;
+      const link = nav[index];
       const section = document.querySelector(link.href);
       const el = progressRefs.current[link.href];
       if (!section || !el) return;
 
-      const sectionTop = window.scrollY + section.getBoundingClientRect().top;
-      const sectionHeight = (section as HTMLElement).offsetHeight || 1;
-      const raw = (window.scrollY - sectionTop) / sectionHeight;
+      // El tramo de cada link va desde su sección hasta donde empieza la del
+      // link siguiente, no solo la altura de su sección: así "Institucional"
+      // cubre también Red de articulación y Misión y Visión, que no tienen
+      // link propio. El último link termina al final de la página. Se mide en
+      // cada frame, así que acompaña cambios de altura (imágenes, pin-spacers).
+      // Referencia: el centro del viewport, el mismo punto que usa el
+      // scroll-spy, para que la barra llegue al 100% justo cuando se activa
+      // el link siguiente (sin salto).
+      const half = window.innerHeight / 2;
+      const position = window.scrollY + half;
+      const pageEnd = document.documentElement.scrollHeight - half;
+      const nextLink = nav[index + 1];
+      const nextSection = nextLink ? document.querySelector(nextLink.href) : null;
+      const start = window.scrollY + section.getBoundingClientRect().top;
+      const end = Math.min(
+        nextSection ? window.scrollY + nextSection.getBoundingClientRect().top : pageEnd,
+        pageEnd
+      );
+      const raw = end > start ? (position - start) / (end - start) : position >= start ? 1 : 0;
       const progress = Math.min(1, Math.max(0, raw));
 
       gsap.to(el, { scaleX: progress, duration: 0.15, ease: "none", overwrite: "auto" });
