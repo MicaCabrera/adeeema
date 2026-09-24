@@ -25,9 +25,9 @@ const frames = [
   [14, 6, 13, 20, 9, 7, 21],
 ];
 
-const MIN_VISIBLE_MS = 1500;
-const MIN_VISIBLE_REDUCED_MS = 600;
-const MAX_VISIBLE_MS = 5000; // tope de seguridad: si algo tarda, el splash se va igual
+const MIN_VISIBLE_MS = 4500;
+const MIN_VISIBLE_REDUCED_MS = 3600;
+const MAX_VISIBLE_MS = 8000; // tope de seguridad: si algo tarda, el splash se va igual
 const FADE_OUT_MS = 500;
 const TAGLINE_DELAY_MS = 300;
 
