@@ -383,7 +383,7 @@ export default function Navbar() {
                     }}
                     href={toHomeAnchor(link.href)}
                     onClick={closeMenu}
-                    className="group flex items-center justify-between border-b border-white/20 py-4 text-3xl font-semibold text-white transition-colors sm:text-4xl"
+                    className="group flex items-center justify-between border-b border-white/20 py-3.5 text-2xl font-semibold text-white transition-colors sm:text-3xl"
                   >
                     <span>{navT[index]?.label ?? link.label}</span>
                     <span aria-hidden="true" className="text-secondary opacity-0 transition-opacity duration-200 group-hover:opacity-100">
